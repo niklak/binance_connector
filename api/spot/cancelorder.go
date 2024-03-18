@@ -66,10 +66,10 @@ func (s *CancelOrderService) Do(ctx context.Context, opts ...request.RequestOpti
 	}
 
 	r.SetParam("symbol", s.symbol)
-	r.SetParam("orderId", *s.orderId)
-	r.SetParam("origClientOrderId", *s.origClientOrderId)
-	r.SetParam("newClientOrderId", *s.newClientOrderId)
-	r.SetParam("cancelRestrictions", *s.cancelRestrictions)
+	r.SetParam("orderId", s.orderId)
+	r.SetParam("origClientOrderId", s.origClientOrderId)
+	r.SetParam("newClientOrderId", s.newClientOrderId)
+	r.SetParam("cancelRestrictions", s.cancelRestrictions)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {

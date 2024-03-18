@@ -50,6 +50,7 @@ func (r *Request) AddParam(key string, value interface{}) *Request {
 
 // SetParam set param with key/value to query string, if param is nil it will be ignored
 func (r *Request) SetParam(key string, value interface{}) *Request {
+	// better to use reflection to handle all types
 	var param string
 	switch v := value.(type) {
 	case nil:
@@ -64,10 +65,33 @@ func (r *Request) SetParam(key string, value interface{}) *Request {
 		param = strconv.FormatFloat(float64(v), 'f', -1, 64)
 	case float64:
 		param = strconv.FormatFloat(v, 'f', -1, 64)
+	case *string:
+		if v != nil {
+			param = *v
+		}
+	case *int:
+		if v != nil {
+			param = strconv.Itoa(*v)
+		}
+	case *int64:
+		if v != nil {
+			param = strconv.FormatInt(*v, 10)
+		}
+	case *float32:
+		if v != nil {
+			param = strconv.FormatFloat(float64(*v), 'f', -1, 64)
+		}
+	case *float64:
+		if v != nil {
+			param = strconv.FormatFloat(*v, 'f', -1, 64)
+		}
 	default:
 		param = fmt.Sprintf("%v", value)
 	}
-	r.Query.Set(key, param)
+	if param != "" {
+		r.Query.Set(key, param)
+	}
+
 	return r
 }
 

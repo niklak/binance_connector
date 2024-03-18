@@ -58,8 +58,8 @@ func (s *GetOrderService) Do(ctx context.Context, opts ...request.RequestOption)
 	}
 
 	r.SetParam("symbol", s.symbol)
-	r.SetParam("orderId", *s.orderId)
-	r.SetParam("origClientOrderId", *s.origClientOrderId)
+	r.SetParam("orderId", s.orderId)
+	r.SetParam("origClientOrderId", s.origClientOrderId)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
