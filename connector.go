@@ -3,8 +3,6 @@ package binance_connector
 import (
 	"time"
 
-	"github.com/niklak/binance_connector/api/market"
-	"github.com/niklak/binance_connector/api/spot"
 	"github.com/niklak/binance_connector/internal/client"
 )
 
@@ -19,22 +17,22 @@ func NewClient(apiKey, secretKey, baseURL string, timeout ...time.Duration) *Cli
 	return &Client{Connector: client.Init()}
 }
 
-func (c *Client) NewTickerPriceService() *market.TickerPrice {
-	return &market.TickerPrice{C: c.Connector}
+func (c *Client) NewTickerPriceService() *TickerPrice {
+	return &TickerPrice{C: c.Connector}
 }
 
-func (c *Client) NewCreateOrderService() *spot.CreateOrderService {
-	return &spot.CreateOrderService{C: c.Connector}
+func (c *Client) NewCreateOrderService() *CreateOrderService {
+	return &CreateOrderService{C: c.Connector}
 }
 
-func (c *Client) NewGetOrderService() *spot.GetOrderService {
-	return &spot.GetOrderService{C: c.Connector}
+func (c *Client) NewGetOrderService() *GetOrderService {
+	return &GetOrderService{C: c.Connector}
 }
 
-func (c *Client) NewCancelOrderService() *spot.CancelOrderService {
-	return &spot.CancelOrderService{C: c.Connector}
+func (c *Client) NewCancelOrderService() *CancelOrderService {
+	return &CancelOrderService{C: c.Connector}
 }
 
-func (c *Client) NewCancelOpenOrdersService() *spot.CancelOpenOrdersService {
-	return &spot.CancelOpenOrdersService{C: c.Connector}
+func (c *Client) NewCancelOpenOrdersService() *CancelOpenOrdersService {
+	return &CancelOpenOrdersService{C: c.Connector}
 }
