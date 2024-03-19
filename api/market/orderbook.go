@@ -40,7 +40,7 @@ func (s *OrderBook) Do(ctx context.Context, opts ...request.RequestOption) (res 
 	}
 
 	r.SetParam("symbol", s.symbol)
-	r.SetParam("limit", *s.limit)
+	r.SetParam("limit", s.limit)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {

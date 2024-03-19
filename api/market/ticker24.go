@@ -36,7 +36,7 @@ func (s *Ticker24hr) Do(ctx context.Context, opts ...request.RequestOption) (res
 	r := newMarketRequest("/api/v3/ticker/24hr")
 
 	if s.symbol != nil {
-		r.SetParam("symbol", *s.symbol)
+		r.SetParam("symbol", s.symbol)
 	} else if s.symbols != nil {
 		symbols := helpers.StringifyStringSlice(*s.symbols)
 		r.SetParam("symbols", symbols)

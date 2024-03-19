@@ -51,8 +51,8 @@ func (s *HistoricalTradeLookup) Do(ctx context.Context, opts ...request.RequestO
 	}
 
 	r.SetParam("symbol", s.symbol)
-	r.SetParam("limit", *s.limit)
-	r.SetParam("fromId", *s.fromId)
+	r.SetParam("limit", s.limit)
+	r.SetParam("fromId", s.fromId)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {

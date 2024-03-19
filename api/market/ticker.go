@@ -46,8 +46,8 @@ func (s *Ticker) Do(ctx context.Context, opts ...request.RequestOption) (res *Ti
 		return
 	}
 	r.SetParam("symbol", s.symbol)
-	r.SetParam("windowSize", *s.windowSize)
-	r.SetParam("type", *s.tickerType)
+	r.SetParam("windowSize", s.windowSize)
+	r.SetParam("type", s.tickerType)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {

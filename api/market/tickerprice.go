@@ -36,7 +36,7 @@ func (s *TickerPrice) Do(ctx context.Context, opts ...request.RequestOption) (re
 	r := newMarketRequest("/api/v3/ticker/price")
 
 	if s.symbol != nil {
-		r.SetParam("symbol", *s.symbol)
+		r.SetParam("symbol", s.symbol)
 	} else if s.symbols != nil {
 		symbols := helpers.StringifyStringSlice(*s.symbols)
 		r.SetParam("symbols", symbols)

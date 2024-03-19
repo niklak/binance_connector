@@ -15,3 +15,4 @@ In the future, I will add the rest methods from the original package.
 - `Ticker24hr.Do` returns a `[]*Ticker24hrResponse` instead of `*Ticker24hrResponse`
 - Reduced `if` blocks for optional parameters, The check performs only at the one place now.
 - Added more constructors, which can be convenient if you need to set timeout or http client with your settings.
+- `AllOrdersResponse` and `NewOpenOrdersResponse` are combined into one struct `OrderResponse`

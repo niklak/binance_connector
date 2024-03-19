@@ -23,7 +23,7 @@ func (s *GetOpenOrdersService) Symbol(symbol string) *GetOpenOrdersService {
 }
 
 // Do send request
-func (s *GetOpenOrdersService) Do(ctx context.Context, opts ...request.RequestOption) (res []*OpenOrdersResponse, err error) {
+func (s *GetOpenOrdersService) Do(ctx context.Context, opts ...request.RequestOption) (res []*OrderResponse, err error) {
 	r := &request.Request{
 		Method:   http.MethodGet,
 		Endpoint: "/api/v3/openOrders",
@@ -36,13 +36,13 @@ func (s *GetOpenOrdersService) Do(ctx context.Context, opts ...request.RequestOp
 	if err != nil {
 		return nil, err
 	}
-	res = make([]*OpenOrdersResponse, 0)
+	res = make([]*OrderResponse, 0)
 	err = json.Unmarshal(data, &res)
 	return
 }
 
 // Create OpenOrdersResponse
-type OpenOrdersResponse struct {
+type OrderResponse struct {
 	Symbol                  string `json:"symbol"`
 	OrderId                 int64  `json:"orderId"`
 	OrderListId             int64  `json:"orderListId"`

@@ -63,9 +63,9 @@ func (s *Klines) Do(ctx context.Context, opts ...request.RequestOption) (res []*
 
 	r.SetParam("symbol", s.symbol)
 	r.SetParam("interval", s.interval)
-	r.SetParam("limit", *s.limit)
-	r.SetParam("startTime", *s.startTime)
-	r.SetParam("endTime", *s.endTime)
+	r.SetParam("limit", s.limit)
+	r.SetParam("startTime", s.startTime)
+	r.SetParam("endTime", s.endTime)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {

@@ -53,7 +53,7 @@ func (s *GetAllOrdersService) Limit(limit int) *GetAllOrdersService {
 }
 
 // Do send request
-func (s *GetAllOrdersService) Do(ctx context.Context, opts ...request.RequestOption) (res []*AllOrdersResponse, err error) {
+func (s *GetAllOrdersService) Do(ctx context.Context, opts ...request.RequestOption) (res []*OrderResponse, err error) {
 	r := &request.Request{
 		Method:   http.MethodGet,
 		Endpoint: "/api/v3/allOrders",
@@ -76,38 +76,7 @@ func (s *GetAllOrdersService) Do(ctx context.Context, opts ...request.RequestOpt
 	if err != nil {
 		return nil, err
 	}
-	res = make([]*AllOrdersResponse, 0)
+	res = make([]*OrderResponse, 0)
 	err = json.Unmarshal(data, &res)
 	return
-}
-
-// Create NewAllOrdersResponse
-type AllOrdersResponse struct {
-	Symbol                  string `json:"symbol"`
-	ListClientOrderId       string `json:"listClientOrderId"`
-	OrderId                 int64  `json:"orderId"`
-	OrderListId             int64  `json:"orderListId"`
-	ClientOrderId           string `json:"clientOrderId"`
-	Price                   string `json:"price"`
-	OrigQty                 string `json:"origQty"`
-	ExecutedQty             string `json:"executedQty"`
-	CumulativeQuoteQty      string `json:"cumulativeQuoteQty"`
-	Status                  string `json:"status"`
-	TimeInForce             string `json:"timeInForce"`
-	Type                    string `json:"type"`
-	Side                    string `json:"side"`
-	StopPrice               string `json:"stopPrice"`
-	IcebergQty              string `json:"icebergQty,omitempty"`
-	Time                    uint64 `json:"time"`
-	UpdateTime              uint64 `json:"updateTime"`
-	IsWorking               bool   `json:"isWorking"`
-	OrigQuoteOrderQty       string `json:"origQuoteOrderQty"`
-	WorkingTime             uint64 `json:"workingTime"`
-	SelfTradePreventionMode string `json:"selfTradePreventionMode"`
-	PreventedMatchId        int64  `json:"preventedMatchId,omitempty"`
-	PreventedQuantity       string `json:"preventedQuantity,omitempty"`
-	StrategyId              int64  `json:"strategyId,omitempty"`
-	StrategyType            int64  `json:"strategyType,omitempty"`
-	TrailingDelta           string `json:"trailingDelta,omitempty"`
-	TrailingTime            int64  `json:"trailingTime,omitempty"`
 }

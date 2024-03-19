@@ -60,10 +60,10 @@ func (s *AggTradesList) Do(ctx context.Context, opts ...request.RequestOption) (
 	}
 
 	r.SetParam("symbol", s.symbol)
-	r.SetParam("limit", *s.limit)
-	r.SetParam("fromId", *s.fromId)
-	r.SetParam("startTime", *s.startTime)
-	r.SetParam("endTime", *s.endTime)
+	r.SetParam("limit", s.limit)
+	r.SetParam("fromId", s.fromId)
+	r.SetParam("startTime", s.startTime)
+	r.SetParam("endTime", s.endTime)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
