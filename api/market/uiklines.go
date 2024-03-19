@@ -73,38 +73,14 @@ func (s *UiKlines) Do(ctx context.Context, opts ...request.RequestOption) (res [
 		return nil, err
 	}
 	var uiklinesResponseArray UiKlinesResponseArray
-	err = json.Unmarshal(data, &uiklinesResponseArray)
-	if err != nil {
+
+	if err = json.Unmarshal(data, &uiklinesResponseArray); err != nil {
 		return
 	}
 	res = make([]*UiKlinesResponse, 0)
 	for _, uikline := range uiklinesResponseArray {
-		openTime := uikline[0].(float64)
-		open := uikline[1].(string)
-		high := uikline[2].(string)
-		low := uikline[3].(string)
-		close := uikline[4].(string)
-		volume := uikline[5].(string)
-		closeTime := uikline[6].(float64)
-		quoteAssetVolume := uikline[7].(string)
-		numberOfTrades := uikline[8].(float64)
-		takerBuyBaseAssetVolume := uikline[9].(string)
-		takerBuyQuoteAssetVolume := uikline[10].(string)
-
 		// create a KlinesResponse struct using the parsed fields
-		uiklinesResponse := &UiKlinesResponse{
-			OpenTime:                 uint64(openTime),
-			Open:                     open,
-			High:                     high,
-			Low:                      low,
-			Close:                    close,
-			Volume:                   volume,
-			CloseTime:                uint64(closeTime),
-			QuoteAssetVolume:         quoteAssetVolume,
-			NumberOfTrades:           uint64(numberOfTrades),
-			TakerBuyBaseAssetVolume:  takerBuyBaseAssetVolume,
-			TakerBuyQuoteAssetVolume: takerBuyQuoteAssetVolume,
-		}
+		uiklinesResponse := (&UiKlinesResponse{}).fromRawKline(uikline)
 		res = append(res, uiklinesResponse)
 	}
 	return
@@ -113,16 +89,4 @@ func (s *UiKlines) Do(ctx context.Context, opts ...request.RequestOption) (res [
 type UiKlinesResponseArray [][]interface{}
 
 // Define UiKlines response data
-type UiKlinesResponse struct {
-	OpenTime                 uint64 `json:"openTime"`
-	Open                     string `json:"open"`
-	High                     string `json:"high"`
-	Low                      string `json:"low"`
-	Close                    string `json:"close"`
-	Volume                   string `json:"volume"`
-	CloseTime                uint64 `json:"closeTime"`
-	QuoteAssetVolume         string `json:"quoteAssetVolume"`
-	NumberOfTrades           uint64 `json:"numberOfTrades"`
-	TakerBuyBaseAssetVolume  string `json:"takerBuyBaseAssetVolume"`
-	TakerBuyQuoteAssetVolume string `json:"takerBuyQuoteAssetVolume"`
-}
+type UiKlinesResponse = KlinesResponse

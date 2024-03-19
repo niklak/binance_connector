@@ -207,87 +207,38 @@ func (s *CancelReplaceService) Do(ctx context.Context, opts ...request.RequestOp
 	return
 }
 
+type OrderData struct {
+	Code                    int      `json:"code,omitempty"`
+	Msg                     string   `json:"msg,omitempty"`
+	Symbol                  string   `json:"symbol,omitempty"`
+	OrigClientOrderId       string   `json:"origClientOrderId,omitempty"`
+	OrderId                 int64    `json:"orderId,omitempty"`
+	OrderListId             int64    `json:"orderListId,omitempty"`
+	ClientOrderId           string   `json:"clientOrderId,omitempty"`
+	TransactTime            uint64   `json:"transactTime,omitempty"`
+	Price                   string   `json:"price,omitempty"`
+	OrigQty                 string   `json:"origQty,omitempty"`
+	ExecutedQty             string   `json:"executedQty,omitempty"`
+	CumulativeQuoteQty      string   `json:"cumulativeQuoteQty,omitempty"`
+	Status                  string   `json:"status,omitempty"`
+	TimeInForce             string   `json:"timeInForce,omitempty"`
+	Type                    string   `json:"type,omitempty"`
+	Side                    string   `json:"side,omitempty"`
+	Fills                   []string `json:"fills,omitempty"`
+	SelfTradePreventionMode string   `json:"selfTradePreventionMode,omitempty"`
+}
+
 type CancelReplaceResponse struct {
-	Code           int64  `json:"code,omitempty"`
-	Msg            string `json:"msg,omitempty"`
-	CancelResult   string `json:"cancelResult,omitempty"`
-	NewOrderResult string `json:"newOrderResult,omitempty"`
-	CancelResponse *struct {
-		Code                    int    `json:"code,omitempty"`
-		Msg                     string `json:"msg,omitempty"`
-		Symbol                  string `json:"symbol,omitempty"`
-		OrigClientOrderId       string `json:"origClientOrderId,omitempty"`
-		OrderId                 int64  `json:"orderId,omitempty"`
-		OrderListId             int64  `json:"orderListId,omitempty"`
-		ClientOrderId           string `json:"clientOrderId,omitempty"`
-		Price                   string `json:"price,omitempty"`
-		OrigQty                 string `json:"origQty,omitempty"`
-		ExecutedQty             string `json:"executedQty,omitempty"`
-		CumulativeQuoteQty      string `json:"cumulativeQuoteQty,omitempty"`
-		Status                  string `json:"status,omitempty"`
-		TimeInForce             string `json:"timeInForce,omitempty"`
-		Type                    string `json:"type,omitempty"`
-		Side                    string `json:"side,omitempty"`
-		SelfTradePreventionMode string `json:"selfTradePreventionMode,omitempty"`
-	} `json:"cancelResponse,omitempty"`
-	NewOrderResponse *struct {
-		Code                    int64    `json:"code,omitempty"`
-		Msg                     string   `json:"msg,omitempty"`
-		Symbol                  string   `json:"symbol,omitempty"`
-		OrderId                 int64    `json:"orderId,omitempty"`
-		OrderListId             int64    `json:"orderListId,omitempty"`
-		ClientOrderId           string   `json:"clientOrderId,omitempty"`
-		TransactTime            uint64   `json:"transactTime,omitempty"`
-		Price                   string   `json:"price,omitempty"`
-		OrigQty                 string   `json:"origQty,omitempty"`
-		ExecutedQty             string   `json:"executedQty,omitempty"`
-		CumulativeQuoteQty      string   `json:"cumulativeQuoteQty,omitempty"`
-		Status                  string   `json:"status,omitempty"`
-		TimeInForce             string   `json:"timeInForce,omitempty"`
-		Type                    string   `json:"type,omitempty"`
-		Side                    string   `json:"side,omitempty"`
-		Fills                   []string `json:"fills,omitempty"`
-		SelfTradePreventionMode string   `json:"selfTradePreventionMode,omitempty"`
-	} `json:"newOrderResponse,omitempty"`
-	Data *struct {
-		CancelResult   string `json:"cancelResult,omitempty"`
-		NewOrderResult string `json:"newOrderResult,omitempty"`
-		CancelResponse *struct {
-			Code                    int64  `json:"code,omitempty"`
-			Msg                     string `json:"msg,omitempty"`
-			Symbol                  string `json:"symbol,omitempty"`
-			OrigClientOrderId       string `json:"origClientOrderId,omitempty"`
-			OrderId                 int64  `json:"orderId,omitempty"`
-			OrderListId             int64  `json:"orderListId,omitempty"`
-			ClientOrderId           string `json:"clientOrderId,omitempty"`
-			Price                   string `json:"price,omitempty"`
-			OrigQty                 string `json:"origQty,omitempty"`
-			ExecutedQty             string `json:"executedQty,omitempty"`
-			CumulativeQuoteQty      string `json:"cumulativeQuoteQty,omitempty"`
-			Status                  string `json:"status,omitempty"`
-			TimeInForce             string `json:"timeInForce,omitempty"`
-			Type                    string `json:"type,omitempty"`
-			Side                    string `json:"side,omitempty"`
-			SelfTradePreventionMode string `json:"selfTradePreventionMode,omitempty"`
-		} `json:"cancelResponse,omitempty"`
-		NewOrderResponse struct {
-			Code                    int64    `json:"code,omitempty"`
-			Msg                     string   `json:"msg,omitempty"`
-			Symbol                  string   `json:"symbol,omitempty"`
-			OrderId                 int64    `json:"orderId,omitempty"`
-			OrderListId             int64    `json:"orderListId,omitempty"`
-			ClientOrderId           string   `json:"clientOrderId,omitempty"`
-			TransactTime            uint64   `json:"transactTime,omitempty"`
-			Price                   string   `json:"price,omitempty"`
-			OrigQty                 string   `json:"origQty,omitempty"`
-			ExecutedQty             string   `json:"executedQty,omitempty"`
-			CumulativeQuoteQty      string   `json:"cumulativeQuoteQty,omitempty"`
-			Status                  string   `json:"status,omitempty"`
-			TimeInForce             string   `json:"timeInForce,omitempty"`
-			Type                    string   `json:"type,omitempty"`
-			Side                    string   `json:"side,omitempty"`
-			Fills                   []string `json:"fills,omitempty"`
-			SelfTradePreventionMode string   `json:"selfTradePreventionMode,omitempty"`
-		} `json:"newOrderResponse"`
+	Code             int64      `json:"code,omitempty"`
+	Msg              string     `json:"msg,omitempty"`
+	CancelResult     string     `json:"cancelResult,omitempty"`
+	NewOrderResult   string     `json:"newOrderResult,omitempty"`
+	CancelResponse   *OrderData `json:"cancelResponse,omitempty"`
+	NewOrderResponse *OrderData `json:"newOrderResponse,omitempty"`
+	Data             *struct {
+		CancelResult     string     `json:"cancelResult,omitempty"`
+		NewOrderResult   string     `json:"newOrderResult,omitempty"`
+		CancelResponse   *OrderData `json:"cancelResponse,omitempty"`
+		NewOrderResponse OrderData  `json:"newOrderResponse"`
 	} `json:"data,omitempty"`
 }

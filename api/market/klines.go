@@ -79,32 +79,9 @@ func (s *Klines) Do(ctx context.Context, opts ...request.RequestOption) (res []*
 
 	res = make([]*KlinesResponse, 0)
 	for _, kline := range klinesResponseArray {
-		openTime := kline[0].(float64)
-		open := kline[1].(string)
-		high := kline[2].(string)
-		low := kline[3].(string)
-		close := kline[4].(string)
-		volume := kline[5].(string)
-		closeTime := kline[6].(float64)
-		quoteAssetVolume := kline[7].(string)
-		numberOfTrades := kline[8].(float64)
-		takerBuyBaseAssetVolume := kline[9].(string)
-		takerBuyQuoteAssetVolume := kline[10].(string)
 
 		// create a KlinesResponse struct using the parsed fields
-		klinesResponse := &KlinesResponse{
-			OpenTime:                 uint64(openTime),
-			Open:                     open,
-			High:                     high,
-			Low:                      low,
-			Close:                    close,
-			Volume:                   volume,
-			CloseTime:                uint64(closeTime),
-			QuoteAssetVolume:         quoteAssetVolume,
-			NumberOfTrades:           uint64(numberOfTrades),
-			TakerBuyBaseAssetVolume:  takerBuyBaseAssetVolume,
-			TakerBuyQuoteAssetVolume: takerBuyQuoteAssetVolume,
-		}
+		klinesResponse := (&KlinesResponse{}).fromRawKline(kline)
 		res = append(res, klinesResponse)
 	}
 	return
@@ -125,4 +102,19 @@ type KlinesResponse struct {
 	NumberOfTrades           uint64 `json:"numberOfTrades"`
 	TakerBuyBaseAssetVolume  string `json:"takerBuyBaseAssetVolume"`
 	TakerBuyQuoteAssetVolume string `json:"takerBuyQuoteAssetVolume"`
+}
+
+func (s *KlinesResponse) fromRawKline(kline []interface{}) *KlinesResponse {
+	s.OpenTime = uint64(kline[0].(float64))
+	s.Open = kline[1].(string)
+	s.High = kline[2].(string)
+	s.Low = kline[3].(string)
+	s.Close = kline[4].(string)
+	s.Volume = kline[5].(string)
+	s.CloseTime = uint64(kline[6].(float64))
+	s.QuoteAssetVolume = kline[7].(string)
+	s.NumberOfTrades = uint64(kline[8].(float64))
+	s.TakerBuyBaseAssetVolume = kline[9].(string)
+	s.TakerBuyQuoteAssetVolume = kline[10].(string)
+	return s
 }

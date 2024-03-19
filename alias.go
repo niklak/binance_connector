@@ -75,3 +75,14 @@ type CancelOrderResponse = spot.CancelOrderResponse
 
 // cancelopenorders.go
 type CancelOpenOrdersService = spot.CancelOpenOrdersService
+
+// newoco.go
+type NewOCOService = spot.NewOCOService
+type OrderOCOResponse = spot.OrderOCOResponse
+
+// canceloco.go
+type CancelOCOService = spot.CancelOCOService
+
+// queryoco.go
+type QueryOCOService = spot.QueryOCOService
+type OCOResponse = spot.OCOResponse

@@ -107,6 +107,9 @@ func (c *Client) NewCreateOrderService() *CreateOrderService {
 func (c *Client) NewGetOrderService() *GetOrderService {
 	return &GetOrderService{C: c.Connector}
 }
+func (c *Client) NewCancelReplaceService() *CancelReplaceService {
+	return &CancelReplaceService{C: c.Connector}
+}
 
 func (c *Client) NewGetOpenOrdersService() *GetOpenOrdersService {
 	return &GetOpenOrdersService{C: c.Connector}
@@ -122,4 +125,16 @@ func (c *Client) NewCancelOrderService() *CancelOrderService {
 
 func (c *Client) NewCancelOpenOrdersService() *CancelOpenOrdersService {
 	return &CancelOpenOrdersService{C: c.Connector}
+}
+
+func (c *Client) NewNewOCOService() *NewOCOService {
+	return &NewOCOService{C: c.Connector}
+}
+
+func (c *Client) NewCancelOCOService() *CancelOCOService {
+	return &CancelOCOService{C: c.Connector}
+}
+
+func (c *Client) NewQueryOCOService() *QueryOCOService {
+	return &QueryOCOService{C: c.Connector}
 }
