@@ -13,7 +13,7 @@ import (
 
 // Binance 24hr Ticker Price Change Statistics (GET /api/v3/ticker/24hr)
 type Ticker24hr struct {
-	c       *connector.Connector
+	C       *connector.Connector
 	symbol  *string
 	symbols *[]string
 }
@@ -45,7 +45,7 @@ func (s *Ticker24hr) Do(ctx context.Context, opts ...request.RequestOption) (res
 		return
 	}
 
-	data, err := s.c.CallAPI(ctx, r, opts...)
+	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
 	}

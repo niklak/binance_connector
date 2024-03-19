@@ -36,9 +36,65 @@ func NewWithHttpClient(apiKey, secretKey, baseURL string, httpClient *http.Clien
 	return &Client{Connector: client.Init()}
 }
 
+// Market Endpoints:
+
+func (c *Client) NewPingService() *Ping {
+	return &Ping{C: c.Connector}
+}
+
+func (c *Client) NewTimeService() *ServerTime {
+	return &ServerTime{C: c.Connector}
+}
+
+func (c *Client) NewExchangeInfoService() *ExchangeInfo {
+	return &ExchangeInfo{C: c.Connector}
+}
+
+func (c *Client) NewOrderBookService() *OrderBook {
+	return &OrderBook{C: c.Connector}
+}
+
+func (c *Client) NewRecentTradesListService() *RecentTradesList {
+	return &RecentTradesList{C: c.Connector}
+}
+
+func (c *Client) NewHistoricalTradeLookupService() *HistoricalTradeLookup {
+	return &HistoricalTradeLookup{C: c.Connector}
+}
+
+func (c *Client) NewAggTradesListService() *AggTradesList {
+	return &AggTradesList{C: c.Connector}
+}
+
+func (c *Client) NewKlinesService() *Klines {
+	return &Klines{C: c.Connector}
+}
+
+func (c *Client) NewUIKlinesService() *UiKlines {
+	return &UiKlines{C: c.Connector}
+}
+
+func (c *Client) NewAvgPriceService() *AvgPrice {
+	return &AvgPrice{C: c.Connector}
+}
+
+func (c *Client) NewTicker24hrService() *Ticker24hr {
+	return &Ticker24hr{C: c.Connector}
+}
+
 func (c *Client) NewTickerPriceService() *TickerPrice {
 	return &TickerPrice{C: c.Connector}
 }
+
+func (c *Client) NewTickerBookTickerService() *TickerBookTicker {
+	return &TickerBookTicker{C: c.Connector}
+}
+
+func (c *Client) NewTickerService() *Ticker {
+	return &Ticker{C: c.Connector}
+}
+
+// Spot Endpoints:
 
 func (c *Client) NewCreateOrderService() *CreateOrderService {
 	return &CreateOrderService{C: c.Connector}

@@ -26,6 +26,9 @@ type HistoricalTradeLookupResponse = market.RecentTradesListResponse
 type AggTradesList = market.AggTradesList
 type AggTradesListResponse = market.AggTradesListResponse
 
+type AvgPrice = market.AvgPrice
+type AvgPriceResponse = market.AvgPriceResponse
+
 type Klines = market.Klines
 type KlinesResponse = market.KlinesResponse
 
