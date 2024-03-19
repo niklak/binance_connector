@@ -41,7 +41,7 @@ func (s *Ticker24hr) Do(ctx context.Context, opts ...request.RequestOption) (res
 		symbols := helpers.StringifyStringSlice(*s.symbols)
 		r.SetParam("symbols", symbols)
 	} else {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
+		err = fmt.Errorf("%w: either symbol or symbols", apierrors.ErrMissingParameter)
 		return
 	}
 

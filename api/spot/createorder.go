@@ -3,6 +3,7 @@ package spot
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/niklak/binance_connector/api/apierrors"
@@ -138,16 +139,16 @@ func (s *CreateOrderService) Do(ctx context.Context, opts ...request.RequestOpti
 
 	// no need to send request if there are no required parameters
 	if s.symbol == "" {
-		err = apierrors.ErrMissingSymbol
+		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
 		return
 	}
 
 	if s.side == "" {
-		err = apierrors.ErrMissingSide
+		err = fmt.Errorf("%w: side", apierrors.ErrMissingParameter)
 		return
 	}
 	if s.orderType == "" {
-		err = apierrors.ErrMissingType
+		err = fmt.Errorf("%w: orderType", apierrors.ErrMissingParameter)
 		return
 	}
 

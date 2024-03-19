@@ -3,6 +3,7 @@ package spot
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/niklak/binance_connector/api/apierrors"
@@ -48,12 +49,12 @@ func (s *GetOrderService) Do(ctx context.Context, opts ...request.RequestOption)
 	r.Init()
 
 	if s.symbol == "" {
-		err = apierrors.ErrMissingSymbol
+		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
 		return
 	}
 
 	if (s.orderId == nil && s.origClientOrderId == nil) || (s.orderId != nil && s.origClientOrderId != nil) {
-		err = apierrors.ErrEitherOrderIdOrOrigClientOrderId
+		err = fmt.Errorf("%w: either origClientOrderId or orderId", apierrors.ErrMissingParameter)
 		return
 	}
 

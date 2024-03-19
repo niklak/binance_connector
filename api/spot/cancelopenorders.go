@@ -3,6 +3,7 @@ package spot
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/niklak/binance_connector/api/apierrors"
@@ -33,7 +34,7 @@ func (s *CancelOpenOrdersService) Do(ctx context.Context, opts ...request.Reques
 	r.Init()
 
 	if s.symbol == "" {
-		err = apierrors.ErrMissingSymbol
+		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
 		return
 	}
 

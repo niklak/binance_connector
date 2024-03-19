@@ -41,7 +41,7 @@ func (s *TickerPrice) Do(ctx context.Context, opts ...request.RequestOption) (re
 		symbols := helpers.StringifyStringSlice(*s.symbols)
 		r.SetParam("symbols", symbols)
 	} else {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
+		err = fmt.Errorf("%w: either symbol or symbols", apierrors.ErrMissingParameter)
 		return
 	}
 	data, err := s.C.CallAPI(ctx, r)
