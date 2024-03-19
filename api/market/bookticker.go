@@ -11,29 +11,28 @@ import (
 	"github.com/niklak/binance_connector/internal/request"
 )
 
-// Binance Symbol Price Ticker (GET /api/v3/ticker/price)
-type TickerPrice struct {
+// Binance Symbol Order Book Ticker (GET /api/v3/ticker/bookTicker)
+type TickerBookTicker struct {
 	C       *connector.Connector
 	symbol  *string
 	symbols *[]string
 }
 
 // Symbol set symbol
-func (s *TickerPrice) Symbol(symbol string) *TickerPrice {
+func (s *TickerBookTicker) Symbol(symbol string) *TickerBookTicker {
 	s.symbol = &symbol
 	return s
 }
 
 // Symbols set symbols
-func (s *TickerPrice) Symbols(symbols []string) *TickerPrice {
+func (s *TickerBookTicker) Symbols(symbols []string) *TickerBookTicker {
 	s.symbols = &symbols
 	return s
 }
 
-// Send the request
-func (s *TickerPrice) Do(ctx context.Context, opts ...request.RequestOption) (res []*TickerPriceResponse, err error) {
+func (s *TickerBookTicker) Do(ctx context.Context, opts ...request.RequestOption) (res []*TickerBookTickerResponse, err error) {
 
-	r := newMarketRequest("/api/v3/ticker/price")
+	r := newMarketRequest("/api/v3/ticker/bookTicker")
 
 	if s.symbol != nil {
 		r.SetParam("symbol", *s.symbol)
@@ -44,7 +43,13 @@ func (s *TickerPrice) Do(ctx context.Context, opts ...request.RequestOption) (re
 		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
 		return
 	}
-	data, err := s.C.CallAPI(ctx, r)
+	data, err := s.C.CallAPI(ctx, r, opts...)
+
+	if err != nil {
+		return []*TickerBookTickerResponse{}, err
+	}
+	var raw json.RawMessage
+	err = json.Unmarshal(data, &raw)
 	if err != nil {
 		return
 	}
@@ -54,18 +59,21 @@ func (s *TickerPrice) Do(ctx context.Context, opts ...request.RequestOption) (re
 			return
 		}
 	} else if s.symbol != nil {
-		dst := &TickerPriceResponse{}
+		dst := &TickerBookTickerResponse{}
 		if err = json.Unmarshal(data, dst); err != nil {
 			return
 		}
 		res = append(res, dst)
 	}
 
-	return
+	return res, nil
 }
 
-// Define TickerPrice response data
-type TickerPriceResponse struct {
-	Symbol string `json:"symbol"`
-	Price  string `json:"price"`
+// Define TickerBookTicker response data
+type TickerBookTickerResponse struct {
+	Symbol   string `json:"symbol"`
+	BidPrice string `json:"bidPrice"`
+	BidQty   string `json:"bidQty"`
+	AskPrice string `json:"askPrice"`
+	AskQty   string `json:"askQty"`
 }

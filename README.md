@@ -10,5 +10,6 @@ In the future, I will add the rest methods from the original package.
 - Use `zerolog` package instead of standard `log` package
 - Add more convenient way to set client timeout
 - `TickerPrice.Do` returns a `[]*TickerPriceResponse` instead of `*TickerPriceResponse`
+- `Ticker24hr.Do` returns a `[]*Ticker24hrResponse` instead of `*Ticker24hrResponse`
 - Reduced `if` blocks for optional parameters, The check performs only at one place now.
 - Added more constructors, which can be convenient if you need to set timeout or http client with your settings.
