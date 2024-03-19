@@ -6,14 +6,14 @@ import (
 	"net/http"
 
 	"github.com/niklak/binance_connector/api/apierrors"
-	"github.com/niklak/binance_connector/internal/client"
+	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
 
 // Binance Cancel Order endpoint (DELETE /api/v3/order)
 // CancelOrderService cancel order
 type CancelOrderService struct {
-	C                  *client.Connector
+	C                  *connector.Connector
 	symbol             string
 	orderId            *int64
 	origClientOrderId  *string

@@ -1,4 +1,4 @@
-package client
+package connector
 
 import (
 	"bytes"
@@ -165,7 +165,7 @@ func (c *Connector) CallAPI(ctx context.Context, r *request.Request, opts ...req
 	return data, nil
 }
 
-func NewClient(apiKey, secretKey, baseURL string, timeout ...time.Duration) *Connector {
+func NewConnector(apiKey, secretKey, baseURL string, timeout ...time.Duration) *Connector {
 
 	if baseURL == "" {
 		baseURL = defaultApiURL
@@ -181,4 +181,13 @@ func NewClient(apiKey, secretKey, baseURL string, timeout ...time.Duration) *Con
 	}
 
 	return client.Init()
+}
+
+func NewConnectorWithClient(apiKey, secretKey, baseURL string, client *http.Client) *Connector {
+	return (&Connector{
+		APIKey:     apiKey,
+		SecretKey:  secretKey,
+		BaseURL:    baseURL,
+		HTTPClient: client,
+	}).Init()
 }

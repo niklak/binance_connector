@@ -6,14 +6,14 @@ import (
 	"net/http"
 
 	"github.com/niklak/binance_connector/api/apierrors"
-	"github.com/niklak/binance_connector/internal/client"
+	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
 
 // Binance New Order endpoint (POST /api/v3/order)
 // CreateOrderService create order
 type CreateOrderService struct {
-	C                       *client.Connector
+	C                       *connector.Connector
 	symbol                  string
 	side                    string
 	orderType               string

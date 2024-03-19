@@ -7,8 +7,8 @@ In the future, I will add the rest methods from the original package.
 
 ## Differences between this package and `binance-connector-go`
 - only client (connector) and api (services) are exposed.
-- Changed constructor `New` -- added optional timeout parameter and binance url required parameter (which still can be empty)
 - Use `zerolog` package instead of standard `log` package
 - Add more convenient way to set client timeout
 - `TickerPrice.Do` returns a `[]*TickerPriceResponse` instead of `*TickerPriceResponse`
-- Reduced `if` blocks for optional parameters, The check performs only at one place now. 
+- Reduced `if` blocks for optional parameters, The check performs only at one place now.
+- Added more constructors, which can be convenient if you need to set timeout or http client with your settings.

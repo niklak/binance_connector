@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"reflect"
 	"strconv"
 )
 
@@ -50,11 +51,17 @@ func (r *Request) AddParam(key string, value interface{}) *Request {
 
 // SetParam set param with key/value to query string, if param is nil it will be ignored
 func (r *Request) SetParam(key string, value interface{}) *Request {
-	// better to use reflection to handle all types
+	v := reflect.ValueOf(value)
+
+	if v.Kind() == reflect.Ptr {
+		if v.IsNil() {
+			return r
+		} else {
+			value = v.Elem().Interface()
+		}
+	}
 	var param string
 	switch v := value.(type) {
-	case nil:
-		return r
 	case string:
 		param = v
 	case int:
@@ -65,26 +72,6 @@ func (r *Request) SetParam(key string, value interface{}) *Request {
 		param = strconv.FormatFloat(float64(v), 'f', -1, 64)
 	case float64:
 		param = strconv.FormatFloat(v, 'f', -1, 64)
-	case *string:
-		if v != nil {
-			param = *v
-		}
-	case *int:
-		if v != nil {
-			param = strconv.Itoa(*v)
-		}
-	case *int64:
-		if v != nil {
-			param = strconv.FormatInt(*v, 10)
-		}
-	case *float32:
-		if v != nil {
-			param = strconv.FormatFloat(float64(*v), 'f', -1, 64)
-		}
-	case *float64:
-		if v != nil {
-			param = strconv.FormatFloat(*v, 'f', -1, 64)
-		}
 	default:
 		param = fmt.Sprintf("%v", value)
 	}

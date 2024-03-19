@@ -6,14 +6,14 @@ import (
 	"net/http"
 
 	"github.com/niklak/binance_connector/api/apierrors"
-	"github.com/niklak/binance_connector/internal/client"
+	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
 
 // Binance Cancel all open orders on a symbol (DELETE /api/v3/openOrders)
 // CancelOpenOrdersService cancel open orders
 type CancelOpenOrdersService struct {
-	C      *client.Connector
+	C      *connector.Connector
 	symbol string
 }
 

@@ -1,18 +1,37 @@
 package binance_connector
 
 import (
+	"net/http"
 	"time"
 
-	"github.com/niklak/binance_connector/internal/client"
+	"github.com/niklak/binance_connector/internal/connector"
 )
 
 type Client struct {
-	*client.Connector
+	*connector.Connector
 }
 
-func NewClient(apiKey, secretKey, baseURL string, timeout ...time.Duration) *Client {
+func NewClient(apiKey, secretKey string, baseURL ...string) *Client {
 
-	client := client.NewClient(apiKey, secretKey, baseURL, timeout...)
+	var bURL string
+	if len(baseURL) > 0 {
+		bURL = baseURL[0]
+	}
+	client := connector.NewConnector(apiKey, secretKey, bURL)
+
+	return &Client{Connector: client.Init()}
+}
+
+func NewClientWithTimeout(apiKey, secretKey, baseURL string, timeout time.Duration) *Client {
+
+	client := connector.NewConnector(apiKey, secretKey, baseURL, timeout)
+
+	return &Client{Connector: client.Init()}
+}
+
+func NewWithHttpClient(apiKey, secretKey, baseURL string, httpClient *http.Client) *Client {
+
+	client := connector.NewConnectorWithClient(apiKey, secretKey, baseURL, httpClient)
 
 	return &Client{Connector: client.Init()}
 }
