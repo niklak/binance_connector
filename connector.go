@@ -96,12 +96,24 @@ func (c *Client) NewTickerService() *Ticker {
 
 // Spot Endpoints:
 
+func (c *Client) NewTestNewOrderService() *TestNewOrder {
+	return &TestNewOrder{C: c.Connector}
+}
+
 func (c *Client) NewCreateOrderService() *CreateOrderService {
 	return &CreateOrderService{C: c.Connector}
 }
 
 func (c *Client) NewGetOrderService() *GetOrderService {
 	return &GetOrderService{C: c.Connector}
+}
+
+func (c *Client) NewGetOpenOrdersService() *GetOpenOrdersService {
+	return &GetOpenOrdersService{C: c.Connector}
+}
+
+func (c *Client) NewGetAllOrdersService() *GetAllOrdersService {
+	return &GetAllOrdersService{C: c.Connector}
 }
 
 func (c *Client) NewCancelOrderService() *CancelOrderService {

@@ -48,6 +48,18 @@ type Ticker = market.Ticker
 type TickerResponse = market.TickerResponse
 
 // spot
+type TestNewOrder = spot.TestNewOrder
+type AccountOrderBookResponse = spot.AccountOrderBookResponse
+
+type CancelReplaceService = spot.CancelReplaceService
+type CancelReplaceResponse = spot.CancelReplaceResponse
+
+type GetOpenOrdersService = spot.GetOpenOrdersService
+type OpenOrdersResponse = spot.OpenOrdersResponse
+
+type GetAllOrdersService = spot.GetAllOrdersService
+type AllOrdersResponse = spot.AllOrdersResponse
+
 // createorder.go
 type CreateOrderService = spot.CreateOrderService
 type CreateOrderResponseACK = spot.CreateOrderResponseACK

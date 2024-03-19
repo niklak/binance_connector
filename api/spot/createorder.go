@@ -122,12 +122,6 @@ func (s *CreateOrderService) SelfTradePreventionMode(selfTradePreventionMode str
 	return s
 }
 
-const (
-	ACK    = 1
-	RESULT = 2
-	FULL   = 3
-)
-
 // Do send request
 func (s *CreateOrderService) Do(ctx context.Context, opts ...request.RequestOption) (res interface{}, err error) {
 	r := &request.Request{
