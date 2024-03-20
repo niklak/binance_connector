@@ -140,3 +140,19 @@ func (c *Client) NewQueryOCOService() *QueryOCOService {
 func (c *Client) NewQueryAllOCOService() *QueryAllOCOService {
 	return &QueryAllOCOService{C: c.Connector}
 }
+
+func (c *Client) NewAccountService() *AccountService {
+	return &AccountService{C: c.Connector}
+}
+
+func (c *Client) NewAccountTradeListService() *AccountTradeListService {
+	return &AccountTradeListService{C: c.Connector}
+}
+
+func (c *Client) NewQueryCurrentOrderCountUsageService() *QueryCurrentOrderCountUsageService {
+	return &QueryCurrentOrderCountUsageService{C: c.Connector}
+}
+
+func (c *Client) NewQueryPreventedMatchesService() *QueryPreventedMatchesService {
+	return &QueryPreventedMatchesService{C: c.Connector}
+}

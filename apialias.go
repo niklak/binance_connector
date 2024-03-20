@@ -1,6 +1,7 @@
 package binance_connector
 
 import (
+	"github.com/niklak/binance_connector/api/account"
 	"github.com/niklak/binance_connector/api/market"
 	"github.com/niklak/binance_connector/api/spot"
 )
@@ -92,3 +93,16 @@ type QueryAllOCOService = spot.QueryAllOCOService
 
 // queryopenorders.go
 type QueryOpenOCOService = spot.QueryOpenOCOService
+
+// account
+type AccountService = account.AccountService
+type AccountResponse = account.AccountResponse
+
+type AccountTradeListService = account.AccountTradeListService
+type AccountTradeListResponse = account.AccountTradeListResponse
+
+type QueryCurrentOrderCountUsageService = account.QueryCurrentOrderCountUsageService
+type QueryCurrentOrderCountUsageResponse = account.QueryCurrentOrderCountUsageResponse
+
+type QueryPreventedMatchesService = account.QueryPreventedMatchesService
+type QueryPreventedMatchesResponse = account.QueryPreventedMatchesResponse
