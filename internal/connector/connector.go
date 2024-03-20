@@ -27,17 +27,22 @@ type Connector struct {
 	Timeout    time.Duration
 	TimeOffset int64
 	logger     zerolog.Logger
-	ApiBaseURL *url.URL
+	apiBaseURL *url.URL
 }
 
 func (c *Connector) Init() *Connector {
+
+	if c.BaseURL == "" {
+		c.BaseURL = defaultApiURL
+	}
 	if c.Timeout == 0 {
 		c.Timeout = defaultTimeout
-
 	}
+
 	if c.HTTPClient == nil {
 		c.HTTPClient = &http.Client{Timeout: c.Timeout}
 	}
+
 	if c.HTTPClient.Timeout == 0 {
 		c.HTTPClient.Timeout = defaultTimeout
 	}
@@ -45,10 +50,10 @@ func (c *Connector) Init() *Connector {
 
 	u, err := url.Parse(c.BaseURL)
 	if err != nil {
+		//panics!
 		c.logger.Fatal().Err(err).Msg("")
 	}
-	c.ApiBaseURL = u
-
+	c.apiBaseURL = u
 	return c
 }
 
@@ -62,7 +67,7 @@ func (c *Connector) parseRequest(r *request.Request, opts ...request.RequestOpti
 		return
 	}
 
-	u, err := c.ApiBaseURL.Parse(r.Endpoint)
+	u, err := c.apiBaseURL.Parse(r.Endpoint)
 	if err != nil {
 		return
 	}
@@ -165,29 +170,42 @@ func (c *Connector) CallAPI(ctx context.Context, r *request.Request, opts ...req
 	return data, nil
 }
 
-func NewConnector(apiKey, secretKey, baseURL string, timeout ...time.Duration) *Connector {
+type ConnectorOption func(*Connector)
 
-	if baseURL == "" {
-		baseURL = defaultApiURL
+func Timeout(timeout time.Duration) ConnectorOption {
+	return func(c *Connector) {
+		c.Timeout = timeout
 	}
+}
+
+func TimeOffset(offset int64) ConnectorOption {
+	return func(c *Connector) {
+		c.TimeOffset = offset
+	}
+}
+
+func HTTPClient(client *http.Client) ConnectorOption {
+	return func(c *Connector) {
+		c.HTTPClient = client
+	}
+}
+
+func BaseURL(baseURL string) ConnectorOption {
+	return func(c *Connector) {
+		c.BaseURL = baseURL
+	}
+}
+
+func NewConnector(apiKey, secretKey string, options ...ConnectorOption) *Connector {
 
 	client := &Connector{
 		APIKey:    apiKey,
 		SecretKey: secretKey,
-		BaseURL:   baseURL,
 	}
-	if len(timeout) > 0 {
-		client.Timeout = timeout[0]
+
+	for _, option := range options {
+		option(client)
 	}
 
 	return client.Init()
-}
-
-func NewConnectorWithClient(apiKey, secretKey, baseURL string, client *http.Client) *Connector {
-	return (&Connector{
-		APIKey:     apiKey,
-		SecretKey:  secretKey,
-		BaseURL:    baseURL,
-		HTTPClient: client,
-	}).Init()
 }

@@ -1,11 +1,15 @@
 package binance_connector
 
 import (
-	"net/http"
-	"time"
-
 	"github.com/niklak/binance_connector/internal/connector"
 )
+
+type ConnectorOption = connector.ConnectorOption
+
+var BaseURL = connector.BaseURL
+var HTTPClient = connector.HTTPClient
+var Timeout = connector.Timeout
+var TimeOffset = connector.TimeOffset
 
 type Client struct {
 	*connector.Connector
@@ -13,27 +17,21 @@ type Client struct {
 
 func NewClient(apiKey, secretKey string, baseURL ...string) *Client {
 
-	var bURL string
+	var c *connector.Connector
 	if len(baseURL) > 0 {
-		bURL = baseURL[0]
+		c = connector.NewConnector(apiKey, secretKey, BaseURL(baseURL[0]))
+	} else {
+		c = connector.NewConnector(apiKey, secretKey)
 	}
-	client := connector.NewConnector(apiKey, secretKey, bURL)
 
-	return &Client{Connector: client.Init()}
+	return &Client{Connector: c}
 }
 
-func NewClientWithTimeout(apiKey, secretKey, baseURL string, timeout time.Duration) *Client {
+func NewClientWithOptions(apiKey, secretKey string, options ...ConnectorOption) *Client {
 
-	client := connector.NewConnector(apiKey, secretKey, baseURL, timeout)
+	c := connector.NewConnector(apiKey, secretKey, options...)
 
-	return &Client{Connector: client.Init()}
-}
-
-func NewWithHttpClient(apiKey, secretKey, baseURL string, httpClient *http.Client) *Client {
-
-	client := connector.NewConnectorWithClient(apiKey, secretKey, baseURL, httpClient)
-
-	return &Client{Connector: client.Init()}
+	return &Client{Connector: c}
 }
 
 // Market Endpoints:
