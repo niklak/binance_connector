@@ -138,3 +138,7 @@ func (c *Client) NewCancelOCOService() *CancelOCOService {
 func (c *Client) NewQueryOCOService() *QueryOCOService {
 	return &QueryOCOService{C: c.Connector}
 }
+
+func (c *Client) NewQueryAllOCOService() *QueryAllOCOService {
+	return &QueryAllOCOService{C: c.Connector}
+}

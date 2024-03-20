@@ -86,3 +86,9 @@ type CancelOCOService = spot.CancelOCOService
 // queryoco.go
 type QueryOCOService = spot.QueryOCOService
 type OCOResponse = spot.OCOResponse
+
+// queryalloco.go
+type QueryAllOCOService = spot.QueryAllOCOService
+
+// queryopenorders.go
+type QueryOpenOCOService = spot.QueryOpenOCOService
