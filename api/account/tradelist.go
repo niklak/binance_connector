@@ -76,7 +76,7 @@ func (s *AccountTradeListService) Do(ctx context.Context, opts ...request.Reques
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return []*AccountTradeListResponse{}, err
+		return
 	}
 	res = make([]*AccountTradeListResponse, 0)
 	err = json.Unmarshal(data, &res)
