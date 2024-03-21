@@ -63,7 +63,7 @@ func (s *AccountTradeListService) Do(ctx context.Context, opts ...request.Reques
 	r := newAccountRequest("/api/v3/myTrades")
 
 	if s.symbol == "" {
-		err = fmt.Errorf("%w: either symbol or symbols", apierrors.ErrMissingParameter)
+		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
 		return
 	}
 

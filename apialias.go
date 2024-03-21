@@ -4,6 +4,7 @@ import (
 	"github.com/niklak/binance_connector/api/account"
 	"github.com/niklak/binance_connector/api/market"
 	"github.com/niklak/binance_connector/api/spot"
+	"github.com/niklak/binance_connector/api/wallet"
 )
 
 // market
@@ -106,3 +107,23 @@ type QueryCurrentOrderCountUsageResponse = account.QueryCurrentOrderCountUsageRe
 
 type QueryPreventedMatchesService = account.QueryPreventedMatchesService
 type QueryPreventedMatchesResponse = account.QueryPreventedMatchesResponse
+
+// wallet
+
+type SystemStatusService = wallet.SystemStatusService
+type SystemStatusResponse = wallet.SystemStatusResponse
+
+type AllCoinsInfoService = wallet.AllCoinsInfoService
+type CoinInfo = wallet.CoinInfo
+
+type AccountSnapshotService = wallet.AccountSnapshotService
+type AccountSnapshotResponse = wallet.AccountSnapshotResponse
+
+type DisableFastWithdrawSwitchService = wallet.DisableFastWithdrawSwitchService
+type DisableFastWithdrawSwitchResponse = wallet.DisableFastWithdrawSwitchResponse
+
+type EnableFastWithdrawSwitchService = wallet.EnableFastWithdrawSwitchService
+type EnableFastWithdrawSwitchResponse = wallet.EnableFastWithdrawSwitchResponse
+
+type WithdrawService = wallet.WithdrawService
+type WithdrawResponse = wallet.WithdrawResponse

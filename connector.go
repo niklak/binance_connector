@@ -156,3 +156,29 @@ func (c *Client) NewQueryCurrentOrderCountUsageService() *QueryCurrentOrderCount
 func (c *Client) NewQueryPreventedMatchesService() *QueryPreventedMatchesService {
 	return &QueryPreventedMatchesService{C: c.Connector}
 }
+
+// Wallet endpoints:
+
+func (c *Client) NewSystemStatusService() *SystemStatusService {
+	return &SystemStatusService{C: c.Connector}
+}
+
+func (c *Client) NewAllCoinsInfoService() *AllCoinsInfoService {
+	return &AllCoinsInfoService{C: c.Connector}
+}
+
+func (c *Client) NewAccountSnapshotService() *AccountSnapshotService {
+	return &AccountSnapshotService{C: c.Connector}
+}
+
+func (c *Client) NewDisableFastWithdrawSwitchService() *DisableFastWithdrawSwitchService {
+	return &DisableFastWithdrawSwitchService{C: c.Connector}
+}
+
+func (c *Client) NewEnableFastWithdrawSwitchService() *EnableFastWithdrawSwitchService {
+	return &EnableFastWithdrawSwitchService{C: c.Connector}
+}
+
+func (c *Client) NewWithdrawService() *WithdrawService {
+	return &WithdrawService{C: c.Connector}
+}
