@@ -182,3 +182,31 @@ func (c *Client) NewEnableFastWithdrawSwitchService() *EnableFastWithdrawSwitchS
 func (c *Client) NewWithdrawService() *WithdrawService {
 	return &WithdrawService{C: c.Connector}
 }
+
+func (c *Client) NewWithdrawHistoryService() *WithdrawHistoryService {
+	return &WithdrawHistoryService{C: c.Connector}
+}
+
+func (c *Client) NewDepositHistoryService() *DepositHistoryService {
+	return &DepositHistoryService{C: c.Connector}
+}
+
+func (c *Client) NewDepositAddressService() *DepositAddressService {
+	return &DepositAddressService{C: c.Connector}
+}
+
+func (c *Client) NewAccountStatusService() *AccountStatusService {
+	return &AccountStatusService{C: c.Connector}
+}
+
+func (c *Client) NewAccountApiTradingStatusService() *AccountApiTradingStatusService {
+	return &AccountApiTradingStatusService{C: c.Connector}
+}
+
+func (c *Client) NewDustLogService() *DustLogService {
+	return &DustLogService{C: c.Connector}
+}
+
+func (c *Client) NewAssetDetailService() *AssetDetailService {
+	return &AssetDetailService{C: c.Connector}
+}

@@ -127,3 +127,24 @@ type EnableFastWithdrawSwitchResponse = wallet.EnableFastWithdrawSwitchResponse
 
 type WithdrawService = wallet.WithdrawService
 type WithdrawResponse = wallet.WithdrawResponse
+
+type WithdrawHistoryService = wallet.WithdrawHistoryService
+type WithdrawHistoryResponse = wallet.WithdrawHistoryResponse
+
+type DepositHistoryService = wallet.DepositHistoryService
+type DepositHistoryResponse = wallet.DepositHistoryResponse
+
+type DepositAddressService = wallet.DepositAddressService
+type DepositAddressResponse = wallet.DepositAddressResponse
+
+type AccountStatusService = wallet.AccountStatusService
+type AccountStatusResponse = wallet.AccountStatusResponse
+
+type AccountApiTradingStatusService = wallet.AccountApiTradingStatusService
+type AccountApiTradingStatusResponse = wallet.AccountApiTradingStatusResponse
+
+type DustLogService = wallet.DustLogService
+type DustLogResponse = wallet.DustLogResponse
+
+type AssetDetailService = wallet.AssetDetailService
+type AssetDetailResponse = wallet.AssetDetailResponse
