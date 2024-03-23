@@ -210,3 +210,19 @@ func (c *Client) NewDustLogService() *DustLogService {
 func (c *Client) NewAssetDetailService() *AssetDetailService {
 	return &AssetDetailService{C: c.Connector}
 }
+
+func (c *Client) NewDustTransferService() *DustTransferService {
+	return &DustTransferService{C: c.Connector}
+}
+
+func (c *Client) NewAssetDividendRecordService() *AssetDividendRecordService {
+	return &AssetDividendRecordService{C: c.Connector}
+}
+
+func (c *Client) NewAssetDetailV2Service() *AssetDetailV2Service {
+	return &AssetDetailV2Service{C: c.Connector}
+}
+
+func (c *Client) NewUniversalTransferService() *UserUniversalTransferService {
+	return &UserUniversalTransferService{C: c.Connector}
+}

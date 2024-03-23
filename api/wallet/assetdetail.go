@@ -9,50 +9,46 @@ import (
 	"github.com/niklak/binance_connector/internal/request"
 )
 
-// Get Assets That Can Be Converted Into BNB (USER_DATA)
+// Asset Detail (USER_DATA)
 
-// AssetDetailService asset detail
-type AssetDetailService struct {
-	C           *connector.Connector
-	accountType *string
+// AssetDetailV2Service asset detail v2
+type AssetDetailV2Service struct {
+	C     *connector.Connector
+	asset *string
 }
 
-func (s *AssetDetailService) AccountType(accountType string) *AssetDetailService {
-	s.accountType = &accountType
+// Asset set asset
+func (s *AssetDetailV2Service) Asset(asset string) *AssetDetailV2Service {
+	s.asset = &asset
 	return s
 }
 
-func (s *AssetDetailService) Do(ctx context.Context) (res *AssetDetailResponse, err error) {
+func (s *AssetDetailV2Service) Do(ctx context.Context) (res *AssetDetailV2Response, err error) {
 	r := &request.Request{
-		Method:   http.MethodPost,
-		Endpoint: "/sapi/v1/asset/dust-btc",
+		Method:   http.MethodGet,
+		Endpoint: "/sapi/v1/asset/assetDetail",
 		SecType:  request.SecTypeSigned,
 	}
 	r.Init()
-
-	r.SetParam("accountType", s.accountType)
-
+	if s.asset != nil {
+		r.SetParam("asset", *s.asset)
+	}
 	data, err := s.C.CallAPI(ctx, r)
 	if err != nil {
 		return nil, err
 	}
-	res = new(AssetDetailResponse)
+	res = new(AssetDetailV2Response)
 	err = json.Unmarshal(data, res)
 	return
 }
 
-// AssetDetailResponse define response of AssetDetailService
-type AssetDetailResponse struct {
-	Details []struct {
-		Asset            string `json:"asset"`
-		AssetFullName    string `json:"assetFullName"`
-		AmountFree       string `json:"amountFree"`
-		ToBTC            string `json:"toBTC"`
-		ToBNB            string `json:"toBNB"`
-		ToBNBOffExchange string `json:"toBNBOffExchange"`
-		Exchange         string `json:"exchange"`
-	} `json:"details"`
-	TotalTransferBtc   string `json:"totalTransferBtc"`
-	TotalTransferBnb   string `json:"totalTransferBnb"`
-	DribbletPercentage string `json:"dribbletPercentage"`
+// AssetDetailV2Response define response of AssetDetailV2Service
+type AssetDetailV2Response struct {
+	AssetDetail struct {
+		MinWithdrawAmount string `json:"minWithdrawAmount"`
+		DepositStatus     bool   `json:"depositStatus"`
+		WithdrawFee       string `json:"withdrawFee"`
+		WithdrawStatus    bool   `json:"withdrawStatus"`
+		DepositTip        string `json:"depositTip"`
+	} `json:"assetDetail"`
 }

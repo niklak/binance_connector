@@ -148,3 +148,18 @@ type DustLogResponse = wallet.DustLogResponse
 
 type AssetDetailService = wallet.AssetDetailService
 type AssetDetailResponse = wallet.AssetDetailResponse
+
+type DustTransferService = wallet.DustTransferService
+type DustTransferResponse = wallet.DustTransferResponse
+
+type AssetDividendRecordService = wallet.AssetDividendRecordService
+type AssetDividendRecordResponse = wallet.AssetDividendRecordResponse
+
+type AssetDetailV2Service = wallet.AssetDetailV2Service
+type AssetDetailV2Response = wallet.AssetDetailV2Response
+
+type TradeFeeService = wallet.TradeFeeService
+type TradeFeeResponse = wallet.TradeFeeResponse
+
+type UserUniversalTransferService = wallet.UserUniversalTransferService
+type UserUniversalTransferResponse = wallet.UserUniversalTransferResponse
