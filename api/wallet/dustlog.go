@@ -38,12 +38,11 @@ func (s *DustLogService) EndTime(endTime uint64) *DustLogService {
 }
 
 func (s *DustLogService) Do(ctx context.Context) (res *DustLogResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/sapi/v1/asset/dribblet",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New("/sapi/v1/asset/dribblet",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
 
 	r.SetParam("accountType", s.accountType)
 	r.SetParam("startTime", s.startTime)

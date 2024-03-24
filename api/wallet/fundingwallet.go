@@ -31,12 +31,11 @@ func (s *FundingWalletService) NeedBtcValuation(needBtcValuation string) *Fundin
 }
 
 func (s *FundingWalletService) Do(ctx context.Context) (res []*FundingWalletResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodPost,
-		Endpoint: "/sapi/v1/asset/get-funding-asset",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New("/sapi/v1/asset/get-funding-asset",
+		request.Method(http.MethodPost),
+		request.SecType(request.SecTypeSigned),
+	)
 
 	r.SetParam("asset", s.asset)
 	r.SetParam("needBtcValuation", s.needBtcValuation)

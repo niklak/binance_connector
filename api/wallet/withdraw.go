@@ -82,12 +82,11 @@ func (s *WithdrawService) WalletType(walletType int) *WithdrawService {
 }
 
 func (s *WithdrawService) Do(ctx context.Context) (res *WithdrawResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodPost,
-		Endpoint: "/sapi/v1/capital/withdraw/apply",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New("/sapi/v1/capital/withdraw/apply",
+		request.Method(http.MethodPost),
+		request.SecType(request.SecTypeSigned),
+	)
 
 	if s.coin == "" {
 		err = fmt.Errorf("%w: coin", apierrors.ErrMissingParameter)

@@ -17,12 +17,11 @@ type AccountApiTradingStatusService struct {
 }
 
 func (s *AccountApiTradingStatusService) Do(ctx context.Context) (res *AccountApiTradingStatusResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/sapi/v1/account/apiTradingStatus",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New("/sapi/v1/account/apiTradingStatus",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
 
 	data, err := s.C.CallAPI(ctx, r)
 	if err != nil {

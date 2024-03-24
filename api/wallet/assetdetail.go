@@ -24,15 +24,14 @@ func (s *AssetDetailV2Service) Asset(asset string) *AssetDetailV2Service {
 }
 
 func (s *AssetDetailV2Service) Do(ctx context.Context) (res *AssetDetailV2Response, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/sapi/v1/asset/assetDetail",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
-	if s.asset != nil {
-		r.SetParam("asset", *s.asset)
-	}
+
+	r := request.New("/sapi/v1/asset/assetDetail",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	r.SetParam("asset", s.asset)
+
 	data, err := s.C.CallAPI(ctx, r)
 	if err != nil {
 		return nil, err

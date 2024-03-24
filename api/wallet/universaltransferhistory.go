@@ -68,12 +68,11 @@ func (s *UserUniversalTransferHistoryService) ToSymbol(toSymbol string) *UserUni
 }
 
 func (s *UserUniversalTransferHistoryService) Do(ctx context.Context) (res *UserUniversalTransferHistoryResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/sapi/v1/asset/transfer",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New("/sapi/v1/asset/transfer",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
 
 	if s.transferType == "" {
 		return nil, fmt.Errorf("%w: transferType", apierrors.ErrMissingParameter)

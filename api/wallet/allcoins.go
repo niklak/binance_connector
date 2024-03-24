@@ -17,12 +17,12 @@ type AllCoinsInfoService struct {
 }
 
 func (s *AllCoinsInfoService) Do(ctx context.Context) (res []*CoinInfo, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/sapi/v1/capital/config/getall",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New("/sapi/v1/capital/config/getall",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
 	data, err := s.C.CallAPI(ctx, r)
 	if err != nil {
 		return

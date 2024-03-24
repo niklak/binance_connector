@@ -24,12 +24,11 @@ func (s *AssetDetailService) AccountType(accountType string) *AssetDetailService
 }
 
 func (s *AssetDetailService) Do(ctx context.Context) (res *AssetDetailResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodPost,
-		Endpoint: "/sapi/v1/asset/dust-btc",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New("/sapi/v1/asset/dust-btc",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
 
 	r.SetParam("accountType", s.accountType)
 

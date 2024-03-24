@@ -17,12 +17,12 @@ type SystemStatusService struct {
 }
 
 func (s *SystemStatusService) Do(ctx context.Context, opts ...request.RequestOption) (res []*SystemStatusResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/sapi/v1/system/status",
-		SecType:  request.SecTypeNone,
-	}
-	r.Init()
+
+	r := request.New("/sapi/v1/system/status",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeNone),
+	)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err

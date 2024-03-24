@@ -66,12 +66,11 @@ func (s *DepositHistoryService) TxId(txid string) *DepositHistoryService {
 }
 
 func (s *DepositHistoryService) Do(ctx context.Context) (res []*DepositHistoryResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/sapi/v1/capital/deposit/hisrec",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New("/sapi/v1/capital/deposit/hisrec",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
 
 	r.SetParam("coin", s.coin)
 	r.SetParam("status", s.status)
@@ -80,6 +79,7 @@ func (s *DepositHistoryService) Do(ctx context.Context) (res []*DepositHistoryRe
 	r.SetParam("offset", s.offset)
 	r.SetParam("limit", s.limit)
 	r.SetParam("txId", s.txid)
+
 	data, err := s.C.CallAPI(ctx, r)
 	if err != nil {
 		return nil, err

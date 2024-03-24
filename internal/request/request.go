@@ -122,6 +122,7 @@ func Method(method string) RequestOption {
 	}
 }
 
+// New create a new Request, prefer to use this function to create a new Request, because it will initialize query and form
 func New(endpoint string, options ...RequestOption) *Request {
 	r := &Request{
 		Endpoint: endpoint,

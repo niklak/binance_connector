@@ -24,12 +24,11 @@ func (s *TradeFeeService) Symbol(symbol string) *TradeFeeService {
 }
 
 func (s *TradeFeeService) Do(ctx context.Context) (res []*TradeFeeResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/sapi/v1/asset/tradeFee",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New("/sapi/v1/asset/tradeFee",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
 
 	r.SetParam("symbol", s.symbol)
 	data, err := s.C.CallAPI(ctx, r)

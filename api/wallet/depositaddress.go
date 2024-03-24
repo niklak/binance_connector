@@ -40,12 +40,11 @@ func (s *DepositAddressService) Network(network string) *DepositAddressService {
 }
 
 func (s *DepositAddressService) Do(ctx context.Context) (res *DepositAddressResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/sapi/v1/capital/deposit/address",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New("/sapi/v1/capital/deposit/address",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
 
 	if s.coin == "" {
 		err = fmt.Errorf("%w: coin", apierrors.ErrMissingParameter)

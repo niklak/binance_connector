@@ -31,12 +31,11 @@ func (s *DustTransferService) Asset(asset []string) *DustTransferService {
 }
 
 func (s *DustTransferService) Do(ctx context.Context) (res *DustTransferResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodPost,
-		Endpoint: "/sapi/v1/asset/dust",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New("/sapi/v1/asset/dust",
+		request.Method(http.MethodPost),
+		request.SecType(request.SecTypeSigned),
+	)
 
 	r.SetParam("accountType", s.accountType)
 	for _, a := range s.asset {

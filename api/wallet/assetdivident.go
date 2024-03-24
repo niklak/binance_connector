@@ -45,12 +45,11 @@ func (s *AssetDividendRecordService) Limit(limit int) *AssetDividendRecordServic
 }
 
 func (s *AssetDividendRecordService) Do(ctx context.Context) (res *AssetDividendRecordResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/sapi/v1/asset/assetDividend",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New("/sapi/v1/asset/assetDividend",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
 
 	r.SetParam("asset", s.asset)
 	r.SetParam("startTime", s.startTime)

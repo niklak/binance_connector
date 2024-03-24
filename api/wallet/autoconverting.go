@@ -17,12 +17,11 @@ type AutoConvertStableCoinService struct {
 }
 
 func (s *AutoConvertStableCoinService) Do(ctx context.Context) (res *AutoConvertStableCoinResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/sapi/v1/capital/contract/convertible-coins",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New("/sapi/v1/capital/contract/convertible-coins",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
 
 	data, err := s.C.CallAPI(ctx, r)
 	if err != nil {

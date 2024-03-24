@@ -16,12 +16,12 @@ type DisableFastWithdrawSwitchService struct {
 }
 
 func (s *DisableFastWithdrawSwitchService) Do(ctx context.Context) (res *DisableFastWithdrawSwitchResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodPost,
-		Endpoint: "/sapi/v1/account/disableFastWithdrawSwitch",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New("/sapi/v1/account/disableFastWithdrawSwitch",
+		request.Method(http.MethodPost),
+		request.SecType(request.SecTypeSigned),
+	)
+
 	if _, err = s.C.CallAPI(ctx, r); err != nil {
 		return
 	}

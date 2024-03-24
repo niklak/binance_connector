@@ -66,12 +66,11 @@ func (s *WithdrawHistoryService) EndTime(endTime uint64) *WithdrawHistoryService
 }
 
 func (s *WithdrawHistoryService) Do(ctx context.Context) (res []*WithdrawHistoryResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/sapi/v1/capital/withdraw/history",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New("/sapi/v1/capital/withdraw/history",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
 
 	r.SetParam("coin", s.coin)
 	r.SetParam("withdrawOrderId", s.withdrawOrderId)

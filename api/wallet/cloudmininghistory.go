@@ -68,12 +68,11 @@ func (s *CloudMiningPaymentHistoryService) Size(size int) *CloudMiningPaymentHis
 }
 
 func (s *CloudMiningPaymentHistoryService) Do(ctx context.Context) (res *CloudMiningPaymentHistoryResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/sapi/v1/asset/ledger-transfer/cloud-mining/queryByPage",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New("/sapi/v1/asset/ledger-transfer/cloud-mining/queryByPage",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
 
 	if s.startTime == 0 {
 		err = fmt.Errorf("%w: startTime", apierrors.ErrMissingParameter)

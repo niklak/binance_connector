@@ -47,12 +47,11 @@ func (s *AccountSnapshotService) Limit(limit int) *AccountSnapshotService {
 }
 
 func (s *AccountSnapshotService) Do(ctx context.Context) (res *AccountSnapshotResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/sapi/v1/accountSnapshot",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New("/sapi/v1/accountSnapshot",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
 
 	if s.marketType == "" {
 		err = fmt.Errorf("%w: marketType", apierrors.ErrMissingParameter)

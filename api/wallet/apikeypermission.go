@@ -17,11 +17,12 @@ type APIKeyPermissionService struct {
 }
 
 func (s *APIKeyPermissionService) Do(ctx context.Context) (res *APIKeyPermissionResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/sapi/v1/account/apiRestrictions",
-		SecType:  request.SecTypeSigned,
-	}
+
+	r := request.New("/sapi/v1/account/apiRestrictions",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
 	data, err := s.C.CallAPI(ctx, r)
 	if err != nil {
 		return nil, err
