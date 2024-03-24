@@ -67,3 +67,4 @@ func main() {
 - Added constructor `NewClientWithOptions` which allow to set optional parameters such as instance of `http.Client` or request timeout.
 - `AllOrdersResponse` and `NewOpenOrdersResponse` are combined into one struct `OrderResponse`
 - if service name was started from `Get` in this package it was removed. For example `GetAccountService` was renamed to `AccountService`
+- BUSD endpoints are omitted

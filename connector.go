@@ -226,3 +226,31 @@ func (c *Client) NewAssetDetailV2Service() *AssetDetailV2Service {
 func (c *Client) NewUniversalTransferService() *UserUniversalTransferService {
 	return &UserUniversalTransferService{C: c.Connector}
 }
+
+func (c *Client) NewUniversalTransferHistoryService() *UserUniversalTransferHistoryService {
+	return &UserUniversalTransferHistoryService{C: c.Connector}
+}
+
+func (c *Client) NewFundingWalletService() *FundingWalletService {
+	return &FundingWalletService{C: c.Connector}
+}
+
+func (c *Client) NewUserAssetService() *UserAssetService {
+	return &UserAssetService{C: c.Connector}
+}
+
+func (c *Client) NewCloudMiningPaymentHistoryService() *CloudMiningPaymentHistoryService {
+	return &CloudMiningPaymentHistoryService{C: c.Connector}
+}
+
+func (c *Client) NewTradeFeeService() *TradeFeeService {
+	return &TradeFeeService{C: c.Connector}
+}
+
+func (c *Client) NewAPIKeyPermissionService() *APIKeyPermissionService {
+	return &APIKeyPermissionService{C: c.Connector}
+}
+
+func (c *Client) NewAutoConvertStableCoinService() *AutoConvertStableCoinService {
+	return &AutoConvertStableCoinService{C: c.Connector}
+}

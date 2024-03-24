@@ -163,3 +163,21 @@ type TradeFeeResponse = wallet.TradeFeeResponse
 
 type UserUniversalTransferService = wallet.UserUniversalTransferService
 type UserUniversalTransferResponse = wallet.UserUniversalTransferResponse
+
+type UserUniversalTransferHistoryService = wallet.UserUniversalTransferHistoryService
+type UserUniversalTransferHistoryResponse = wallet.UserUniversalTransferHistoryResponse
+
+type FundingWalletService = wallet.FundingWalletService
+type FundingWalletResponse = wallet.FundingWalletResponse
+
+type UserAssetService = wallet.UserAssetService
+type UserAssetResponse = wallet.UserAssetResponse
+
+type CloudMiningPaymentHistoryService = wallet.CloudMiningPaymentHistoryService
+type CloudMiningPaymentHistoryResponse = wallet.CloudMiningPaymentHistoryResponse
+
+type APIKeyPermissionService = wallet.APIKeyPermissionService
+type APIKeyPermissionResponse = wallet.APIKeyPermissionResponse
+
+type AutoConvertStableCoinService = wallet.AutoConvertStableCoinService
+type AutoConvertStableCoinResponse = wallet.AutoConvertStableCoinResponse
