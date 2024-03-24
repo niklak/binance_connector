@@ -109,3 +109,25 @@ func WithRecvWindow(recvWindow int64) RequestOption {
 
 // RequestOption define option type for Request
 type RequestOption func(*Request)
+
+func SecType(secType secType) RequestOption {
+	return func(r *Request) {
+		r.SecType = secType
+	}
+}
+
+func Method(method string) RequestOption {
+	return func(r *Request) {
+		r.Method = method
+	}
+}
+
+func New(endpoint string, options ...RequestOption) *Request {
+	r := &Request{
+		Endpoint: endpoint,
+	}
+	for _, option := range options {
+		option(r)
+	}
+	return r.Init()
+}
