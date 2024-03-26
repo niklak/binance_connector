@@ -68,3 +68,5 @@ func main() {
 - `AllOrdersResponse` and `NewOpenOrdersResponse` are combined into one struct `OrderResponse`
 - if service name was started from `Get` in this package it was removed. For example `GetAccountService` was renamed to `AccountService`
 - BUSD endpoints are omitted
+- `QuerySubAccountSpotAssetTransferHistoryService`  returns `[]*SubAccountAssetTransferHistoryResponse` instead of `QuerySubAccountSpotAssetTransferHistoryResp`
+- (`Get`)`SubAccountDepositHistoryService` returns `[]*SubAccountDepositHistoryResponse` instead of `GetSubAccountDepositHistoryResp`

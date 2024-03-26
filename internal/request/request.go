@@ -50,6 +50,7 @@ func (r *Request) AddParam(key string, value interface{}) *Request {
 }
 
 // SetParam set param with key/value to query string, if param is nil it will be ignored
+// if param is nil pointer, it will be ignored. if param is pointer it will be dereferenced
 func (r *Request) SetParam(key string, value interface{}) *Request {
 	v := reflect.ValueOf(value)
 
