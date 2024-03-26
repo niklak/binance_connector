@@ -91,16 +91,6 @@ func (r *Request) SetParams(m params) *Request {
 	return r
 }
 
-func (r *Request) Validate() (err error) {
-	if r.Query == nil {
-		r.Query = url.Values{}
-	}
-	if r.Form == nil {
-		r.Form = url.Values{}
-	}
-	return nil
-}
-
 // Append `WithRecvWindow(insert_recvwindow)` to Request to modify the default recvWindow value
 func WithRecvWindow(recvWindow int64) RequestOption {
 	return func(r *Request) {

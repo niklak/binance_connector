@@ -63,10 +63,6 @@ func (c *Connector) parseRequest(r *request.Request, opts ...request.RequestOpti
 		opt(r)
 	}
 
-	if err = r.Validate(); err != nil {
-		return
-	}
-
 	u, err := c.apiBaseURL.Parse(r.Endpoint)
 	if err != nil {
 		return
