@@ -117,11 +117,9 @@ func (c *Connector) parseRequest(r *request.Request, opts ...request.RequestOpti
 }
 
 func (c *Connector) CallAPI(ctx context.Context, r *request.Request, opts ...request.RequestOption) (data []byte, err error) {
-	err = c.parseRequest(r, opts...)
-	if r.Endpoint != "/api/v3/order/cancelReplace" {
-		if err != nil {
-			return
-		}
+
+	if err = c.parseRequest(r, opts...); err != nil {
+		return
 	}
 	req, err := http.NewRequestWithContext(ctx, r.Method, r.FullURL, r.Body)
 	if err != nil {
@@ -159,9 +157,7 @@ func (c *Connector) CallAPI(ctx context.Context, r *request.Request, opts ...req
 		if err != nil {
 			c.logger.Error().Err(err).Msg("")
 		}
-		if r.Endpoint != "/api/v3/order/cancelReplace" {
-			return nil, apiErr
-		}
+		return nil, apiErr
 	}
 	return data, nil
 }
