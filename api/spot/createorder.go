@@ -13,6 +13,8 @@ import (
 
 // Binance New Order endpoint (POST /api/v3/order)
 // CreateOrderService create order
+//
+//gen:new_service
 type CreateOrderService struct {
 	C                       *connector.Connector
 	symbol                  string

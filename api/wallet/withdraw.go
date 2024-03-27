@@ -14,6 +14,8 @@ import (
 // Withdraw(USER_DATA)
 
 // WithdrawService withdraw
+//
+//gen:new_service
 type WithdrawService struct {
 	C                  *connector.Connector
 	coin               string

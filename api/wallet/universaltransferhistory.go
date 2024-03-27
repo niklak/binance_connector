@@ -14,6 +14,8 @@ import (
 // Query User Universal Transfer History (USER_DATA)
 
 // UserUniversalTransferHistoryService user universal transfer history
+//
+//gen:new_service
 type UserUniversalTransferHistoryService struct {
 	C            *connector.Connector
 	transferType string

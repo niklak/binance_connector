@@ -10,6 +10,8 @@ import (
 
 // Query Current Order Count Usage (TRADE)
 // QueryCurrentOrderCountUsageService query current order count usage
+//
+//gen:new_service
 type QueryCurrentOrderCountUsageService struct {
 	C *connector.Connector
 }

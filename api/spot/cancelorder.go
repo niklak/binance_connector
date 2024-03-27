@@ -13,6 +13,8 @@ import (
 
 // Binance Cancel Order endpoint (DELETE /api/v3/order)
 // CancelOrderService cancel order
+//
+//gen:new_service
 type CancelOrderService struct {
 	C                  *connector.Connector
 	symbol             string

@@ -10,6 +10,8 @@ import (
 
 // Binance Account Information (USER_DATA) (GET /api/v3/account)
 // AccountService get account information
+//
+//gen:new_service
 type AccountService struct {
 	C *connector.Connector
 }

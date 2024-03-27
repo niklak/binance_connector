@@ -12,6 +12,8 @@ import (
 // Asset Dividend Record (USER_DATA)
 
 // AssetDividendRecordService asset dividend record
+//
+//gen:new_service
 type AssetDividendRecordService struct {
 	C         *connector.Connector
 	asset     *string

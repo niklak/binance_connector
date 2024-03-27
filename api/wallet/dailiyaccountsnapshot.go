@@ -14,6 +14,8 @@ import (
 // Daily Account Snapshot (USER_DATA)
 
 // AccountSnapshotService get all orders from account
+//
+//gen:new_service
 type AccountSnapshotService struct {
 	C          *connector.Connector
 	marketType string

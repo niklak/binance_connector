@@ -12,6 +12,8 @@ import (
 
 // Binance New OCO (TRADE) (POST /api/v3/order/oco)
 // NewOCOService create new OCO order
+//
+//gen:new_service
 type NewOCOService struct {
 	C                       *connector.Connector
 	symbol                  string

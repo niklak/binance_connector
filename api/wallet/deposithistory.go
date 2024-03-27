@@ -12,6 +12,8 @@ import (
 // Deposit History (supporting network) (USER_DATA)
 
 // DepositHistoryService deposit history
+//
+//gen:new_service
 type DepositHistoryService struct {
 	C         *connector.Connector
 	coin      *string

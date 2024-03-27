@@ -11,6 +11,8 @@ import (
 )
 
 // Binance UI Klines GET /api/v3/uiKlines
+//
+//gen:new_service
 type UiKlines struct {
 	C         *connector.Connector
 	symbol    string

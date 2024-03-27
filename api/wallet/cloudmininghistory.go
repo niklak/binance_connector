@@ -14,6 +14,8 @@ import (
 // Get Cloud-Mining payment and refund history (USER_DATA)
 
 // CloudMiningPaymentHistoryService cloud mining payment history
+//
+//gen:new_service
 type CloudMiningPaymentHistoryService struct {
 	C            *connector.Connector
 	tranid       *int64

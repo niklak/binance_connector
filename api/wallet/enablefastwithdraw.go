@@ -11,6 +11,8 @@ import (
 // Enable Fast Withdraw Switch (USER_DATA)
 
 // EnableFastWithdrawSwitchService enable fast withdraw switch
+//
+//gen:new_service
 type EnableFastWithdrawSwitchService struct {
 	C *connector.Connector
 }

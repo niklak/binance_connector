@@ -11,6 +11,8 @@ import (
 )
 
 // Binance Recent Trades List endpoint (GET /api/v3/trades)
+//
+//gen:new_service
 type RecentTradesList struct {
 	C      *connector.Connector
 	symbol string

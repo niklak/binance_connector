@@ -11,6 +11,8 @@ import (
 )
 
 // Cancel an Existing Order and Send a New Order (TRADE)
+//
+//gen:new_service
 type CancelReplaceService struct {
 	C                       *connector.Connector
 	symbol                  string

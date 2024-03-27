@@ -11,6 +11,8 @@ import (
 
 // Binance Query open OCO (USER_DATA) (GET /api/v3/openOrderList)
 // QueryOpenOCOService query open OCO order
+//
+//gen:new_service
 type QueryOpenOCOService struct {
 	C *connector.Connector
 }

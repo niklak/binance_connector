@@ -12,6 +12,8 @@ import (
 )
 
 // Binance Symbol Price Ticker (GET /api/v3/ticker/price)
+//
+//gen:new_service
 type TickerPrice struct {
 	C       *connector.Connector
 	symbol  *string

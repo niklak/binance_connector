@@ -12,6 +12,8 @@ import (
 // User Asset (USER_DATA)
 
 // UserAssetService user asset
+//
+//gen:new_service
 type UserAssetService struct {
 	C                *connector.Connector
 	asset            *string

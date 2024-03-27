@@ -13,6 +13,8 @@ import (
 
 // Binance Get all account orders; active, canceled, or filled (GET /api/v3/allOrders)
 // GetAllOrdersService get all orders
+//
+//gen:new_service
 type GetAllOrdersService struct {
 	C         *connector.Connector
 	symbol    string

@@ -9,6 +9,8 @@ import (
 )
 
 // Binance Exchange Information endpoint (GET /api/v3/exchangeInfo)
+//
+//gen:new_service
 type ExchangeInfo struct {
 	C *connector.Connector
 }

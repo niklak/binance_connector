@@ -12,6 +12,8 @@ import (
 
 // Binance Get trades for a specific account and symbol (USER_DATA) (GET /api/v3/myTrades)
 // AccountTradeListService get trades for a specific account and symbol
+//
+//gen:new_service
 type AccountTradeListService struct {
 	C         *connector.Connector
 	symbol    string

@@ -11,6 +11,8 @@ import (
 )
 
 // Binance Rolling window price change statistics (GET /api/v3/ticker)
+//
+//gen:new_service
 type Ticker struct {
 	C          *connector.Connector
 	symbol     string

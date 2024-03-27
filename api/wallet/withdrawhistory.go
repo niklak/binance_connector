@@ -12,6 +12,8 @@ import (
 // Withdraw History (supporting network) (USER_DATA)
 
 // WithdrawHistoryService withdraw history
+//
+//gen:new_service
 type WithdrawHistoryService struct {
 	C               *connector.Connector
 	coin            *string

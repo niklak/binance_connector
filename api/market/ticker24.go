@@ -12,6 +12,8 @@ import (
 )
 
 // Binance 24hr Ticker Price Change Statistics (GET /api/v3/ticker/24hr)
+//
+//gen:new_service
 type Ticker24hr struct {
 	C       *connector.Connector
 	symbol  *string

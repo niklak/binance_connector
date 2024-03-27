@@ -13,6 +13,8 @@ import (
 
 // Binance Cancel all open orders on a symbol (DELETE /api/v3/openOrders)
 // CancelOpenOrdersService cancel open orders
+//
+//gen:new_service
 type CancelOpenOrdersService struct {
 	C      *connector.Connector
 	symbol string

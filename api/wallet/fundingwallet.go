@@ -12,6 +12,8 @@ import (
 // Funding Wallet (USER_DATA)
 
 // FundingWalletService funding wallet
+//
+//gen:new_service
 type FundingWalletService struct {
 	C                *connector.Connector
 	asset            *string

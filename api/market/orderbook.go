@@ -12,6 +12,8 @@ import (
 )
 
 // Binance Order Book endpoint (GET /api/v3/depth)
+//
+//gen:new_service
 type OrderBook struct {
 	C      *connector.Connector
 	symbol string

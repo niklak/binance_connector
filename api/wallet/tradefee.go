@@ -12,6 +12,8 @@ import (
 // Trade Fee (USER_DATA)
 
 // TradeFeeService trade fee
+//
+//gen:new_service
 type TradeFeeService struct {
 	C      *connector.Connector
 	symbol *string

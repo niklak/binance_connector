@@ -12,6 +12,8 @@ import (
 )
 
 // Binance Old Trade Lookup endpoint (GET /api/v3/historicalTrades)
+//
+//gen:new_service
 type HistoricalTradeLookup struct {
 	C      *connector.Connector
 	symbol string

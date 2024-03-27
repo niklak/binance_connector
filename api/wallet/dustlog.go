@@ -12,6 +12,8 @@ import (
 // DustLog(USER_DATA)
 
 // DustLogService dust log
+//
+//gen:new_service
 type DustLogService struct {
 	C           *connector.Connector
 	accountType *string

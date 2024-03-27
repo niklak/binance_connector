@@ -11,6 +11,8 @@ import (
 )
 
 // Binance Current Average Price (GET /api/v3/avgPrice)
+//
+//gen:new_service
 type AvgPrice struct {
 	C      *connector.Connector
 	symbol string

@@ -14,6 +14,8 @@ import (
 // Query Order (USER_DATA)
 // Binance Query Order (USER_DATA) (GET /api/v3/order)
 // GetOrderService get order
+//
+//gen:new_service
 type GetOrderService struct {
 	C                 *connector.Connector
 	symbol            string

@@ -11,6 +11,8 @@ import (
 
 // Binance Get current open orders (GET /api/v3/openOrders)
 // GetOpenOrdersService get open orders
+//
+//gen:new_service
 type GetOpenOrdersService struct {
 	C      *connector.Connector
 	symbol *string

@@ -12,6 +12,8 @@ import (
 )
 
 // Binance Symbol Order Book Ticker (GET /api/v3/ticker/bookTicker)
+//
+//gen:new_service
 type TickerBookTicker struct {
 	C       *connector.Connector
 	symbol  *string

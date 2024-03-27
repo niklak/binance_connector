@@ -12,6 +12,8 @@ import (
 // Account API Trading Status (USER_DATA)
 
 // AccountApiTradingStatusService account api trading status
+//
+//gen:new_service
 type AccountApiTradingStatusService struct {
 	C *connector.Connector
 }

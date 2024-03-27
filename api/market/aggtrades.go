@@ -11,6 +11,8 @@ import (
 )
 
 // Binance Compressed/Aggregate Trades List endpoint (GET /api/v3/aggTrades)
+//
+//gen:new_service
 type AggTradesList struct {
 	C         *connector.Connector
 	symbol    string

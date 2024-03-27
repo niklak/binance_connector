@@ -12,6 +12,8 @@ import (
 
 // Query Prevented Matches (USER_DATA)
 // QueryPreventedMatchesService query prevented matches
+//
+//gen:new_service
 type QueryPreventedMatchesService struct {
 	C                    *connector.Connector
 	symbol               string

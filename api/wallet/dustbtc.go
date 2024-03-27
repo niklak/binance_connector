@@ -12,6 +12,8 @@ import (
 // Get Assets That Can Be Converted Into BNB (USER_DATA)
 
 // AssetDetailService asset detail
+//
+//gen:new_service
 type AssetDetailService struct {
 	C           *connector.Connector
 	accountType *string

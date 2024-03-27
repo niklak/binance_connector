@@ -11,6 +11,8 @@ import (
 )
 
 // Binance Kline/Candlestick Data endpoint (GET /api/v3/klines)
+//
+//gen:new_service
 type Klines struct {
 	C         *connector.Connector
 	symbol    string

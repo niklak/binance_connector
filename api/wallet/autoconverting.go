@@ -12,6 +12,8 @@ import (
 // Query auto-converting stable coins (USER_DATA)
 
 // AutoConvertStableCoinService auto convert stable coin
+//
+//gen:new_service
 type AutoConvertStableCoinService struct {
 	C *connector.Connector
 }

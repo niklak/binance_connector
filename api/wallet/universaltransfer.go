@@ -14,6 +14,8 @@ import (
 // User Universal Transfer (USER_DATA)
 
 // UserUniversalTransferService user universal transfer
+//
+//gen:new_service
 type UserUniversalTransferService struct {
 	C            *connector.Connector
 	transferType string

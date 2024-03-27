@@ -12,6 +12,8 @@ import (
 // Get API Key Permission (USER_DATA)
 
 // APIKeyPermissionService get api key permission
+//
+//gen:new_service
 type APIKeyPermissionService struct {
 	C *connector.Connector
 }

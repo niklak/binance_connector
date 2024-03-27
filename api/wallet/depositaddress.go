@@ -14,6 +14,8 @@ import (
 // Deposit Address (supporting network) (USER_DATA)
 
 // DepositAddressService deposit address
+//
+//gen:new_service
 type DepositAddressService struct {
 	C       *connector.Connector
 	coin    string

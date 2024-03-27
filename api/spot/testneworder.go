@@ -11,6 +11,7 @@ import (
 	"github.com/niklak/binance_connector/internal/request"
 )
 
+//gen:new_service
 type TestNewOrder struct {
 	C                   *connector.Connector
 	symbol              string

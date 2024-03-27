@@ -11,6 +11,8 @@ import (
 
 // Binance Query OCO (USER_DATA) (GET /api/v3/orderList)
 // QueryOCOService query OCO order
+//
+//gen:new_service
 type QueryOCOService struct {
 	C                 *connector.Connector
 	orderListId       *int64

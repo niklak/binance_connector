@@ -12,6 +12,8 @@ import (
 // All Coins' Information (USER_DATA)
 
 // AllCoinsInfoService get all coins' information
+//
+//gen:new_service
 type AllCoinsInfoService struct {
 	C *connector.Connector
 }

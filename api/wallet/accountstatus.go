@@ -12,6 +12,8 @@ import (
 // Account Status (USER_DATA)
 
 // AccountStatusService account status
+//
+//gen:new_service
 type AccountStatusService struct {
 	C *connector.Connector
 }

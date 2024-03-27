@@ -8,6 +8,8 @@ import (
 )
 
 // Binance Test Connectivity endpoint (GET /api/v3/ping)
+//
+//gen:new_service
 type Ping struct {
 	C *connector.Connector
 }

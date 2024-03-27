@@ -12,6 +12,8 @@ import (
 // Dust Transfer (USER_DATA)
 
 // DustTransferService dust transfer
+//
+//gen:new_service
 type DustTransferService struct {
 	C           *connector.Connector
 	accountType *string

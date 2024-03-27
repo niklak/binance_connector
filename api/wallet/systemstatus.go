@@ -12,6 +12,8 @@ import (
 // System Status (System)
 
 // SystemStatusService get account info
+//
+//gen:new_service
 type SystemStatusService struct {
 	C *connector.Connector
 }

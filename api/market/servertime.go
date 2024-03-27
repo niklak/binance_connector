@@ -9,6 +9,8 @@ import (
 )
 
 // Binance Check Server Time endpoint (GET /api/v3/time)
+//
+//gen:new_service
 type ServerTime struct {
 	C *connector.Connector
 }

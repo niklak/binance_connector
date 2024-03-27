@@ -13,6 +13,8 @@ import (
 
 // Binance Cancel OCO (TRADE) (DELETE /api/v3/orderList)
 // CancelOCOService cancel OCO order
+//
+//gen:new_service
 type CancelOCOService struct {
 	C                 *connector.Connector
 	symbol            string
