@@ -58,15 +58,15 @@ func main() {
 
 
 ## Differences between this package and `binance-connector-go`
-- only client (connector) and api (services) are exposed.
-- Use `zerolog` package instead of standard `log` package
-- Add more convenient way to set client timeout
+- Only a client (connector) and api (services) are exposed.
+- Using `zerolog` package instead of standard `log` package.
+- Added more convenient way to set client timeout
 - `TickerPrice.Do` returns a `[]*TickerPriceResponse` instead of `*TickerPriceResponse`
 - `Ticker24hr.Do` returns a `[]*Ticker24hrResponse` instead of `*Ticker24hrResponse`
 - Reduced `if` blocks for optional parameters, The check performs only at the one place now.
 - Added constructor `NewClientWithOptions` which allow to set optional parameters such as instance of `http.Client` or request timeout.
 - `AllOrdersResponse` and `NewOpenOrdersResponse` are combined into one struct `OrderResponse`
-- if service name was started from `Get` in this package it was removed. For example `GetAccountService` was renamed to `AccountService`
-- BUSD endpoints are omitted
+- If a service name was started with prefix `Get` then this prefix was removed. For example `GetAccountService` was renamed to `AccountService`
+- BUSD endpoints are omitted.
 - `QuerySubAccountSpotAssetTransferHistoryService`  returns `[]*SubAccountAssetTransferHistoryResponse` instead of `QuerySubAccountSpotAssetTransferHistoryResp`
 - (`Get`)`SubAccountDepositHistoryService` returns `[]*SubAccountDepositHistoryResponse` instead of `GetSubAccountDepositHistoryResp`

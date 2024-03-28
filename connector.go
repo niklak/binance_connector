@@ -1,4 +1,4 @@
-//go:generate go run internal/cmd/genalias/genalias.go -src=api/account,api/market,api/spot,api/wallet
+//go:generate go run internal/cmd/genalias/genalias.go -src=api/account,api/market,api/spot,api/wallet,api/subaccount
 
 package binance_connector
 

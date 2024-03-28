@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
@@ -13,7 +12,8 @@ import (
 )
 
 // Create a Virtual Sub-account(For Master Account)
-
+//
+//gen:new_service
 type CreateSubAccountService struct {
 	C                *connector.Connector
 	subAccountString string
@@ -51,7 +51,8 @@ type CreateSubAccountResp struct {
 }
 
 // Query Sub-account List (For Master Account)
-
+//
+//gen:new_service
 type QuerySubAccountListService struct {
 	C        *connector.Connector
 	email    *string
@@ -115,7 +116,8 @@ type SubAccount struct {
 }
 
 // Query Sub-account Spot Asset Transfer History (For Master Account)
-// TODO: remove from all endpoints *Query* prefix
+//
+//gen:new_service
 type QuerySubAccountSpotAssetTransferHistoryService struct {
 	C         *connector.Connector
 	fromEmail *string
@@ -192,6 +194,7 @@ type SubAccountTransferHistoryResponse struct {
 
 // Query Sub-account Futures Asset Transfer History (For Master Account)
 
+//gen:new_service
 type QuerySubAccountFuturesAssetTransferHistoryService struct {
 	C           *connector.Connector
 	email       string
@@ -275,6 +278,7 @@ type QuerySubAccountFuturesAssetTransferHistoryResp struct {
 
 // Sub-account Futures Asset Transfer (For Master Account)
 
+//gen:new_service
 type SubAccountFuturesAssetTransferService struct {
 	C           *connector.Connector
 	fromEmail   string
@@ -338,6 +342,7 @@ type SubAccountFuturesAssetTransferResp struct {
 
 // Query Sub-account Assets (For Master Account)
 
+//gen:new_service
 type QuerySubAccountAssetsService struct {
 	C     *connector.Connector
 	email string
@@ -379,6 +384,7 @@ type QuerySubAccountAssetsResp struct {
 	} `json:"balances"`
 }
 
+//gen:new_service
 type QuerySubAccountSpotAssetsSummaryService struct {
 	C     *connector.Connector
 	email *string
@@ -431,29 +437,30 @@ type QuerySubAccountSpotAssetsSummaryResp struct {
 	} `json:"spotSubUserAssetBtcVoList"`
 }
 
-type GetSubAccountDepositAddressService struct {
+//gen:new_service
+type SubAccountDepositAddressService struct {
 	C       *connector.Connector
 	email   string
 	coin    string
 	network *string
 }
 
-func (s *GetSubAccountDepositAddressService) Email(email string) *GetSubAccountDepositAddressService {
+func (s *SubAccountDepositAddressService) Email(email string) *SubAccountDepositAddressService {
 	s.email = email
 	return s
 }
 
-func (s *GetSubAccountDepositAddressService) Coin(coin string) *GetSubAccountDepositAddressService {
+func (s *SubAccountDepositAddressService) Coin(coin string) *SubAccountDepositAddressService {
 	s.coin = coin
 	return s
 }
 
-func (s *GetSubAccountDepositAddressService) Network(network string) *GetSubAccountDepositAddressService {
+func (s *SubAccountDepositAddressService) Network(network string) *SubAccountDepositAddressService {
 	s.network = &network
 	return s
 }
 
-func (s *GetSubAccountDepositAddressService) Do(ctx context.Context, opts ...request.RequestOption) (res *GetSubAccountDepositAddressResp, err error) {
+func (s *SubAccountDepositAddressService) Do(ctx context.Context, opts ...request.RequestOption) (res *SubAccountDepositAddressResp, err error) {
 
 	r := request.New(
 		"/sapi/v1/capital/deposit/subAddress",
@@ -478,12 +485,12 @@ func (s *GetSubAccountDepositAddressService) Do(ctx context.Context, opts ...req
 	if err != nil {
 		return nil, err
 	}
-	res = new(GetSubAccountDepositAddressResp)
+	res = new(SubAccountDepositAddressResp)
 	err = json.Unmarshal(data, &res)
 	return
 }
 
-type GetSubAccountDepositAddressResp struct {
+type SubAccountDepositAddressResp struct {
 	Address string `json:"address"`
 	Coin    string `json:"coin"`
 	Tag     string `json:"tag"`
@@ -492,6 +499,7 @@ type GetSubAccountDepositAddressResp struct {
 
 // Get Sub-account Deposit History (For Master Account)
 
+//gen:new_service
 type SubAccountDepositHistoryService struct {
 	C         *connector.Connector
 	email     string
@@ -592,6 +600,7 @@ type SubAccountDepositHistoryResponse struct {
 
 // Get Sub-account's Status on Margin/Futures (For Master Account)
 
+//gen:new_service
 type SubAccountStatusService struct {
 	C     *connector.Connector
 	email *string
@@ -633,6 +642,7 @@ type SubAccountStatusResp struct {
 
 // Enable Margin for Sub-account (For Master Account)
 
+//gen:new_service
 type EnableMarginForSubAccountService struct {
 	C     *connector.Connector
 	email string
@@ -673,6 +683,7 @@ type EnableMarginForSubAccountResp struct {
 
 // Get Detail on Sub-account's Margin Account (For Master Account)
 
+//gen:new_service
 type DetailOnSubAccountMarginAccountService struct {
 	C     *connector.Connector
 	email string
@@ -728,6 +739,7 @@ type DetailOnSubAccountMarginAccountResp struct {
 
 // Get Summary of Sub-account's Margin Account (For Master Account)
 
+//gen:new_service
 type SummaryOfSubAccountMarginAccountService struct {
 	C *connector.Connector
 }
@@ -763,6 +775,7 @@ type SummaryOfSubAccountMarginAccountResp struct {
 
 // Enable Futures for Sub-account (For Master Account)
 
+//gen:new_service
 type EnableFuturesForSubAccountService struct {
 	C     *connector.Connector
 	email string
@@ -803,6 +816,7 @@ type EnableFuturesForSubAccountResp struct {
 
 // Get Detail on Sub-account's Futures Account (For Master Account)
 
+//gen:new_service
 type DetailOnSubAccountFuturesAccountService struct {
 	C     *connector.Connector
 	email string
@@ -866,6 +880,7 @@ type DetailOnSubAccountFuturesAccountResp struct {
 
 // Get Summary of Sub-account's Futures Account (For Master Account)
 
+//gen:new_service
 type SummaryOfSubAccountFuturesAccountService struct {
 	C *connector.Connector
 }
@@ -911,6 +926,7 @@ type SummaryOfSubAccountFuturesAccountResp struct {
 
 // Get Futures Position-Risk of Sub-account (For Master Account)
 
+//gen:new_service
 type FuturesPositionRiskOfSubAccountService struct {
 	C     *connector.Connector
 	email string
@@ -956,6 +972,7 @@ type FuturesPositionRiskOfSubAccountResp struct {
 
 // Futures Transfer for Sub-account (For Master Account)
 
+//gen:new_service
 type FuturesTransferForSubAccountService struct {
 	C            *connector.Connector
 	email        string
@@ -1031,6 +1048,7 @@ type FuturesTransferForSubAccountResp struct {
 
 // Margin Transfer for Sub-account (For Master Account)
 
+//gen:new_service
 type MarginTransferForSubAccountService struct {
 	C            *connector.Connector
 	email        string
@@ -1103,6 +1121,7 @@ type MarginTransferForSubAccountResp struct {
 
 // Transfer to Sub-account of Same Master (For Sub-account)
 
+//gen:new_service
 type TransferToSubAccountOfSameMasterService struct {
 	C       *connector.Connector
 	toEmail string
@@ -1164,6 +1183,7 @@ type TransferToSubAccountOfSameMasterResp struct {
 
 // Transfer to Master (For Sub-account)
 
+//gen:new_service
 type TransferToMasterService struct {
 	C      *connector.Connector
 	asset  string
@@ -1213,6 +1233,7 @@ type TransferToMasterResp struct {
 
 // Sub-account Transfer History (For Sub-account)
 
+//gen:new_service
 type SubAccountTransferHistoryService struct {
 	C            *connector.Connector
 	asset        *string
@@ -1285,6 +1306,7 @@ type SubAccountTransferHistoryResp struct {
 
 // Universal Transfer (For Master Account)
 
+//gen:new_service
 type UniversalTransferService struct {
 	C               *connector.Connector
 	asset           string
@@ -1371,6 +1393,7 @@ type UniversalTransferResp struct {
 
 // Query Universal Transfer History (For Master Account)
 
+//gen:new_service
 type QueryUniversalTransferHistoryService struct {
 	C            *connector.Connector
 	fromEmail    *string
@@ -1424,13 +1447,13 @@ func (s *QueryUniversalTransferHistoryService) Do(ctx context.Context, opts ...r
 		request.SecType(request.SecTypeSigned),
 	)
 
-	r.SetParam("fromEmail", *s.fromEmail)
-	r.SetParam("toEmail", *s.toEmail)
-	r.SetParam("clientTranId", *s.clientTranId)
-	r.SetParam("startTime", *s.startTime)
-	r.SetParam("endTime", *s.endTime)
-	r.SetParam("page", *s.page)
-	r.SetParam("limit", *s.limit)
+	r.SetParam("fromEmail", s.fromEmail)
+	r.SetParam("toEmail", s.toEmail)
+	r.SetParam("clientTranId", s.clientTranId)
+	r.SetParam("startTime", s.startTime)
+	r.SetParam("endTime", s.endTime)
+	r.SetParam("page", s.page)
+	r.SetParam("limit", s.limit)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
@@ -1461,6 +1484,7 @@ type InternalUniversalTransfer struct {
 
 // Get Detail on Sub-account's Futures Account V2 (For Master Account)
 
+//gen:new_service
 type DetailOnSubAccountFuturesAccountV2Service struct {
 	C           *connector.Connector
 	email       string
@@ -1555,6 +1579,7 @@ type DetailOnSubAccountFuturesAccountV2COINResp struct {
 
 // Get Summary of Sub-account's Futures Account V2 (For Master Account)
 
+//gen:new_service
 type SummaryOfSubAccountFuturesAccountV2Service struct {
 	C           *connector.Connector
 	futuresType int
@@ -1586,12 +1611,9 @@ func (s *SummaryOfSubAccountFuturesAccountV2Service) Do(ctx context.Context, opt
 	)
 
 	r.SetParam("futuresType", s.futuresType)
-	if s.page != nil {
-		r.SetParam("page", *s.page)
-	}
-	if s.limit != nil {
-		r.SetParam("limit", *s.limit)
-	}
+
+	r.SetParam("page", s.page)
+	r.SetParam("limit", s.limit)
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
@@ -1647,6 +1669,7 @@ type SummaryOfSubAccountFuturesAccountV2COINResp struct {
 
 // Get Futures Position-Risk of Sub-account V2 (For Master Account)
 
+//gen:new_service
 type FuturesPositionRiskOfSubAccountV2Service struct {
 	C           *connector.Connector
 	email       string
@@ -1730,6 +1753,7 @@ const (
 	enableLeverageTokenForSubAccountEndpoint = "/sapi/v1/sub-account/blvt/enable"
 )
 
+//gen:new_service
 type EnableLeverageTokenForSubAccountService struct {
 	C          *connector.Connector
 	email      string
@@ -1781,6 +1805,7 @@ type EnableLeverageTokenForSubAccountResp struct {
 
 // Get IP Restriction for a Sub-account API Key (For Master Account)
 
+//gen:new_service
 type IPRestrictionForSubAccountAPIKeyService struct {
 	C                *connector.Connector
 	email            string
@@ -1837,6 +1862,7 @@ type IPRestrictionForSubAccountAPIKeyResp struct {
 
 // Delete IP List For a Sub-account API Key (For Master Account)
 
+//gen:new_service
 type DeleteIPListForSubAccountAPIKeyService struct {
 	C                *connector.Connector
 	email            string
@@ -1901,6 +1927,7 @@ type DeleteIPListForSubAccountAPIKeyResp struct {
 
 // Update IP Restriction for Sub-Account API key (For Master Account)
 
+//gen:new_service
 type UpdateIPRestrictionForSubAccountAPIKeyService struct {
 	C                *connector.Connector
 	email            string
@@ -1974,6 +2001,7 @@ type UpdateIPRestrictionForSubAccountAPIKeyResp struct {
 
 // Deposit Assets Into The Managed Sub-account（For Investor Master Account）
 
+//gen:new_service
 type DepositAssetsIntoTheManagedSubAccountService struct {
 	C       *connector.Connector
 	toEmail string
@@ -2036,6 +2064,7 @@ type DepositAssetsIntoTheManagedSubAccountResp struct {
 
 // Query Managed Sub-account Asset Details（For Investor Master Account）
 
+//gen:new_service
 type QueryManagedSubAccountAssetDetailsService struct {
 	C     *connector.Connector
 	email string
@@ -2082,6 +2111,7 @@ type QueryManagedSubAccountAssetDetailsResp struct {
 
 // Withdrawl Assets From The Managed Sub-account（For Investor Master Account）
 
+//gen:new_service
 type WithdrawAssetsFromTheManagedSubAccountService struct {
 	C            *connector.Connector
 	fromEmail    string
@@ -2136,7 +2166,7 @@ func (s *WithdrawAssetsFromTheManagedSubAccountService) Do(ctx context.Context, 
 	r.SetParam("fromEmail", s.fromEmail)
 	r.SetParam("asset", s.asset)
 	r.SetParam("amount", s.amount)
-	r.SetParam("transferDate", *s.transferDate)
+	r.SetParam("transferDate", s.transferDate)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
@@ -2153,6 +2183,7 @@ type WithdrawAssetsFromTheManagedSubAccountResp struct {
 
 // Query Managed Sub-account Snapshot（For Investor Master Account）
 
+//gen:new_service
 type QueryManagedSubAccountSnapshotService struct {
 	C         *connector.Connector
 	email     string
@@ -2208,9 +2239,9 @@ func (s *QueryManagedSubAccountSnapshotService) Do(ctx context.Context, opts ...
 	r.SetParam("email", s.email)
 	r.SetParam("type", s.subType)
 
-	r.SetParam("startTime", *s.startTime)
-	r.SetParam("endTime", *s.endTime)
-	r.SetParam("limit", *s.limit)
+	r.SetParam("startTime", s.startTime)
+	r.SetParam("endTime", s.endTime)
+	r.SetParam("limit", s.limit)
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
@@ -2239,6 +2270,7 @@ type QueryManagedSubAccountSnapshotResp struct {
 
 // Query Managed Sub Account Transfer Log (Investor) (USER_DATA)
 
+//gen:new_service
 type QueryManagedSubAccountTransferLogService struct {
 	C                           *connector.Connector
 	email                       string
@@ -2351,6 +2383,7 @@ type QueryManagedSubAccountTransferLogResp struct {
 
 // Query Managed Sub-account Futures Asset Details（For Investor Master Account）(USER_DATA)
 
+//gen:new_service
 type QueryManagedSubAccountFuturesAssetDetailsService struct {
 	C     *connector.Connector
 	email string
@@ -2408,6 +2441,7 @@ type QueryManagedSubAccountFuturesAssetDetailsResp struct {
 
 // Query Managed Sub-account Margin Asset Details (For Investor Master Account) (USER_DATA)
 
+//gen:new_service
 type QueryManagedSubAccountMarginAssetDetailsService struct {
 	C     *connector.Connector
 	email string
@@ -2452,6 +2486,7 @@ type QueryManagedSubAccountMarginAssetDetailsResp struct {
 
 // Query Managed Sub Account Transfer Log (Trading Team) (USER_DATA)
 
+//gen:new_service
 type QueryManagedSubAccountTransferLogForTradingTeamService struct {
 	C                           *connector.Connector
 	email                       string
@@ -2562,6 +2597,7 @@ type QueryManagedSubAccountTransferLogForTradingTeamResp struct {
 
 // Query Sub-account Assets (For Master Account)(USER_DATA)
 
+//gen:new_service
 type QuerySubAccountAssetsForMasterAccountService struct {
 	C     *connector.Connector
 	email string
@@ -2605,6 +2641,7 @@ type QuerySubAccountAssetsForMasterAccountResp struct {
 
 // Query Managed Sub-account List
 
+//gen:new_service
 type QueryManagedSubAccountList struct {
 	C     *connector.Connector
 	email *string
@@ -2634,9 +2671,9 @@ func (s *QueryManagedSubAccountList) Do(ctx context.Context, opts ...request.Req
 		request.SecType(request.SecTypeSigned),
 	)
 
-	r.SetParam("email", *s.email)
-	r.SetParam("page", strconv.Itoa(*s.page))
-	r.SetParam("limit", strconv.Itoa(*s.limit))
+	r.SetParam("email", s.email)
+	r.SetParam("page", s.page)
+	r.SetParam("limit", s.limit)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
@@ -2666,6 +2703,7 @@ type QueryManagedSubAccountListResp struct {
 
 // Query Sub-account Transaction Tatistics (For Master Account) (USER_DATA)
 
+//gen:new_service
 type QuerySubAccountTransactionStatistics struct {
 	C     *connector.Connector
 	email string
@@ -2718,29 +2756,30 @@ type QuerySubAccountTransactionStatisticsResp struct {
 
 // Get Managed Sub-account Deposit Address (For Investor Master Account) (USER_DATA)
 
-type GetManagedSubAccountDepositAddressService struct {
+//gen:new_service
+type ManagedSubAccountDepositAddressService struct {
 	C       *connector.Connector
 	email   string
 	coin    string
 	network *string
 }
 
-func (s *GetManagedSubAccountDepositAddressService) Email(email string) *GetManagedSubAccountDepositAddressService {
+func (s *ManagedSubAccountDepositAddressService) Email(email string) *ManagedSubAccountDepositAddressService {
 	s.email = email
 	return s
 }
 
-func (s *GetManagedSubAccountDepositAddressService) Coin(coin string) *GetManagedSubAccountDepositAddressService {
+func (s *ManagedSubAccountDepositAddressService) Coin(coin string) *ManagedSubAccountDepositAddressService {
 	s.coin = coin
 	return s
 }
 
-func (s *GetManagedSubAccountDepositAddressService) Network(network string) *GetManagedSubAccountDepositAddressService {
+func (s *ManagedSubAccountDepositAddressService) Network(network string) *ManagedSubAccountDepositAddressService {
 	s.network = &network
 	return s
 }
 
-func (s *GetManagedSubAccountDepositAddressService) Do(ctx context.Context, opts ...request.RequestOption) (res *GetManagedSubAccountDepositAddressResp, err error) {
+func (s *ManagedSubAccountDepositAddressService) Do(ctx context.Context, opts ...request.RequestOption) (res *ManagedSubAccountDepositAddressResp, err error) {
 
 	r := request.New(
 		"/sapi/v1/managed-subaccount/deposit/address",
@@ -2766,12 +2805,12 @@ func (s *GetManagedSubAccountDepositAddressService) Do(ctx context.Context, opts
 	if err != nil {
 		return nil, err
 	}
-	res = new(GetManagedSubAccountDepositAddressResp)
+	res = new(ManagedSubAccountDepositAddressResp)
 	err = json.Unmarshal(data, &res)
 	return
 }
 
-type GetManagedSubAccountDepositAddressResp struct {
+type ManagedSubAccountDepositAddressResp struct {
 	Coin    string `json:"coin"`
 	Address string `json:"address"`
 	Tag     string `json:"tag"`
