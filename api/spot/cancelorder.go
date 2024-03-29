@@ -68,6 +68,10 @@ func (s *CancelOrderService) Do(ctx context.Context, opts ...request.RequestOpti
 		return
 	}
 
+	if s.orderId == nil && s.origClientOrderId == nil {
+		return nil, fmt.Errorf("%w: either orderId or origClientOrderId", apierrors.ErrMissingParameter)
+	}
+
 	r.SetParam("symbol", s.symbol)
 	r.SetParam("orderId", s.orderId)
 	r.SetParam("origClientOrderId", s.origClientOrderId)

@@ -176,7 +176,6 @@ func (s *CancelReplaceService) Do(ctx context.Context, opts ...request.RequestOp
 
 	if s.cancelOrderId == nil && s.cancelOrigClientOrderId == nil {
 		return nil, fmt.Errorf("%w: either cancelOrderId or cancelOrigClientOrderId", apierrors.ErrMissingParameter)
-
 	}
 
 	r.SetParam("symbol", s.symbol)

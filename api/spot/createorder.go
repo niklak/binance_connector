@@ -126,12 +126,12 @@ func (s *CreateOrderService) SelfTradePreventionMode(selfTradePreventionMode str
 
 // Do send request
 func (s *CreateOrderService) Do(ctx context.Context, opts ...request.RequestOption) (res interface{}, err error) {
-	r := &request.Request{
-		Method:   http.MethodPost,
-		Endpoint: "/api/v3/order",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New(
+		"/api/v3/order",
+		request.Method(http.MethodPost),
+		request.SecType(request.SecTypeSigned),
+	)
 
 	// no need to send request if there are no required parameters
 	if s.symbol == "" {
