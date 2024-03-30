@@ -11,15 +11,11 @@ import (
 	"github.com/niklak/binance_connector/internal/request"
 )
 
-const (
-	ACK    = 1
-	RESULT = 2
-	FULL   = 3
-)
-
 // Cross Margin Account Transfer API Endpoint
 
 // TransferService transfer between spot and margin account
+//
+//gen:new_service
 type TransferService struct {
 	C            *connector.Connector
 	asset        string
@@ -88,6 +84,8 @@ type TransferResponse struct {
 // Cross Margin Account Borrow API Endpoint
 
 // BorrowService borrow from cross margin account
+//
+//gen:new_service
 type BorrowService struct {
 	C          *connector.Connector
 	asset      string
@@ -154,6 +152,8 @@ type BorrowResponse struct {
 // Cross Margin Account Repay API Endpoint
 
 // RepayService repay to cross margin account
+//
+//gen:new_service
 type RepayService struct {
 	C          *connector.Connector
 	asset      string
@@ -227,6 +227,8 @@ type RepayResponse struct {
 // Query Margin Asset API Endpoint
 
 // QueryMarginAssetService query margin asset
+//
+//gen:new_service
 type QueryMarginAssetService struct {
 	C     *connector.Connector
 	asset string
@@ -275,6 +277,8 @@ type QueryMarginAssetResponse struct {
 // Query Cross Margin Pair API Endpoint
 
 // QueryCrossMarginPairService query cross margin pair
+//
+//gen:new_service
 type QueryCrossMarginPairService struct {
 	C      *connector.Connector
 	symbol string
@@ -324,6 +328,8 @@ type QueryCrossMarginPairResponse struct {
 // Get all margin assets API Endpoint
 
 // GetAllMarginAssetsService get all margin assets
+
+//gen:new_service
 type GetAllMarginAssetsService struct {
 	C *connector.Connector
 }
@@ -365,6 +371,8 @@ type GetAllMarginAssetsResponse struct {
 // Get all margin pairs API Endpoint
 
 // GetAllMarginPairsService get all margin pairs
+
+//gen:new_service
 type GetAllMarginPairsService struct {
 	C *connector.Connector
 }
@@ -403,6 +411,8 @@ type GetAllMarginPairsResponse struct {
 // Query Margin Price Index API Endpoint
 
 // QueryMarginPriceIndexService query margin price index
+//
+//gen:new_service
 type QueryMarginPriceIndexService struct {
 	C      *connector.Connector
 	symbol string
@@ -447,6 +457,8 @@ type QueryMarginPriceIndexResponse struct {
 // Margin Accouunt New Order (TRADE) API Endpoint
 
 // MarginAccountNewOrderService margin account new order
+//
+//gen:new_service
 type MarginAccountNewOrderService struct {
 	C                *connector.Connector
 	symbol           string
@@ -660,6 +672,8 @@ type MarginAccountNewOrderResponseFULL struct {
 // Margin Account Cancel Order (TRADE) API Endpoint
 
 // MarginAccountCancelOrderService margin account cancel order
+//
+//gen:new_service
 type MarginAccountCancelOrderService struct {
 	C                 *connector.Connector
 	symbol            string
@@ -752,6 +766,8 @@ type MarginAccountCancelOrderResponse struct {
 // Margin Account Cancel All Orders (TRADE) API Endpoint
 
 // MarginAccountCancelAllOrdersService margin account cancel all orders
+//
+//gen:new_service
 type MarginAccountCancelAllOrdersService struct {
 	C          *connector.Connector
 	symbol     string
@@ -828,6 +844,8 @@ type CrossMarginTransferHistoryResponse struct {
 // Margin account borrow/repay(MARGIN)
 
 // QueryMarginBorrowRepayService query
+//
+//gen:new_service
 type QueryMarginBorrowRepayService struct {
 	C              *connector.Connector
 	asset          string
@@ -953,6 +971,8 @@ type QueryMarginBorrowRepay struct {
 // Query Interest History (USER_DATA) API Endpoint
 
 // InterestHistoryService query interest history
+//
+//gen:new_service
 type InterestHistoryService struct {
 	C              *connector.Connector
 	asset          *string
@@ -1043,6 +1063,8 @@ type InterestHistoryResponse struct {
 // Query Force Liquidation Record (USER_DATA) API Endpoint
 
 // ForceLiquidationRecordService query force liquidation record
+//
+//gen:new_service
 type ForceLiquidationRecordService struct {
 	C              *connector.Connector
 	startTime      *uint64
@@ -1126,6 +1148,8 @@ type ForceLiquidationRecordResponse struct {
 // Query Query Cross Margin Account Details (USER_DATA) API Endpoint
 
 // CrossMarginAccountDetailService query cross margin account details
+//
+//gen:new_service
 type CrossMarginAccountDetailService struct {
 	C *connector.Connector
 }
@@ -1170,6 +1194,8 @@ type CrossMarginAccountDetailResponse struct {
 // Query Margin Account's Order (USER_DATA) API Endpoint
 
 // MarginAccountOrderService query margin account's order
+//
+//gen:new_service
 type MarginAccountOrderService struct {
 	C                 *connector.Connector
 	symbol            string
@@ -1256,6 +1282,8 @@ const (
 )
 
 // MarginAccountOpenOrderService query margin account's open order
+//
+//gen:new_service
 type MarginAccountOpenOrderService struct {
 	C          *connector.Connector
 	symbol     *string
@@ -1325,6 +1353,8 @@ type MarginAccountOpenOrderResponse struct {
 // Query Margin Account's All Orders (USER_DATA) API Endpoint
 
 // MarginAccountAllOrderService query margin account's all order
+//
+//gen:new_service
 type MarginAccountAllOrderService struct {
 	C          *connector.Connector
 	symbol     string
@@ -1429,6 +1459,8 @@ type MarginAccountAllOrderResponse struct {
 // Margin Account New OCO (TRADE) API Endpoint
 
 // MarginAccountNewOCOService create new oco order
+//
+//gen:new_service
 type MarginAccountNewOCOService struct {
 	C                    *connector.Connector
 	symbol               string
@@ -1630,6 +1662,7 @@ type MarginAccountNewOCOResponse struct {
 
 // Margin Account Cancel OCO (TRADE)
 
+//gen:new_service
 type MarginAccountCancelOCOService struct {
 	C                 *connector.Connector
 	symbol            string
@@ -1734,6 +1767,7 @@ type MarginAccountCancelOCOResponse struct {
 
 // Query Margin Account's OCO (USER_DATA) (HMAC SHA256)
 
+//gen:new_service
 type MarginAccountQueryOCOService struct {
 	C                 *connector.Connector
 	isIsolated        *string
@@ -1808,6 +1842,7 @@ type MarginAccountQueryOCOResponse struct {
 
 // Query Margin Account's all OCO (USER_DATA)
 
+//gen:new_service
 type MarginAccountQueryAllOCOService struct {
 	C          *connector.Connector
 	isIsolated *string
@@ -1898,6 +1933,7 @@ type MarginAccountQueryAllOCOResponse struct {
 
 // Query Margin Account's Open OCO (USER_DATA)
 
+//gen:new_service
 type MarginAccountQueryOpenOCOService struct {
 	C          *connector.Connector
 	isIsolated *string
@@ -1956,6 +1992,7 @@ type MarginAccountQueryOpenOCOResponse struct {
 
 // Query Margin Account's Trade List (USER_DATA)
 
+//gen:new_service
 type MarginAccountQueryTradeListService struct {
 	C          *connector.Connector
 	symbol     string
@@ -2059,6 +2096,7 @@ type MarginAccountQueryTradeListResponse struct {
 
 // Query Margin Account's Max Borrow (USER_DATA)
 
+//gen:new_service
 type MarginAccountQueryMaxBorrowService struct {
 	C              *connector.Connector
 	asset          string
@@ -2111,6 +2149,7 @@ type MarginAccountQueryMaxBorrowResponse struct {
 
 // Query Margin Account's Max Transfer-Out Amount (USER_DATA)
 
+//gen:new_service
 type MarginAccountQueryMaxTransferOutAmountService struct {
 	C              *connector.Connector
 	asset          string
@@ -2163,6 +2202,7 @@ type MarginAccountQueryMaxTransferOutAmountResponse struct {
 
 // Get Summary of Margin account (USER_DATA) - GET /sapi/v1/margin/tradeCoeff (HMAC SHA256)
 
+//gen:new_service
 type MarginAccountSummaryService struct {
 	C *connector.Connector
 }
@@ -2194,6 +2234,7 @@ type MarginAccountSummaryResponse struct {
 
 // Isolated Margin Account Transfer (MARGIN)
 
+//gen:new_service
 type MarginIsolatedAccountTransferService struct {
 	C         *connector.Connector
 	asset     string
@@ -2248,6 +2289,7 @@ func (s *MarginIsolatedAccountTransferService) Do(ctx context.Context, opts ...r
 	}
 	if s.symbol == "" {
 		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
+		return
 	}
 
 	if s.transFrom == "" {
@@ -2285,6 +2327,7 @@ type MarginIsolatedAccountTransferResponse struct {
 
 // Isolated Margin Account Transfer History (MARGIN)
 
+//gen:new_service
 type MarginIsolatedAccountTransferHistoryService struct {
 	C         *connector.Connector
 	asset     *string
@@ -2401,6 +2444,7 @@ type MarginIsolatedAccountTransferHistoryResponse struct {
 
 // Query Isolated Margin Account Info (USER_DATA)
 
+//gen:new_service
 type MarginIsolatedAccountInfoService struct {
 	C       *connector.Connector
 	symbols *string
@@ -2487,6 +2531,7 @@ type MarginIsolatedAccountInfoResponse struct {
 
 // Disable Isolated Margin Account (TRADE)
 
+//gen:new_service
 type MarginIsolatedAccountDisableService struct {
 	C      *connector.Connector
 	symbol string
@@ -2530,6 +2575,7 @@ type MarginIsolatedAccountDisableResponse struct {
 
 // Enable Isolated Margin Account (TRADE)
 
+//gen:new_service
 type MarginIsolatedAccountEnableService struct {
 	C      *connector.Connector
 	symbol string
@@ -2572,6 +2618,7 @@ type MarginIsolatedAccountEnableResponse struct {
 
 // Query Enabled Isolated Margin Account Limit (USER_DATA)
 
+//gen:new_service
 type MarginIsolatedAccountLimitService struct {
 	C *connector.Connector
 }
@@ -2601,6 +2648,8 @@ type MarginIsolatedAccountLimitResponse struct {
 }
 
 // Query Isolated Margin Symbol (USER_DATA)
+//
+//gen:new_service
 type MarginIsolatedSymbolService struct {
 	C      *connector.Connector
 	symbol string
@@ -2649,6 +2698,8 @@ type MarginIsolatedSymbolResponse struct {
 // Get All Isolated Margin Symbol(USER_DATA)
 
 // AllIsolatedMarginSymbolService returns all isolated margin symbols
+//
+//gen:new_service
 type AllIsolatedMarginSymbolService struct {
 	C *connector.Connector
 }
@@ -2675,6 +2726,7 @@ func (s *AllIsolatedMarginSymbolService) Do(ctx context.Context, opts ...request
 
 // Toggle BNB Burn On Spot Trade And Margin Interest (USER_DATA)
 
+//gen:new_service
 type MarginToggleBnbBurnService struct {
 	C               *connector.Connector
 	spotBNBBurn     *string
@@ -2721,6 +2773,7 @@ type MarginToggleBnbBurnResponse struct {
 
 // Get BNB Burn Status (USER_DATA)
 
+//gen:new_service
 type MarginBnbBurnStatusService struct {
 	C *connector.Connector
 }
@@ -2751,6 +2804,7 @@ type MarginBnbBurnStatusResponse struct {
 
 // Query Margin Interest Rate History (USER_DATA)
 
+//gen:new_service
 type MarginInterestRateHistoryService struct {
 	C         *connector.Connector
 	asset     string
@@ -2822,6 +2876,7 @@ type MarginInterestRateHistoryResponse struct {
 
 // Query Cross Margin Fee Data (USER_DATA)
 
+//gen:new_service
 type MarginCrossMarginFeeService struct {
 	C        *connector.Connector
 	vipLevel *int
@@ -2877,6 +2932,7 @@ type MarginCrossMarginFeeResponse struct {
 
 // Query Isolated Margin Fee Data (USER_DATA)
 
+//gen:new_service
 type MarginIsolatedMarginFeeService struct {
 	C        *connector.Connector
 	vipLevel *int
@@ -2929,6 +2985,7 @@ type MarginIsolatedMarginFeeResponse struct {
 
 // Query Isolated Margin Tier Data (USER_DATA)
 
+//gen:new_service
 type MarginIsolatedMarginTierService struct {
 	C      *connector.Connector
 	symbol string
@@ -2990,6 +3047,7 @@ const (
 	marginCurrentOrderCountEndpoint = "/sapi/v1/margin/rateLimit/order"
 )
 
+//gen:new_service
 type MarginCurrentOrderCountService struct {
 	C          *connector.Connector
 	isIsolated *string
@@ -3040,6 +3098,7 @@ type MarginCurrentOrderCountResponse struct {
 
 // Margin Dustlog (USER_DATA)
 
+//gen:new_service
 type MarginDustlogService struct {
 	C         *connector.Connector
 	startTime *uint64
@@ -3105,6 +3164,7 @@ type UserAssetDribbletDetail struct {
 
 // Cross margin collateral ratio (MARKET_DATA)
 
+//gen:new_service
 type MarginCrossCollateralRatioService struct {
 	C *connector.Connector
 }
@@ -3141,6 +3201,7 @@ type MarginCrossCollateralRatioResponse struct {
 
 // Get Small Liability Exchange Coin List (USER_DATA)
 
+//gen:new_service
 type MarginSmallLiabilityExchangeCoinListService struct {
 	C *connector.Connector
 }
@@ -3173,6 +3234,7 @@ type MarginSmallLiabilityExchangeCoinListResponse struct {
 
 // Small Liability Exchange (MARGIN)
 
+//gen:new_service
 type MarginSmallLiabilityExchangeService struct {
 	C          *connector.Connector
 	assetNames string
@@ -3214,6 +3276,7 @@ type MarginSmallLiabilityExchangeResponse struct {
 
 // Get Small Liability Exchange History (USER_DATA)
 
+//gen:new_service
 type MarginSmallLiabilityExchangeHistoryService struct {
 	C         *connector.Connector
 	current   int

@@ -70,3 +70,8 @@ func main() {
 - BUSD endpoints are omitted.
 - `QuerySubAccountSpotAssetTransferHistoryService`  returns `[]*SubAccountAssetTransferHistoryResponse` instead of `QuerySubAccountSpotAssetTransferHistoryResp`
 - (`Get`)`SubAccountDepositHistoryService` returns `[]*SubAccountDepositHistoryResponse` instead of `GetSubAccountDepositHistoryResp`
+
+## Important
+
+Some endpoints may not work because Binance could remove these endpoints from the API. 
+Please visit [binance api docs](https://binance-docs.github.io/apidocs/spot/en/#change-log).

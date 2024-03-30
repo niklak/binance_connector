@@ -526,3 +526,238 @@ func (c *Client) NewManagedSubAccountDepositAddressService() *ManagedSubAccountD
 	return &ManagedSubAccountDepositAddressService{C: c.Connector}
 }
 
+
+func (c *Client) NewTransferService() *TransferService {
+	return &TransferService{C: c.Connector}
+}
+
+
+func (c *Client) NewBorrowService() *BorrowService {
+	return &BorrowService{C: c.Connector}
+}
+
+
+func (c *Client) NewRepayService() *RepayService {
+	return &RepayService{C: c.Connector}
+}
+
+
+func (c *Client) NewQueryMarginAssetService() *QueryMarginAssetService {
+	return &QueryMarginAssetService{C: c.Connector}
+}
+
+
+func (c *Client) NewQueryCrossMarginPairService() *QueryCrossMarginPairService {
+	return &QueryCrossMarginPairService{C: c.Connector}
+}
+
+
+func (c *Client) NewGetAllMarginAssetsService() *GetAllMarginAssetsService {
+	return &GetAllMarginAssetsService{C: c.Connector}
+}
+
+
+func (c *Client) NewGetAllMarginPairsService() *GetAllMarginPairsService {
+	return &GetAllMarginPairsService{C: c.Connector}
+}
+
+
+func (c *Client) NewQueryMarginPriceIndexService() *QueryMarginPriceIndexService {
+	return &QueryMarginPriceIndexService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginAccountNewOrderService() *MarginAccountNewOrderService {
+	return &MarginAccountNewOrderService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginAccountCancelOrderService() *MarginAccountCancelOrderService {
+	return &MarginAccountCancelOrderService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginAccountCancelAllOrdersService() *MarginAccountCancelAllOrdersService {
+	return &MarginAccountCancelAllOrdersService{C: c.Connector}
+}
+
+
+func (c *Client) NewQueryMarginBorrowRepayService() *QueryMarginBorrowRepayService {
+	return &QueryMarginBorrowRepayService{C: c.Connector}
+}
+
+
+func (c *Client) NewInterestHistoryService() *InterestHistoryService {
+	return &InterestHistoryService{C: c.Connector}
+}
+
+
+func (c *Client) NewForceLiquidationRecordService() *ForceLiquidationRecordService {
+	return &ForceLiquidationRecordService{C: c.Connector}
+}
+
+
+func (c *Client) NewCrossMarginAccountDetailService() *CrossMarginAccountDetailService {
+	return &CrossMarginAccountDetailService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginAccountOrderService() *MarginAccountOrderService {
+	return &MarginAccountOrderService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginAccountOpenOrderService() *MarginAccountOpenOrderService {
+	return &MarginAccountOpenOrderService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginAccountAllOrderService() *MarginAccountAllOrderService {
+	return &MarginAccountAllOrderService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginAccountNewOCOService() *MarginAccountNewOCOService {
+	return &MarginAccountNewOCOService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginAccountCancelOCOService() *MarginAccountCancelOCOService {
+	return &MarginAccountCancelOCOService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginAccountQueryOCOService() *MarginAccountQueryOCOService {
+	return &MarginAccountQueryOCOService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginAccountQueryAllOCOService() *MarginAccountQueryAllOCOService {
+	return &MarginAccountQueryAllOCOService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginAccountQueryOpenOCOService() *MarginAccountQueryOpenOCOService {
+	return &MarginAccountQueryOpenOCOService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginAccountQueryTradeListService() *MarginAccountQueryTradeListService {
+	return &MarginAccountQueryTradeListService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginAccountQueryMaxBorrowService() *MarginAccountQueryMaxBorrowService {
+	return &MarginAccountQueryMaxBorrowService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginAccountQueryMaxTransferOutAmountService() *MarginAccountQueryMaxTransferOutAmountService {
+	return &MarginAccountQueryMaxTransferOutAmountService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginAccountSummaryService() *MarginAccountSummaryService {
+	return &MarginAccountSummaryService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginIsolatedAccountTransferService() *MarginIsolatedAccountTransferService {
+	return &MarginIsolatedAccountTransferService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginIsolatedAccountTransferHistoryService() *MarginIsolatedAccountTransferHistoryService {
+	return &MarginIsolatedAccountTransferHistoryService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginIsolatedAccountInfoService() *MarginIsolatedAccountInfoService {
+	return &MarginIsolatedAccountInfoService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginIsolatedAccountDisableService() *MarginIsolatedAccountDisableService {
+	return &MarginIsolatedAccountDisableService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginIsolatedAccountEnableService() *MarginIsolatedAccountEnableService {
+	return &MarginIsolatedAccountEnableService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginIsolatedAccountLimitService() *MarginIsolatedAccountLimitService {
+	return &MarginIsolatedAccountLimitService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginIsolatedSymbolService() *MarginIsolatedSymbolService {
+	return &MarginIsolatedSymbolService{C: c.Connector}
+}
+
+
+func (c *Client) NewAllIsolatedMarginSymbolService() *AllIsolatedMarginSymbolService {
+	return &AllIsolatedMarginSymbolService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginToggleBnbBurnService() *MarginToggleBnbBurnService {
+	return &MarginToggleBnbBurnService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginBnbBurnStatusService() *MarginBnbBurnStatusService {
+	return &MarginBnbBurnStatusService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginInterestRateHistoryService() *MarginInterestRateHistoryService {
+	return &MarginInterestRateHistoryService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginCrossMarginFeeService() *MarginCrossMarginFeeService {
+	return &MarginCrossMarginFeeService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginIsolatedMarginFeeService() *MarginIsolatedMarginFeeService {
+	return &MarginIsolatedMarginFeeService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginIsolatedMarginTierService() *MarginIsolatedMarginTierService {
+	return &MarginIsolatedMarginTierService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginCurrentOrderCountService() *MarginCurrentOrderCountService {
+	return &MarginCurrentOrderCountService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginDustlogService() *MarginDustlogService {
+	return &MarginDustlogService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginCrossCollateralRatioService() *MarginCrossCollateralRatioService {
+	return &MarginCrossCollateralRatioService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginSmallLiabilityExchangeCoinListService() *MarginSmallLiabilityExchangeCoinListService {
+	return &MarginSmallLiabilityExchangeCoinListService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginSmallLiabilityExchangeService() *MarginSmallLiabilityExchangeService {
+	return &MarginSmallLiabilityExchangeService{C: c.Connector}
+}
+
+
+func (c *Client) NewMarginSmallLiabilityExchangeHistoryService() *MarginSmallLiabilityExchangeHistoryService {
+	return &MarginSmallLiabilityExchangeHistoryService{C: c.Connector}
+}
+
