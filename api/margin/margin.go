@@ -1629,9 +1629,6 @@ type MarginAccountNewOCOResponse struct {
 }
 
 // Margin Account Cancel OCO (TRADE)
-const (
-	marginAccountCancelOCOEndpoint = "/sapi/v1/margin/orderList"
-)
 
 type MarginAccountCancelOCOService struct {
 	C                 *connector.Connector
@@ -1674,37 +1671,32 @@ func (s *MarginAccountCancelOCOService) NewClientOrderId(newClientOrderId string
 
 // Do send request
 func (s *MarginAccountCancelOCOService) Do(ctx context.Context, opts ...request.RequestOption) (res *MarginAccountCancelOCOResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodDelete,
-		Endpoint: marginAccountCancelOCOEndpoint,
-		SecType:  request.SecTypeSigned,
+
+	r := request.New(
+		"/sapi/v1/margin/orderList",
+		request.Method(http.MethodDelete),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	if s.symbol == "" {
+		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
+		return
 	}
-	m := params{
-		"symbol": s.symbol,
-	}
-	if s.isIsolated != nil {
-		m["isIsolated"] = *s.isIsolated
-	}
-	if s.orderListId != nil {
-		m["orderListId"] = *s.orderListId
-	}
-	if s.listClientOrderId != nil {
-		m["listClientOrderId"] = *s.listClientOrderId
-	}
-	if s.newClientOrderId != nil {
-		m["newClientOrderId"] = *s.newClientOrderId
-	}
-	r.setParams(m)
+
+	r.SetParam("symbol", s.symbol)
+
+	r.SetParam("isIsolated", s.isIsolated)
+	r.SetParam("orderListId", s.orderListId)
+	r.SetParam("listClientOrderId", s.listClientOrderId)
+	r.SetParam("newClientOrderId", s.newClientOrderId)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return &MarginAccountCancelOCOResponse{}, err
+		return
 	}
 	res = new(MarginAccountCancelOCOResponse)
 	err = json.Unmarshal(data, res)
-	if err != nil {
-		return &MarginAccountCancelOCOResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginAccountCancelOCOService response
@@ -1741,9 +1733,6 @@ type MarginAccountCancelOCOResponse struct {
 }
 
 // Query Margin Account's OCO (USER_DATA) (HMAC SHA256)
-const (
-	marginAccountQueryOCOEndpoint = "/sapi/v1/margin/orderList"
-)
 
 type MarginAccountQueryOCOService struct {
 	C                 *connector.Connector
@@ -1779,33 +1768,25 @@ func (s *MarginAccountQueryOCOService) OrigClientOrderId(origClientOrderId strin
 
 // Do send request
 func (s *MarginAccountQueryOCOService) Do(ctx context.Context, opts ...request.RequestOption) (res *MarginAccountQueryOCOResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginAccountQueryOCOEndpoint,
-		SecType:  request.SecTypeSigned,
-	}
-	if s.isIsolated != nil {
-		r.SetParam("isIsolated", *s.isIsolated)
-	}
-	if s.symbol != nil {
-		r.SetParam("symbol", *s.symbol)
-	}
-	if s.orderListId != nil {
-		r.SetParam("orderListId", *s.orderListId)
-	}
-	if s.origClientOrderId != nil {
-		r.SetParam("origClientOrderId", *s.origClientOrderId)
-	}
+
+	r := request.New(
+		"/sapi/v1/margin/orderList",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	r.SetParam("isIsolated", s.isIsolated)
+	r.SetParam("symbol", s.symbol)
+	r.SetParam("orderListId", s.orderListId)
+	r.SetParam("origClientOrderId", s.origClientOrderId)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return &MarginAccountQueryOCOResponse{}, err
+		return
 	}
 	res = new(MarginAccountQueryOCOResponse)
 	err = json.Unmarshal(data, res)
-	if err != nil {
-		return &MarginAccountQueryOCOResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginAccountQueryOCOService response
@@ -1826,9 +1807,6 @@ type MarginAccountQueryOCOResponse struct {
 }
 
 // Query Margin Account's all OCO (USER_DATA)
-const (
-	marginAccountQueryAllOCOEndpoint = "/sapi/v1/margin/allOrderList"
-)
 
 type MarginAccountQueryAllOCOService struct {
 	C          *connector.Connector
@@ -1878,39 +1856,27 @@ func (s *MarginAccountQueryAllOCOService) Limit(limit int) *MarginAccountQueryAl
 
 // Do send request
 func (s *MarginAccountQueryAllOCOService) Do(ctx context.Context, opts ...request.RequestOption) (res *MarginAccountQueryAllOCOResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginAccountQueryAllOCOEndpoint,
-		SecType:  request.SecTypeSigned,
-	}
-	if s.isIsolated != nil {
-		r.SetParam("isIsolated", *s.isIsolated)
-	}
-	if s.symbol != nil {
-		r.SetParam("symbol", *s.symbol)
-	}
-	if s.fromId != nil {
-		r.SetParam("fromId", *s.fromId)
-	}
-	if s.startTime != nil {
-		r.SetParam("startTime", *s.startTime)
-	}
-	if s.endTime != nil {
-		r.SetParam("endTime", *s.endTime)
-	}
-	if s.limit != nil {
-		r.SetParam("limit", *s.limit)
-	}
+
+	r := request.New(
+		"/sapi/v1/margin/allOrderList",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	r.SetParam("isIsolated", s.isIsolated)
+	r.SetParam("symbol", s.symbol)
+	r.SetParam("fromId", s.fromId)
+	r.SetParam("startTime", s.startTime)
+	r.SetParam("endTime", s.endTime)
+	r.SetParam("limit", s.limit)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return &MarginAccountQueryAllOCOResponse{}, err
+		return
 	}
 	res = new(MarginAccountQueryAllOCOResponse)
 	err = json.Unmarshal(data, res)
-	if err != nil {
-		return &MarginAccountQueryAllOCOResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginAccountQueryAllOCOService response
@@ -1931,9 +1897,6 @@ type MarginAccountQueryAllOCOResponse struct {
 }
 
 // Query Margin Account's Open OCO (USER_DATA)
-const (
-	marginAccountQueryOpenOCOEndpoint = "/sapi/v1/margin/openOrderList"
-)
 
 type MarginAccountQueryOpenOCOService struct {
 	C          *connector.Connector
@@ -1955,27 +1918,23 @@ func (s *MarginAccountQueryOpenOCOService) Symbol(symbol string) *MarginAccountQ
 
 // Do send request
 func (s *MarginAccountQueryOpenOCOService) Do(ctx context.Context, opts ...request.RequestOption) (res *MarginAccountQueryOpenOCOResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginAccountQueryOpenOCOEndpoint,
-		SecType:  request.SecTypeSigned,
-	}
-	if s.isIsolated != nil {
-		r.SetParam("isIsolated", *s.isIsolated)
-	}
-	if s.symbol != nil {
-		r.SetParam("symbol", *s.symbol)
-	}
+
+	r := request.New(
+		"/sapi/v1/margin/openOrderList",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	r.SetParam("isIsolated", s.isIsolated)
+	r.SetParam("symbol", s.symbol)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return &MarginAccountQueryOpenOCOResponse{}, err
+		return
 	}
 	res = new(MarginAccountQueryOpenOCOResponse)
 	err = json.Unmarshal(data, res)
-	if err != nil {
-		return &MarginAccountQueryOpenOCOResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginAccountQueryOpenOCOService response
@@ -1996,9 +1955,6 @@ type MarginAccountQueryOpenOCOResponse struct {
 }
 
 // Query Margin Account's Trade List (USER_DATA)
-const (
-	marginAccountQueryTradeListEndpoint = "/sapi/v1/margin/myTrades"
-)
 
 type MarginAccountQueryTradeListService struct {
 	C          *connector.Connector
@@ -2055,43 +2011,34 @@ func (s *MarginAccountQueryTradeListService) Limit(limit int) *MarginAccountQuer
 
 // Do send request
 func (s *MarginAccountQueryTradeListService) Do(ctx context.Context, opts ...request.RequestOption) (res *MarginAccountQueryTradeListResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginAccountQueryTradeListEndpoint,
-		SecType:  request.SecTypeSigned,
+
+	r := request.New(
+		"/sapi/v1/margin/myTrades",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	if s.symbol == "" {
+		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
+		return
 	}
-	m := params{
-		"symbol": s.symbol,
-	}
-	if s.isIsolated != nil {
-		m["isIsolated"] = *s.isIsolated
-	}
-	if s.orderId != nil {
-		m["orderId"] = *s.orderId
-	}
-	if s.startTime != nil {
-		m["startTime"] = *s.startTime
-	}
-	if s.endTime != nil {
-		m["endTime"] = *s.endTime
-	}
-	if s.fromId != nil {
-		m["fromId"] = *s.fromId
-	}
-	if s.limit != nil {
-		m["limit"] = *s.limit
-	}
-	r.setParams(m)
+
+	r.SetParam("symbol", s.symbol)
+
+	r.SetParam("isIsolated", s.isIsolated)
+	r.SetParam("orderId", s.orderId)
+	r.SetParam("startTime", s.startTime)
+	r.SetParam("endTime", s.endTime)
+	r.SetParam("fromId", s.fromId)
+	r.SetParam("limit", s.limit)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return &MarginAccountQueryTradeListResponse{}, err
+		return
 	}
 	res = new(MarginAccountQueryTradeListResponse)
 	err = json.Unmarshal(data, res)
-	if err != nil {
-		return &MarginAccountQueryTradeListResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginAccountQueryTradeListService response
@@ -2111,9 +2058,6 @@ type MarginAccountQueryTradeListResponse struct {
 }
 
 // Query Margin Account's Max Borrow (USER_DATA)
-const (
-	marginAccountQueryMaxBorrowEndpoint = "/sapi/v1/margin/maxBorrowable"
-)
 
 type MarginAccountQueryMaxBorrowService struct {
 	C              *connector.Connector
@@ -2135,28 +2079,28 @@ func (s *MarginAccountQueryMaxBorrowService) IsolatedSymbol(isolatedSymbol strin
 
 // Do send request
 func (s *MarginAccountQueryMaxBorrowService) Do(ctx context.Context, opts ...request.RequestOption) (res *MarginAccountQueryMaxBorrowResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginAccountQueryMaxBorrowEndpoint,
-		SecType:  request.SecTypeSigned,
+
+	r := request.New(
+		"/sapi/v1/margin/maxBorrowable",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	if s.asset == "" {
+		err = fmt.Errorf("%w: asset", apierrors.ErrMissingParameter)
+		return
 	}
-	m := params{
-		"asset": s.asset,
-	}
-	if s.isolatedSymbol != nil {
-		m["isolatedSymbol"] = *s.isolatedSymbol
-	}
-	r.setParams(m)
+	r.SetParam("asset", s.asset)
+
+	r.SetParam("isolatedSymbol", s.isolatedSymbol)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return &MarginAccountQueryMaxBorrowResponse{}, err
+		return
 	}
 	res = new(MarginAccountQueryMaxBorrowResponse)
 	err = json.Unmarshal(data, res)
-	if err != nil {
-		return &MarginAccountQueryMaxBorrowResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginAccountQueryMaxBorrowService response
@@ -2166,9 +2110,6 @@ type MarginAccountQueryMaxBorrowResponse struct {
 }
 
 // Query Margin Account's Max Transfer-Out Amount (USER_DATA)
-const (
-	marginAccountQueryMaxTransferOutAmountEndpoint = "/sapi/v1/margin/maxTransferable"
-)
 
 type MarginAccountQueryMaxTransferOutAmountService struct {
 	C              *connector.Connector
@@ -2190,28 +2131,29 @@ func (s *MarginAccountQueryMaxTransferOutAmountService) IsolatedSymbol(isolatedS
 
 // Do send request
 func (s *MarginAccountQueryMaxTransferOutAmountService) Do(ctx context.Context, opts ...request.RequestOption) (res *MarginAccountQueryMaxTransferOutAmountResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginAccountQueryMaxTransferOutAmountEndpoint,
-		SecType:  request.SecTypeSigned,
+
+	r := request.New(
+		"/sapi/v1/margin/maxTransferable",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	if s.asset == "" {
+		err = fmt.Errorf("%w: asset", apierrors.ErrMissingParameter)
+		return
 	}
-	m := params{
-		"asset": s.asset,
-	}
-	if s.isolatedSymbol != nil {
-		m["isolatedSymbol"] = *s.isolatedSymbol
-	}
-	r.setParams(m)
+
+	r.SetParam("asset", s.asset)
+
+	r.SetParam("isolatedSymbol", s.isolatedSymbol)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return &MarginAccountQueryMaxTransferOutAmountResponse{}, err
+		return
 	}
 	res = new(MarginAccountQueryMaxTransferOutAmountResponse)
 	err = json.Unmarshal(data, res)
-	if err != nil {
-		return &MarginAccountQueryMaxTransferOutAmountResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginAccountQueryMaxTransferOutAmountService response
@@ -2220,9 +2162,6 @@ type MarginAccountQueryMaxTransferOutAmountResponse struct {
 }
 
 // Get Summary of Margin account (USER_DATA) - GET /sapi/v1/margin/tradeCoeff (HMAC SHA256)
-const (
-	marginAccountSummaryEndpoint = "/sapi/v1/margin/tradeCoeff"
-)
 
 type MarginAccountSummaryService struct {
 	C *connector.Connector
@@ -2230,21 +2169,20 @@ type MarginAccountSummaryService struct {
 
 // Do send request
 func (s *MarginAccountSummaryService) Do(ctx context.Context, opts ...request.RequestOption) (res *MarginAccountSummaryResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginAccountSummaryEndpoint,
-		SecType:  request.SecTypeSigned,
-	}
+
+	r := request.New(
+		"/sapi/v1/margin/tradeCoeff",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return &MarginAccountSummaryResponse{}, err
+		return
 	}
 	res = new(MarginAccountSummaryResponse)
 	err = json.Unmarshal(data, res)
-	if err != nil {
-		return &MarginAccountSummaryResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginAccountSummaryService response
@@ -2255,9 +2193,6 @@ type MarginAccountSummaryResponse struct {
 }
 
 // Isolated Margin Account Transfer (MARGIN)
-const (
-	marginIsolatedAccountTransferEndpoint = "/sapi/v1/margin/isolated/transfer"
-)
 
 type MarginIsolatedAccountTransferService struct {
 	C         *connector.Connector
@@ -2300,29 +2235,47 @@ func (s *MarginIsolatedAccountTransferService) Amount(amount float64) *MarginIso
 
 // Do send request
 func (s *MarginIsolatedAccountTransferService) Do(ctx context.Context, opts ...request.RequestOption) (res *MarginIsolatedAccountTransferResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodPost,
-		Endpoint: marginIsolatedAccountTransferEndpoint,
-		SecType:  request.SecTypeSigned,
+
+	r := request.New(
+		"/sapi/v1/margin/isolated/transfer",
+		request.Method(http.MethodPost),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	if s.asset == "" {
+		err = fmt.Errorf("%w: asset", apierrors.ErrMissingParameter)
+		return
 	}
-	m := params{
-		"asset":     s.asset,
-		"symbol":    s.symbol,
-		"transFrom": s.transFrom,
-		"transTo":   s.transTo,
-		"amount":    s.amount,
+	if s.symbol == "" {
+		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
 	}
-	r.setParams(m)
+
+	if s.transFrom == "" {
+		err = fmt.Errorf("%w: transFrom", apierrors.ErrMissingParameter)
+		return
+	}
+	if s.transTo == "" {
+		err = fmt.Errorf("%w: transTo", apierrors.ErrMissingParameter)
+		return
+	}
+	if s.amount == 0 {
+		err = fmt.Errorf("%w: amount", apierrors.ErrMissingParameter)
+		return
+	}
+
+	r.SetParam("asset", s.asset)
+	r.SetParam("symbol", s.symbol)
+	r.SetParam("transFrom", s.transFrom)
+	r.SetParam("transTo", s.transTo)
+	r.SetParam("amount", s.amount)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return &MarginIsolatedAccountTransferResponse{}, err
+		return
 	}
 	res = new(MarginIsolatedAccountTransferResponse)
 	err = json.Unmarshal(data, res)
-	if err != nil {
-		return &MarginIsolatedAccountTransferResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginIsolatedAccountTransferService response
@@ -2331,9 +2284,6 @@ type MarginIsolatedAccountTransferResponse struct {
 }
 
 // Isolated Margin Account Transfer History (MARGIN)
-const (
-	marginIsolatedAccountTransferHistoryEndpoint = "/sapi/v1/margin/isolated/transfer"
-)
 
 type MarginIsolatedAccountTransferHistoryService struct {
 	C         *connector.Connector
@@ -2404,49 +2354,35 @@ func (s *MarginIsolatedAccountTransferHistoryService) Archived(archived string) 
 
 // Do send request
 func (s *MarginIsolatedAccountTransferHistoryService) Do(ctx context.Context, opts ...request.RequestOption) (res *MarginIsolatedAccountTransferHistoryResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginIsolatedAccountTransferHistoryEndpoint,
-		SecType:  request.SecTypeSigned,
+
+	r := request.New(
+		"/sapi/v1/margin/isolated/transfer",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	if s.symbol == "" {
+		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
+		return
 	}
-	m := params{
-		"symbol": s.symbol,
-	}
-	if s.asset != nil {
-		m["asset"] = *s.asset
-	}
-	if s.transFrom != nil {
-		m["transFrom"] = *s.transFrom
-	}
-	if s.transTo != nil {
-		m["transTo"] = *s.transTo
-	}
-	if s.startTime != nil {
-		m["startTime"] = *s.startTime
-	}
-	if s.endTime != nil {
-		m["endTime"] = *s.endTime
-	}
-	if s.current != nil {
-		m["current"] = *s.current
-	}
-	if s.size != nil {
-		m["size"] = *s.size
-	}
-	if s.archived != nil {
-		m["archived"] = *s.archived
-	}
-	r.setParams(m)
+	r.SetParam("symbol", s.symbol)
+
+	r.SetParam("asset", s.asset)
+	r.SetParam("transFrom", s.transFrom)
+	r.SetParam("transTo", s.transTo)
+	r.SetParam("startTime", s.startTime)
+	r.SetParam("endTime", s.endTime)
+	r.SetParam("current", s.current)
+	r.SetParam("size", s.size)
+	r.SetParam("archived", s.archived)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return &MarginIsolatedAccountTransferHistoryResponse{}, err
+		return
 	}
 	res = new(MarginIsolatedAccountTransferHistoryResponse)
 	err = json.Unmarshal(data, res)
-	if err != nil {
-		return &MarginIsolatedAccountTransferHistoryResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginIsolatedAccountTransferHistoryService response
@@ -2464,9 +2400,6 @@ type MarginIsolatedAccountTransferHistoryResponse struct {
 }
 
 // Query Isolated Margin Account Info (USER_DATA)
-const (
-	marginIsolatedAccountInfoEndpoint = "/sapi/v1/margin/isolated/account"
-)
 
 type MarginIsolatedAccountInfoService struct {
 	C       *connector.Connector
@@ -2481,36 +2414,27 @@ func (s *MarginIsolatedAccountInfoService) Symbols(symbols string) *MarginIsolat
 
 // Do send request
 func (s *MarginIsolatedAccountInfoService) Do(ctx context.Context, opts ...request.RequestOption) (res interface{}, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginIsolatedAccountInfoEndpoint,
-		SecType:  request.SecTypeSigned,
-	}
-	if s.symbols != nil {
-		r.addParam("symbols", s.symbols)
-	}
-	data, err := s.C.CallAPI(ctx, r, opts...)
-	if err != nil {
-		if s.symbols != nil {
-			return &MarginIsolatedAccountInfoResponseSymbols{}, err
-		} else {
-			return &MarginIsolatedAccountInfoResponse{}, err
-		}
-	}
+
+	r := request.New(
+		"/sapi/v1/margin/isolated/account",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	r.SetParam("symbols", s.symbols)
+
 	if s.symbols != nil {
 		res = new(MarginIsolatedAccountInfoResponseSymbols)
 	} else {
 		res = new(MarginIsolatedAccountInfoResponse)
 	}
-	err = json.Unmarshal(data, res)
+
+	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		if s.symbols != nil {
-			return &MarginIsolatedAccountInfoResponseSymbols{}, err
-		} else {
-			return &MarginIsolatedAccountInfoResponse{}, err
-		}
+		return
 	}
-	return res, nil
+	err = json.Unmarshal(data, res)
+	return
 }
 
 type MarginIsolatedAccountInfoAssets struct {
@@ -2562,9 +2486,6 @@ type MarginIsolatedAccountInfoResponse struct {
 }
 
 // Disable Isolated Margin Account (TRADE)
-const (
-	marginIsolatedAccountDisableEndpoint = "/sapi/v1/margin/isolated/account"
-)
 
 type MarginIsolatedAccountDisableService struct {
 	C      *connector.Connector
@@ -2579,25 +2500,27 @@ func (s *MarginIsolatedAccountDisableService) Symbol(symbol string) *MarginIsola
 
 // Do send request
 func (s *MarginIsolatedAccountDisableService) Do(ctx context.Context, opts ...request.RequestOption) (res *MarginIsolatedAccountDisableResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodDelete,
-		Endpoint: marginIsolatedAccountDisableEndpoint,
-		SecType:  request.SecTypeSigned,
+
+	r := request.New(
+		"/sapi/v1/margin/isolated/account",
+		request.Method(http.MethodDelete),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	if s.symbol == "" {
+		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
+		return
 	}
-	m := params{
-		"symbol": s.symbol,
-	}
-	r.setParams(m)
+
+	r.SetParam("symbol", s.symbol)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return &MarginIsolatedAccountDisableResponse{}, err
+		return
 	}
 	res = new(MarginIsolatedAccountDisableResponse)
 	err = json.Unmarshal(data, res)
-	if err != nil {
-		return &MarginIsolatedAccountDisableResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginIsolatedAccountDisableService response
@@ -2606,9 +2529,6 @@ type MarginIsolatedAccountDisableResponse struct {
 }
 
 // Enable Isolated Margin Account (TRADE)
-const (
-	marginIsolatedAccountEnableEndpoint = "/sapi/v1/margin/isolated/account"
-)
 
 type MarginIsolatedAccountEnableService struct {
 	C      *connector.Connector
@@ -2623,25 +2543,26 @@ func (s *MarginIsolatedAccountEnableService) Symbol(symbol string) *MarginIsolat
 
 // Do send request
 func (s *MarginIsolatedAccountEnableService) Do(ctx context.Context, opts ...request.RequestOption) (res *MarginIsolatedAccountEnableResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodPost,
-		Endpoint: marginIsolatedAccountEnableEndpoint,
-		SecType:  request.SecTypeSigned,
+
+	r := request.New(
+		"/sapi/v1/margin/isolated/account",
+		request.Method(http.MethodPost),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	if s.symbol == "" {
+		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
+		return
 	}
-	m := params{
-		"symbol": s.symbol,
-	}
-	r.setParams(m)
+	r.SetParam("symbol", s.symbol)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return &MarginIsolatedAccountEnableResponse{}, err
+		return
 	}
 	res = new(MarginIsolatedAccountEnableResponse)
 	err = json.Unmarshal(data, res)
-	if err != nil {
-		return &MarginIsolatedAccountEnableResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginIsolatedAccountEnableService response
@@ -2650,9 +2571,6 @@ type MarginIsolatedAccountEnableResponse struct {
 }
 
 // Query Enabled Isolated Margin Account Limit (USER_DATA)
-const (
-	marginIsolatedAccountLimitEndpoint = "/sapi/v1/margin/isolated/accountLimit"
-)
 
 type MarginIsolatedAccountLimitService struct {
 	C *connector.Connector
@@ -2660,21 +2578,20 @@ type MarginIsolatedAccountLimitService struct {
 
 // Do send request
 func (s *MarginIsolatedAccountLimitService) Do(ctx context.Context, opts ...request.RequestOption) (res *MarginIsolatedAccountLimitResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginIsolatedAccountLimitEndpoint,
-		SecType:  request.SecTypeSigned,
-	}
+
+	r := request.New(
+		"/sapi/v1/margin/isolated/accountLimit",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return &MarginIsolatedAccountLimitResponse{}, err
+		return
 	}
 	res = new(MarginIsolatedAccountLimitResponse)
 	err = json.Unmarshal(data, res)
-	if err != nil {
-		return &MarginIsolatedAccountLimitResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginIsolatedAccountLimitService response
@@ -2684,10 +2601,6 @@ type MarginIsolatedAccountLimitResponse struct {
 }
 
 // Query Isolated Margin Symbol (USER_DATA)
-const (
-	marginIsolatedSymbolEndpoint = "/sapi/v1/margin/isolated/pair"
-)
-
 type MarginIsolatedSymbolService struct {
 	C      *connector.Connector
 	symbol string
@@ -2701,25 +2614,26 @@ func (s *MarginIsolatedSymbolService) Symbol(symbol string) *MarginIsolatedSymbo
 
 // Do send request
 func (s *MarginIsolatedSymbolService) Do(ctx context.Context, opts ...request.RequestOption) (res *MarginIsolatedSymbolResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginIsolatedSymbolEndpoint,
-		SecType:  request.SecTypeSigned,
+
+	r := request.New(
+		"/sapi/v1/margin/isolated/pair",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	if s.symbol == "" {
+		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
+		return
 	}
-	m := params{
-		"symbol": s.symbol,
-	}
-	r.setParams(m)
+	r.SetParam("symbol", s.symbol)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return &MarginIsolatedSymbolResponse{}, err
+		return
 	}
 	res = new(MarginIsolatedSymbolResponse)
 	err = json.Unmarshal(data, res)
-	if err != nil {
-		return &MarginIsolatedSymbolResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginIsolatedSymbolService response
@@ -2733,9 +2647,6 @@ type MarginIsolatedSymbolResponse struct {
 }
 
 // Get All Isolated Margin Symbol(USER_DATA)
-const (
-	marginIsolatedSymbolAllEndpoint = "/sapi/v1/margin/isolated/allPairs"
-)
 
 // AllIsolatedMarginSymbolService returns all isolated margin symbols
 type AllIsolatedMarginSymbolService struct {
@@ -2744,29 +2655,25 @@ type AllIsolatedMarginSymbolService struct {
 
 // Do send request
 func (s *AllIsolatedMarginSymbolService) Do(ctx context.Context, opts ...request.RequestOption) (res []*MarginIsolatedSymbolResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginIsolatedSymbolAllEndpoint,
-		SecType:  request.SecTypeAPIKey,
-	}
+
+	r := request.New(
+		"/sapi/v1/margin/isolated/allPairs",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return []*MarginIsolatedSymbolResponse{}, err
+		return
 	}
 	res = make([]*MarginIsolatedSymbolResponse, 0)
 	err = json.Unmarshal(data, &res)
-	if err != nil {
-		return []*MarginIsolatedSymbolResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginIsolatedSymbolAllService returns all isolated margin symbols
 
 // Toggle BNB Burn On Spot Trade And Margin Interest (USER_DATA)
-const (
-	marginToggleBnbBurnEndpoint = "/sapi/v1/bnbBurn"
-)
 
 type MarginToggleBnbBurnService struct {
 	C               *connector.Connector
@@ -2788,27 +2695,22 @@ func (s *MarginToggleBnbBurnService) InterestBNBBurn(interestBNBBurn string) *Ma
 
 // Do send request
 func (s *MarginToggleBnbBurnService) Do(ctx context.Context, opts ...request.RequestOption) (res *MarginToggleBnbBurnResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodPost,
-		Endpoint: marginToggleBnbBurnEndpoint,
-		SecType:  request.SecTypeSigned,
-	}
-	if s.spotBNBBurn != nil {
-		r.addParam("spotBNBBurn", s.spotBNBBurn)
-	}
-	if s.interestBNBBurn != nil {
-		r.addParam("interestBNBBurn", s.interestBNBBurn)
-	}
+
+	r := request.New(
+		"/sapi/v1/bnbBurn",
+		request.Method(http.MethodPost),
+		request.SecType(request.SecTypeSigned),
+	)
+	r.SetParam("spotBNBBurn", s.spotBNBBurn)
+	r.SetParam("interestBNBBurn", s.interestBNBBurn)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return &MarginToggleBnbBurnResponse{}, err
+		return
 	}
 	res = new(MarginToggleBnbBurnResponse)
 	err = json.Unmarshal(data, res)
-	if err != nil {
-		return &MarginToggleBnbBurnResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginToggleBnbBurnService response
@@ -2818,9 +2720,6 @@ type MarginToggleBnbBurnResponse struct {
 }
 
 // Get BNB Burn Status (USER_DATA)
-const (
-	marginBnbBurnStatusEndpoint = "/sapi/v1/bnbBurn"
-)
 
 type MarginBnbBurnStatusService struct {
 	C *connector.Connector
@@ -2828,21 +2727,20 @@ type MarginBnbBurnStatusService struct {
 
 // Do send request
 func (s *MarginBnbBurnStatusService) Do(ctx context.Context, opts ...request.RequestOption) (res *MarginBnbBurnStatusResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginBnbBurnStatusEndpoint,
-		SecType:  request.SecTypeSigned,
-	}
+
+	r := request.New(
+		"/sapi/v1/bnbBurn",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return &MarginBnbBurnStatusResponse{}, err
+		return
 	}
 	res = new(MarginBnbBurnStatusResponse)
 	err = json.Unmarshal(data, res)
-	if err != nil {
-		return &MarginBnbBurnStatusResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginBnbBurnStatusService response
@@ -2852,9 +2750,6 @@ type MarginBnbBurnStatusResponse struct {
 }
 
 // Query Margin Interest Rate History (USER_DATA)
-const (
-	marginInterestRateHistoryEndpoint = "/sapi/v1/margin/interestRateHistory"
-)
 
 type MarginInterestRateHistoryService struct {
 	C         *connector.Connector
@@ -2890,34 +2785,31 @@ func (s *MarginInterestRateHistoryService) EndTime(endTime uint64) *MarginIntere
 
 // Do send request
 func (s *MarginInterestRateHistoryService) Do(ctx context.Context, opts ...request.RequestOption) (res []*MarginInterestRateHistoryResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginInterestRateHistoryEndpoint,
-		SecType:  request.SecTypeSigned,
+
+	r := request.New(
+		"/sapi/v1/margin/interestRateHistory",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	if s.asset == "" {
+		err = fmt.Errorf("%w: asset", apierrors.ErrMissingParameter)
+		return
 	}
-	m := params{
-		"asset": s.asset,
-	}
-	if s.vipLevel != nil {
-		m["vipLevel"] = *s.vipLevel
-	}
-	if s.startTime != nil {
-		m["startTime"] = *s.startTime
-	}
-	if s.endTime != nil {
-		m["endTime"] = *s.endTime
-	}
-	r.setParams(m)
+
+	r.SetParam("asset", s.asset)
+
+	r.SetParam("vipLevel", s.vipLevel)
+	r.SetParam("startTime", s.startTime)
+	r.SetParam("endTime", s.endTime)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return []*MarginInterestRateHistoryResponse{}, err
+		return
 	}
 	res = make([]*MarginInterestRateHistoryResponse, 0)
 	err = json.Unmarshal(data, &res)
-	if err != nil {
-		return []*MarginInterestRateHistoryResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginInterestRateHistoryService response
@@ -2929,9 +2821,6 @@ type MarginInterestRateHistoryResponse struct {
 }
 
 // Query Cross Margin Fee Data (USER_DATA)
-const (
-	marginCrossMarginFeeEndpoint = "/sapi/v1/margin/crossMarginData"
-)
 
 type MarginCrossMarginFeeService struct {
 	C        *connector.Connector
@@ -2953,27 +2842,23 @@ func (s *MarginCrossMarginFeeService) Coin(coin string) *MarginCrossMarginFeeSer
 
 // Do send request
 func (s *MarginCrossMarginFeeService) Do(ctx context.Context, opts ...request.RequestOption) (res []*MarginCrossMarginFeeResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginCrossMarginFeeEndpoint,
-		SecType:  request.SecTypeSigned,
-	}
-	if s.vipLevel != nil {
-		r.SetParam("vipLevel", *s.vipLevel)
-	}
-	if s.coin != nil {
-		r.SetParam("coin", *s.coin)
-	}
+
+	r := request.New(
+		"/sapi/v1/margin/crossMarginFee",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	r.SetParam("vipLevel", s.vipLevel)
+	r.SetParam("coin", s.coin)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return []*MarginCrossMarginFeeResponse{}, err
+		return
 	}
 	res = make([]*MarginCrossMarginFeeResponse, 0)
 	err = json.Unmarshal(data, &res)
-	if err != nil {
-		return []*MarginCrossMarginFeeResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginCrossMarginFeeService response
@@ -2991,9 +2876,6 @@ type MarginCrossMarginFeeResponse struct {
 }
 
 // Query Isolated Margin Fee Data (USER_DATA)
-const (
-	marginIsolatedMarginFeeEndpoint = "/sapi/v1/margin/isolatedMarginData"
-)
 
 type MarginIsolatedMarginFeeService struct {
 	C        *connector.Connector
@@ -3015,27 +2897,22 @@ func (s *MarginIsolatedMarginFeeService) Symbol(symbol string) *MarginIsolatedMa
 
 // Do send request
 func (s *MarginIsolatedMarginFeeService) Do(ctx context.Context, opts ...request.RequestOption) (res []*MarginIsolatedMarginFeeResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginIsolatedMarginFeeEndpoint,
-		SecType:  request.SecTypeSigned,
-	}
-	if s.vipLevel != nil {
-		r.SetParam("vipLevel", *s.vipLevel)
-	}
-	if s.symbol != nil {
-		r.SetParam("symbol", *s.symbol)
-	}
+
+	r := request.New(
+		"/sapi/v1/margin/isolatedMarginFee",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+	r.SetParam("vipLevel", s.vipLevel)
+	r.SetParam("symbol", s.symbol)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return []*MarginIsolatedMarginFeeResponse{}, err
+		return
 	}
 	res = make([]*MarginIsolatedMarginFeeResponse, 0)
 	err = json.Unmarshal(data, &res)
-	if err != nil {
-		return []*MarginIsolatedMarginFeeResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginIsolatedMarginFeeService response
@@ -3051,9 +2928,6 @@ type MarginIsolatedMarginFeeResponse struct {
 }
 
 // Query Isolated Margin Tier Data (USER_DATA)
-const (
-	marginIsolatedMarginTierEndpoint = "/sapi/v1/margin/isolatedMarginTier"
-)
 
 type MarginIsolatedMarginTierService struct {
 	C      *connector.Connector
@@ -3075,28 +2949,29 @@ func (s *MarginIsolatedMarginTierService) Tier(tier int) *MarginIsolatedMarginTi
 
 // Do send request
 func (s *MarginIsolatedMarginTierService) Do(ctx context.Context, opts ...request.RequestOption) (res []*MarginIsolatedMarginTierResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginIsolatedMarginTierEndpoint,
-		SecType:  request.SecTypeSigned,
+
+	r := request.New(
+		"/sapi/v1/margin/isolated/marginTier",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	if s.symbol == "" {
+		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
+		return
 	}
-	m := params{
-		"symbol": s.symbol,
-	}
-	if s.tier != nil {
-		m["tier"] = *s.tier
-	}
-	r.setParams(m)
+
+	r.SetParam("symbol", s.symbol)
+
+	r.SetParam("tier", s.tier)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return []*MarginIsolatedMarginTierResponse{}, err
+		return
 	}
 	res = make([]*MarginIsolatedMarginTierResponse, 0)
 	err = json.Unmarshal(data, &res)
-	if err != nil {
-		return []*MarginIsolatedMarginTierResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginIsolatedMarginTierService response
@@ -3135,27 +3010,23 @@ func (s *MarginCurrentOrderCountService) Symbol(symbol string) *MarginCurrentOrd
 
 // Do send request
 func (s *MarginCurrentOrderCountService) Do(ctx context.Context, opts ...request.RequestOption) (res []*MarginCurrentOrderCountResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginCurrentOrderCountEndpoint,
-		SecType:  request.SecTypeSigned,
-	}
-	if s.isIsolated != nil {
-		r.SetParam("isIsolated", *s.isIsolated)
-	}
-	if s.symbol != nil {
-		r.SetParam("symbol", *s.symbol)
-	}
+
+	r := request.New(
+		marginCurrentOrderCountEndpoint,
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	r.SetParam("isIsolated", s.isIsolated)
+	r.SetParam("symbol", s.symbol)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return []*MarginCurrentOrderCountResponse{}, err
+		return
 	}
 	res = make([]*MarginCurrentOrderCountResponse, 0)
 	err = json.Unmarshal(data, &res)
-	if err != nil {
-		return []*MarginCurrentOrderCountResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginCurrentOrderCountService response
@@ -3168,9 +3039,6 @@ type MarginCurrentOrderCountResponse struct {
 }
 
 // Margin Dustlog (USER_DATA)
-const (
-	marginDustlogEndpoint = "/sapi/v1/margin/dribblet"
-)
 
 type MarginDustlogService struct {
 	C         *connector.Connector
@@ -3192,27 +3060,23 @@ func (s *MarginDustlogService) EndTime(endTime uint64) *MarginDustlogService {
 
 // Do send request
 func (s *MarginDustlogService) Do(ctx context.Context, opts ...request.RequestOption) (res *MarginDustlogResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginDustlogEndpoint,
-		SecType:  request.SecTypeSigned,
-	}
-	if s.startTime != nil {
-		r.SetParam("startTime", *s.startTime)
-	}
-	if s.endTime != nil {
-		r.SetParam("endTime", *s.endTime)
-	}
+
+	r := request.New(
+		"/sapi/v1/asset/dribblet",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	r.SetParam("startTime", s.startTime)
+	r.SetParam("endTime", s.endTime)
+
 	data, err := s.C.CallAPI(ctx, r)
 	if err != nil {
 		return
 	}
 	res = new(MarginDustlogResponse)
 	err = json.Unmarshal(data, res)
-	if err != nil {
-		return
-	}
-	return res, nil
+	return
 }
 
 type MarginDustlogResponse struct {
@@ -3240,9 +3104,6 @@ type UserAssetDribbletDetail struct {
 }
 
 // Cross margin collateral ratio (MARKET_DATA)
-const (
-	marginCrossCollateralRatioEndpoint = "/sapi/v1/margin/crossMarginCollateralRatio"
-)
 
 type MarginCrossCollateralRatioService struct {
 	C *connector.Connector
@@ -3250,21 +3111,20 @@ type MarginCrossCollateralRatioService struct {
 
 // Do send request
 func (s *MarginCrossCollateralRatioService) Do(ctx context.Context, opts ...request.RequestOption) (res []*MarginCrossCollateralRatioResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginCrossCollateralRatioEndpoint,
-		SecType:  request.SecTypeSigned,
-	}
+
+	r := request.New(
+		"/sapi/v1/margin/crossCollateralRatio",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return []*MarginCrossCollateralRatioResponse{}, err
+		return
 	}
 	res = make([]*MarginCrossCollateralRatioResponse, 0)
 	err = json.Unmarshal(data, &res)
-	if err != nil {
-		return []*MarginCrossCollateralRatioResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginCrossCollateralRatioService response
@@ -3280,9 +3140,6 @@ type MarginCrossCollateralRatioResponse struct {
 }
 
 // Get Small Liability Exchange Coin List (USER_DATA)
-const (
-	marginSmallLiabilityExchangeCoinListEndpoint = "/sapi/v1/margin/exchange-small-liability"
-)
 
 type MarginSmallLiabilityExchangeCoinListService struct {
 	C *connector.Connector
@@ -3290,21 +3147,20 @@ type MarginSmallLiabilityExchangeCoinListService struct {
 
 // Do send request
 func (s *MarginSmallLiabilityExchangeCoinListService) Do(ctx context.Context, opts ...request.RequestOption) (res []*MarginSmallLiabilityExchangeCoinListResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginSmallLiabilityExchangeCoinListEndpoint,
-		SecType:  request.SecTypeSigned,
-	}
+
+	r := request.New(
+		"/sapi/v1/margin/smallLiability/exchangeCoinList",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return []*MarginSmallLiabilityExchangeCoinListResponse{}, err
+		return
 	}
 	res = make([]*MarginSmallLiabilityExchangeCoinListResponse, 0)
 	err = json.Unmarshal(data, &res)
-	if err != nil {
-		return []*MarginSmallLiabilityExchangeCoinListResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginSmallLiabilityExchangeCoinListService response
@@ -3316,9 +3172,6 @@ type MarginSmallLiabilityExchangeCoinListResponse struct {
 }
 
 // Small Liability Exchange (MARGIN)
-const (
-	marginSmallLiabilityExchangeEndpoint = "/sapi/v1/margin/exchange-small-liability"
-)
 
 type MarginSmallLiabilityExchangeService struct {
 	C          *connector.Connector
@@ -3333,25 +3186,26 @@ func (s *MarginSmallLiabilityExchangeService) AssetNames(assetNames string) *Mar
 
 // Do send request
 func (s *MarginSmallLiabilityExchangeService) Do(ctx context.Context, opts ...request.RequestOption) (res []*MarginSmallLiabilityExchangeResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodPost,
-		Endpoint: marginSmallLiabilityExchangeEndpoint,
-		SecType:  request.SecTypeSigned,
+
+	r := request.New(
+		"/sapi/v1/margin/smallLiability/exchange",
+		request.Method(http.MethodPost),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	if s.assetNames == "" {
+		err = fmt.Errorf("%w: assetNames", apierrors.ErrMissingParameter)
+		return
 	}
-	m := params{
-		"assetNames": s.assetNames,
-	}
-	r.setParams(m)
+	r.SetParam("assetNames", s.assetNames)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return []*MarginSmallLiabilityExchangeResponse{}, err
+		return
 	}
 	res = make([]*MarginSmallLiabilityExchangeResponse, 0)
 	err = json.Unmarshal(data, &res)
-	if err != nil {
-		return []*MarginSmallLiabilityExchangeResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginSmallLiabilityExchangeService response
@@ -3359,9 +3213,6 @@ type MarginSmallLiabilityExchangeResponse struct {
 }
 
 // Get Small Liability Exchange History (USER_DATA)
-const (
-	marginSmallLiabilityExchangeHistoryEndpoint = "/sapi/v1/margin/exchange-small-liability-history"
-)
 
 type MarginSmallLiabilityExchangeHistoryService struct {
 	C         *connector.Connector
@@ -3397,32 +3248,34 @@ func (s *MarginSmallLiabilityExchangeHistoryService) EndTime(endTime uint64) *Ma
 
 // Do send request
 func (s *MarginSmallLiabilityExchangeHistoryService) Do(ctx context.Context, opts ...request.RequestOption) (res []*MarginSmallLiabilityExchangeHistoryResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginSmallLiabilityExchangeHistoryEndpoint,
-		SecType:  request.SecTypeSigned,
+
+	r := request.New(
+		"/sapi/v1/margin/exchange-small-liability-history",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
+	if s.current == 0 {
+		err = fmt.Errorf("%w: current", apierrors.ErrMissingParameter)
+		return
 	}
-	m := params{
-		"current": s.current,
-		"size":    s.size,
+	if s.size == 0 {
+		err = fmt.Errorf("%w: size", apierrors.ErrMissingParameter)
+		return
 	}
-	if s.startTime != nil {
-		m["startTime"] = *s.startTime
-	}
-	if s.endTime != nil {
-		m["endTime"] = *s.endTime
-	}
-	r.setParams(m)
+
+	r.SetParam("current", s.current)
+	r.SetParam("size", s.size)
+	r.SetParam("startTime", s.startTime)
+	r.SetParam("endTime", s.endTime)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return []*MarginSmallLiabilityExchangeHistoryResponse{}, err
+		return
 	}
 	res = make([]*MarginSmallLiabilityExchangeHistoryResponse, 0)
 	err = json.Unmarshal(data, &res)
-	if err != nil {
-		return []*MarginSmallLiabilityExchangeHistoryResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginSmallLiabilityExchangeHistoryService response
