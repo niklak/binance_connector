@@ -1,7 +1,6 @@
 package connector
 
 import (
-	"bytes"
 	"context"
 	"crypto/hmac"
 	"crypto/sha256"
@@ -68,52 +67,40 @@ func (c *Connector) parseRequest(r *request.Request, opts ...request.RequestOpti
 		return
 	}
 
-	fullURL := u.String()
 	if r.RecvWindow > 0 {
 		r.SetParam(recvWindowKey, r.RecvWindow)
 	}
 	if r.SecType == request.SecTypeSigned {
 		r.SetParam(timestampKey, helpers.CurrentTimestamp()-c.TimeOffset)
 	}
-	queryString := r.Query.Encode()
-	body := &bytes.Buffer{}
-	bodyString := r.Form.Encode()
 	header := http.Header{}
 	if r.Header != nil {
 		header = r.Header.Clone()
 	}
 	//header.Set("User-Agent", fmt.Sprintf("%s/%s", Name, Version))
-	if bodyString != "" {
-		header.Set("Content-Type", "application/x-www-form-urlencoded")
-		body = bytes.NewBufferString(bodyString)
-	}
+
 	if r.SecType == request.SecTypeAPIKey || r.SecType == request.SecTypeSigned {
 		header.Set("X-MBX-APIKEY", c.APIKey)
 	}
 
 	if r.SecType == request.SecTypeSigned {
-		raw := fmt.Sprintf("%s%s", queryString, bodyString)
 		mac := hmac.New(sha256.New, []byte(c.SecretKey))
-		_, err = mac.Write([]byte(raw))
-		if err != nil {
-			return err
+
+		if _, err = mac.Write([]byte(r.Query.Encode())); err != nil {
+			return
 		}
-		v := url.Values{}
-		v.Set(signatureKey, fmt.Sprintf("%x", (mac.Sum(nil))))
-		if queryString == "" {
-			queryString = v.Encode()
-		} else {
-			queryString = fmt.Sprintf("%s&%s", queryString, v.Encode())
-		}
+
+		r.Query.Set(signatureKey, fmt.Sprintf("%x", (mac.Sum(nil))))
 	}
-	if queryString != "" {
-		fullURL = fmt.Sprintf("%s?%s", fullURL, queryString)
-	}
-	c.logger.Debug().Str("full_url", fullURL).Str("body", bodyString).Msg("")
+
+	u.RawQuery = r.Query.Encode()
+
+	fullURL := u.String()
+
+	c.logger.Debug().Str("full_url", fullURL).Msg("")
 	r.FullURL = fullURL
 	r.Header = header
-	r.Body = body
-	return nil
+	return
 }
 
 func (c *Connector) CallAPI(ctx context.Context, r *request.Request, opts ...request.RequestOption) (data []byte, err error) {

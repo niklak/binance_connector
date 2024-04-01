@@ -24,7 +24,6 @@ type Request struct {
 	Method     string
 	Endpoint   string
 	Query      url.Values
-	Form       url.Values
 	RecvWindow int64
 	SecType    secType
 	Header     http.Header
@@ -37,15 +36,6 @@ func (r *Request) Init() *Request {
 	if r.Query == nil {
 		r.Query = url.Values{}
 	}
-	if r.Form == nil {
-		r.Form = url.Values{}
-	}
-	return r
-}
-
-// AddParam add param with key/value to query string
-func (r *Request) AddParam(key string, value interface{}) *Request {
-	r.Query.Add(key, fmt.Sprintf("%v", value))
 	return r
 }
 

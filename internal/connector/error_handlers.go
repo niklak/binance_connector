@@ -1,6 +1,7 @@
 package connector
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -17,6 +18,5 @@ func (e APIError) Error() string {
 
 // IsAPIError check if e is an API error
 func IsAPIError(e error) bool {
-	_, ok := e.(*APIError)
-	return ok
+	return errors.As(e, &APIError{})
 }
