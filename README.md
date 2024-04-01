@@ -2,10 +2,17 @@
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/niklak/binance_connector.svg)](https://pkg.go.dev/github.com/niklak/binance_connector)
 
-Based on [binance-connector-go](https://github.com/binance/binance-connector-go).
 
-Right now it contains only a few methods useful only for me.
-In the future, I will add the rest methods from the original package.
+This package is a wrapper for the Binance API. It is based on the [binance-connector-go](https://github.com/binance/binance-connector-go).
+
+Supported API endpoints:
+- Account
+- Market Data
+- Spot Trading
+- Margin Account / Trading
+- Sub-Account
+- Wallet
+- Staking
 
 ## Installation
 ```
@@ -70,8 +77,15 @@ func main() {
 - BUSD endpoints are omitted.
 - `QuerySubAccountSpotAssetTransferHistoryService`  returns `[]*SubAccountAssetTransferHistoryResponse` instead of `QuerySubAccountSpotAssetTransferHistoryResp`
 - (`Get`)`SubAccountDepositHistoryService` returns `[]*SubAccountDepositHistoryResponse` instead of `GetSubAccountDepositHistoryResp`
+- This wrapper doesn't include websocket API handlers at all.
+- This package doesn't contain pretty-print functions, you can use your favorite package for this purpose.
 
 ## Important
 
-Some endpoints may not work because Binance could remove these endpoints from the API. 
+- Some endpoints may not work because Binance could remove these endpoints from the API. 
 Please visit [binance api docs](https://binance-docs.github.io/apidocs/spot/en/#change-log).
+
+- This package has no tests. Tests will be added in the future.
+
+- This package will not contain websocket API handlers. Because it is a different approach with different dependencies.
+I doubt that I will create another package for websocket API. 
