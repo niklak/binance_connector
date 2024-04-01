@@ -7,7 +7,6 @@ import (
 )
 
 func newAccountRequest(endpoint string) *request.Request {
-	r := request.Request{Method: http.MethodGet, SecType: request.SecTypeSigned}
-	r.Endpoint = endpoint
+	r := request.Request{Method: http.MethodGet, SecType: request.SecTypeSigned, Endpoint: endpoint}
 	return r.Init()
 }

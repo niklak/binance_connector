@@ -54,7 +54,7 @@ func (s *QueryPreventedMatchesService) Limit(limit int) *QueryPreventedMatchesSe
 }
 
 // Do send request
-func (s *QueryPreventedMatchesService) Do(ctx context.Context, opts ...request.RequestOption) (res *QueryPreventedMatchesResponse, err error) {
+func (s *QueryPreventedMatchesService) Do(ctx context.Context, opts ...request.RequestOption) (res []*QueryPreventedMatchesResponse, err error) {
 
 	r := newAccountRequest("/api/v3/myPreventedMatches")
 
@@ -73,22 +73,20 @@ func (s *QueryPreventedMatchesService) Do(ctx context.Context, opts ...request.R
 	if err != nil {
 		return nil, err
 	}
-	res = new(QueryPreventedMatchesResponse)
-	err = json.Unmarshal(data, res)
+	res = make([]*QueryPreventedMatchesResponse, 0)
+	err = json.Unmarshal(data, &res)
 	return
 }
 
 // Create QueryPreventedMatchesResponse
 type QueryPreventedMatchesResponse struct {
-	PreventedMatches []struct {
-		Symbol                  string `json:"symbol"`
-		PreventedMatchId        int64  `json:"preventedMatchId"`
-		TakerOrderId            int64  `json:"takerOrderId"`
-		MakerOrderId            int64  `json:"makerOrderId"`
-		TradeGroupId            int64  `json:"tradeGroupId"`
-		SelfTradePreventionMode string `json:"selfTradePreventionMode"`
-		Price                   string `json:"price"`
-		MakerPreventedQuantity  string `json:"makerPreventedQuantity"`
-		TransactTime            uint64 `json:"transactTime"`
-	} `json:"preventedMatches"`
+	Symbol                  string `json:"symbol"`
+	PreventedMatchId        int64  `json:"preventedMatchId"`
+	TakerOrderId            int64  `json:"takerOrderId"`
+	MakerOrderId            int64  `json:"makerOrderId"`
+	TradeGroupId            int64  `json:"tradeGroupId"`
+	SelfTradePreventionMode string `json:"selfTradePreventionMode"`
+	Price                   string `json:"price"`
+	MakerPreventedQuantity  string `json:"makerPreventedQuantity"`
+	TransactTime            uint64 `json:"transactTime"`
 }
