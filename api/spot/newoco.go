@@ -3,9 +3,8 @@ package spot
 import (
 	"context"
 	"encoding/json"
-	"fmt"
+	"net/http"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -153,28 +152,14 @@ func (s *NewOCOService) SelfTradePreventionMode(selfTradePreventionMode string) 
 
 // Do send request
 func (s *NewOCOService) Do(ctx context.Context, opts ...request.RequestOption) (res *OrderOCOResponse, err error) {
-	r := newSpotRequest("/api/v3/order/oco")
 
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.side == "" {
-		err = fmt.Errorf("%w: side", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.quantity == 0 {
-		err = fmt.Errorf("%w: quantity", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.price == 0 {
-		err = fmt.Errorf("%w: price", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.stopPrice == 0 {
-		err = fmt.Errorf("%w: stopPrice", apierrors.ErrMissingParameter)
-		return
-	}
+	r := request.New(
+		"/api/v3/order/oco",
+		request.Method(http.MethodPost),
+		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol", "side", "quantity", "price", "stopPrice"),
+	)
+
 	r.SetParam("symbol", s.symbol)
 	r.SetParam("side", s.side)
 	r.SetParam("quantity", s.quantity)

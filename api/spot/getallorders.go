@@ -3,10 +3,8 @@ package spot
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -56,19 +54,16 @@ func (s *GetAllOrdersService) Limit(limit int) *GetAllOrdersService {
 
 // Do send request
 func (s *GetAllOrdersService) Do(ctx context.Context, opts ...request.RequestOption) (res []*OrderResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/api/v3/allOrders",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
 
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
+	r := request.New(
+		"/api/v3/allOrders",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol"),
+	)
 
 	r.SetParam("symbol", s.symbol)
+
 	r.SetParam("orderId", s.orderId)
 	r.SetParam("startTime", s.startTime)
 	r.SetParam("endTime", s.endTime)

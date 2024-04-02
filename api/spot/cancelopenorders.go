@@ -3,10 +3,8 @@ package spot
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -28,17 +26,13 @@ func (s *CancelOpenOrdersService) Symbol(symbol string) *CancelOpenOrdersService
 
 // Do send request
 func (s *CancelOpenOrdersService) Do(ctx context.Context, opts ...request.RequestOption) (res []*CancelOrderResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodDelete,
-		Endpoint: "/api/v3/openOrders",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
 
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
+	r := request.New(
+		"/api/v3/openOrders",
+		request.Method(http.MethodDelete),
+		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol"),
+	)
 
 	r.SetParam("symbol", s.symbol)
 

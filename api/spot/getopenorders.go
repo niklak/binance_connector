@@ -26,12 +26,13 @@ func (s *GetOpenOrdersService) Symbol(symbol string) *GetOpenOrdersService {
 
 // Do send request
 func (s *GetOpenOrdersService) Do(ctx context.Context, opts ...request.RequestOption) (res []*OrderResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/api/v3/openOrders",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New(
+		"/api/v3/openOrders",
+		request.Method(http.MethodGet),
+		request.SecType(request.SecTypeSigned),
+	)
+
 	r.SetParam("symbol", s.symbol)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)

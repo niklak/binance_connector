@@ -1,0 +1,3 @@
+package spot
+
+// TODO: implement

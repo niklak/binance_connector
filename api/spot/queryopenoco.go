@@ -3,7 +3,6 @@ package spot
 import (
 	"context"
 	"encoding/json"
-	"net/http"
 
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
@@ -19,11 +18,11 @@ type QueryOpenOCOService struct {
 
 // Do send request
 func (s *QueryOpenOCOService) Do(ctx context.Context, opts ...request.RequestOption) (res *OCOResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/api/v3/openOrderList",
-		SecType:  request.SecTypeSigned,
-	}
+
+	r := request.New(
+		"/api/v3/openOrderList",
+		request.SecType(request.SecTypeSigned),
+	)
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err

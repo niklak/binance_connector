@@ -3,32 +3,31 @@ package spot
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
 
 //gen:new_service
 type TestNewOrder struct {
-	C                   *connector.Connector
-	symbol              string
-	side                string
-	orderType           string
-	timeInForce         *string
-	quantity            *float64
-	quoteOrderQty       *float64
-	price               *float64
-	newClientOrderId    *string
-	strategyId          *int
-	strategyType        *int
-	stopPrice           *float64
-	trailingDelta       *int
-	icebergQty          *float64
-	newOrderRespType    *string
-	selfTradePrevention *string
+	C                       *connector.Connector
+	symbol                  string
+	side                    string
+	orderType               string
+	timeInForce             *string
+	quantity                *float64
+	quoteOrderQty           *float64
+	price                   *float64
+	newClientOrderId        *string
+	strategyId              *int
+	strategyType            *int
+	stopPrice               *float64
+	trailingDelta           *int
+	icebergQty              *float64
+	newOrderRespType        *string
+	selfTradePreventionMode *string
+	computeCommissionRates  *bool
 }
 
 // Symbol set symbol
@@ -115,33 +114,32 @@ func (s *TestNewOrder) NewOrderRespType(newOrderRespType string) *TestNewOrder {
 	return s
 }
 
-// SelfTradePrevention set selfTradePrevention
-func (s *TestNewOrder) SelfTradePrevention(selfTradePrevention string) *TestNewOrder {
-	s.selfTradePrevention = &selfTradePrevention
+// SelfTradePreventionMode set selfTradePreventionMode
+func (s *TestNewOrder) SelfTradePreventionMode(selfTradePreventionMode string) *TestNewOrder {
+	s.selfTradePreventionMode = &selfTradePreventionMode
+	return s
+}
+
+// ComputeCommissionRates set computeCommissionRates
+func (s *TestNewOrder) ComputeCommissionRates(computeCommissionRates bool) *TestNewOrder {
+	s.computeCommissionRates = &computeCommissionRates
 	return s
 }
 
 // Send the request
 func (s *TestNewOrder) Do(ctx context.Context, opts ...request.RequestOption) (res *AccountOrderBookResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodPost,
-		Endpoint: "/api/v3/order/test",
-		SecType:  request.SecTypeNone,
-	}
-	r.Init()
 
-	if s.symbol == "" {
-		return nil, fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-	}
-	if s.side == "" {
-		return nil, fmt.Errorf("%w: side", apierrors.ErrMissingParameter)
-	}
-	if s.orderType == "" {
-		return nil, fmt.Errorf("%w: orderType", apierrors.ErrMissingParameter)
-	}
+	r := request.New(
+		"/api/v3/order/test",
+		request.Method(http.MethodPost),
+		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol", "side", "type"),
+	)
+
 	r.SetParam("symbol", s.symbol)
 	r.SetParam("side", s.side)
 	r.SetParam("type", s.orderType)
+
 	r.SetParam("timeInForce", s.timeInForce)
 	r.SetParam("quantity", s.quantity)
 	r.SetParam("quoteOrderQty", s.quoteOrderQty)
@@ -152,8 +150,9 @@ func (s *TestNewOrder) Do(ctx context.Context, opts ...request.RequestOption) (r
 	r.SetParam("stopPrice", s.stopPrice)
 	r.SetParam("trailingDelta", s.trailingDelta)
 	r.SetParam("icebergQty", s.icebergQty)
+	r.SetParam("selfTradePreventionMode", s.selfTradePreventionMode)
 	r.SetParam("newOrderRespType", s.newOrderRespType)
-	r.SetParam("selfTradePreventionMode", s.selfTradePrevention)
+	r.SetParam("computeCommissionRates", s.computeCommissionRates)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {

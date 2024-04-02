@@ -3,10 +3,8 @@ package spot
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -56,23 +54,17 @@ func (s *CancelOrderService) CancelRestrictions(cancelRestrictions string) *Canc
 
 // Do send request
 func (s *CancelOrderService) Do(ctx context.Context, opts ...request.RequestOption) (res *CancelOrderResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodDelete,
-		Endpoint: "/api/v3/order",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
 
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
-
-	if s.orderId == nil && s.origClientOrderId == nil {
-		return nil, fmt.Errorf("%w: either orderId or origClientOrderId", apierrors.ErrMissingParameter)
-	}
+	r := request.New(
+		"/api/v3/order",
+		request.Method(http.MethodDelete),
+		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol"),
+		request.RequiredOneOfParams([]string{"orderId", "origClientOrderId"}),
+	)
 
 	r.SetParam("symbol", s.symbol)
+
 	r.SetParam("orderId", s.orderId)
 	r.SetParam("origClientOrderId", s.origClientOrderId)
 	r.SetParam("newClientOrderId", s.newClientOrderId)

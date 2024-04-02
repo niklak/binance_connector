@@ -3,9 +3,8 @@ package spot
 import (
 	"context"
 	"encoding/json"
-	"fmt"
+	"net/http"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -159,36 +158,28 @@ func (s *CancelReplaceService) CancelRestrictions(cancelRestrictions string) *Ca
 
 // Do send request
 func (s *CancelReplaceService) Do(ctx context.Context, opts ...request.RequestOption) (res *CancelReplaceResponse, err error) {
-	r := newSpotRequest("v1/order/cancelReplace")
 
-	if s.symbol == "" {
-		return nil, fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-	}
-	if s.side == "" {
-		return nil, fmt.Errorf("%w: side", apierrors.ErrMissingParameter)
-	}
-	if s.orderType == "" {
-		return nil, fmt.Errorf("%w: orderType", apierrors.ErrMissingParameter)
-	}
-	if s.cancelReplaceMode == "" {
-		return nil, fmt.Errorf("%w: cancelReplaceMode", apierrors.ErrMissingParameter)
-	}
-
-	if s.cancelOrderId == nil && s.cancelOrigClientOrderId == nil {
-		return nil, fmt.Errorf("%w: either cancelOrderId or cancelOrigClientOrderId", apierrors.ErrMissingParameter)
-	}
+	r := request.New(
+		"/api/v3/order/cancelReplace",
+		request.Method(http.MethodPost),
+		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol", "side", "type", "cancelReplaceMode"),
+		request.RequiredOneOfParams([]string{"cancelOrderId", "cancelOrigClientOrderId"}),
+	)
 
 	r.SetParam("symbol", s.symbol)
 	r.SetParam("side", s.side)
 	r.SetParam("type", s.orderType)
 	r.SetParam("cancelReplaceMode", s.cancelReplaceMode)
+
+	r.SetParam("cancelOrderId", s.cancelOrderId)
+	r.SetParam("cancelOrigClientOrderId", s.cancelOrigClientOrderId)
+
 	r.SetParam("timeInForce", s.timeInForce)
 	r.SetParam("quantity", s.quantity)
 	r.SetParam("quoteOrderQty", s.quoteOrderQty)
 	r.SetParam("price", s.price)
 	r.SetParam("cancelNewClientOrderId", s.cancelNewClientOrderId)
-	r.SetParam("cancelOrigClientOrderId", s.cancelOrigClientOrderId)
-	r.SetParam("cancelOrderId", s.cancelOrderId)
 	r.SetParam("newClientOrderId", s.newClientOrderId)
 	r.SetParam("strategyId", s.strategyId)
 	r.SetParam("strategyType", s.strategyType)

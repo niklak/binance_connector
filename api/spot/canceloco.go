@@ -3,10 +3,8 @@ package spot
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -54,17 +52,9 @@ func (s *CancelOCOService) Do(ctx context.Context, opts ...request.RequestOption
 		"/api/v3/orderList",
 		request.Method(http.MethodDelete),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol"),
+		request.RequiredOneOfParams([]string{"orderListId", "listClientOrderId"}),
 	)
-
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
-
-	if s.orderListId == nil && s.listClientOrderId == nil {
-		err = fmt.Errorf("%w: either orderListId or listClientOrderId", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("symbol", s.symbol)
 	r.SetParam("orderListId", s.orderListId)

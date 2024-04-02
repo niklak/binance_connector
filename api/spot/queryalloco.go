@@ -3,7 +3,6 @@ package spot
 import (
 	"context"
 	"encoding/json"
-	"net/http"
 
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
@@ -47,12 +46,11 @@ func (s *QueryAllOCOService) Limit(limit int) *QueryAllOCOService {
 
 // Do send request
 func (s *QueryAllOCOService) Do(ctx context.Context, opts ...request.RequestOption) (res []*OCOResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/api/v3/allOrderList",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New(
+		"/api/v3/allOrderList",
+		request.SecType(request.SecTypeSigned),
+	)
 
 	r.SetParam("fromId", s.fromId)
 	r.SetParam("startTime", s.startTime)
