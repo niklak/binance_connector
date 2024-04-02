@@ -1,12 +1,14 @@
 package request
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"net/url"
 	"reflect"
 	"strconv"
+	"strings"
 )
 
 type secType int
@@ -17,18 +19,18 @@ const (
 	SecTypeSigned // if the 'timestamp' parameter is required
 )
 
-type params map[string]interface{}
-
 // Request define an API Request
 type Request struct {
-	Method     string
-	Endpoint   string
-	Query      url.Values
-	RecvWindow int64
-	SecType    secType
-	Header     http.Header
-	Body       io.Reader
-	FullURL    string
+	Method              string
+	Endpoint            string
+	Query               url.Values
+	RecvWindow          int64
+	SecType             secType
+	Header              http.Header
+	Body                io.Reader
+	FullURL             string
+	RequiredParams      []string
+	RequiredOneOfParams [][]string
 }
 
 // Init initialize Request's query
@@ -80,12 +82,58 @@ func (r *Request) SetParam(key string, value interface{}) *Request {
 	return r
 }
 
-// setParams set params with key/values to query string
-func (r *Request) SetParams(m params) *Request {
-	for k, v := range m {
-		r.SetParam(k, v)
+func (r *Request) checkRequiredParams() error {
+	var errs []error
+	for _, key := range r.RequiredParams {
+		if len(r.Query[key]) == 0 {
+			e := fmt.Errorf("%w: %q", ErrMissingParam, key)
+			errs = append(errs, e)
+		}
 	}
-	return r
+	if len(errs) > 0 {
+		return errors.Join(errs...)
+	}
+	return nil
+}
+
+func (r *Request) checkRequiredEitherParams() error {
+	var errs []error
+	for _, keys := range r.RequiredOneOfParams {
+		var found bool
+		for _, key := range keys {
+			if len(r.Query[key]) > 0 {
+				found = true
+				break
+			}
+		}
+		if !found {
+			e := fmt.Errorf("%w: one of: %q", ErrMissingParam, strings.Join(keys, ", "))
+			errs = append(errs, e)
+		}
+	}
+	if len(errs) > 0 {
+		return errors.Join(errs...)
+	}
+	return nil
+}
+
+// Validate checks if the request's query has all required parameters.
+// Returns all missing parameters as an error.
+// Since it checks only required parameters and `required one of the parameters`
+// this package doesn't need a heavy validation library such as go-playground/validator or its alternatives.
+func (r *Request) Validate() error {
+	var errs []error
+	if err := r.checkRequiredParams(); err != nil {
+		errs = append(errs, err)
+	}
+	if err := r.checkRequiredEitherParams(); err != nil {
+		errs = append(errs, err)
+
+	}
+	if len(errs) > 0 {
+		return errors.Join(errs...)
+	}
+	return nil
 }
 
 // Append `WithRecvWindow(insert_recvwindow)` to Request to modify the default recvWindow value
