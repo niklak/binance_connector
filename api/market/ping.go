@@ -16,7 +16,7 @@ type Ping struct {
 
 // Send the request
 func (s *Ping) Do(ctx context.Context, opts ...request.RequestOption) (err error) {
-	r := newMarketRequest("/api/v3/ping")
+	r := request.New("/api/v3/ping")
 	_, err = s.C.CallAPI(ctx, r, opts...)
 	return
 }

@@ -3,9 +3,7 @@ package market
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -53,18 +51,15 @@ func (s *Klines) EndTime(endTime uint64) *Klines {
 }
 
 func (s *Klines) Do(ctx context.Context, opts ...request.RequestOption) (res []*KlinesResponse, err error) {
-	r := newMarketRequest("/api/v3/klines")
 
-	if s.symbol == "" {
-		return nil, fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-	}
-
-	if s.interval == "" {
-		return nil, fmt.Errorf("%w: interval", apierrors.ErrMissingParameter)
-	}
+	r := request.New(
+		"/api/v3/klines",
+		request.RequiredParams("symbol", "interval"),
+	)
 
 	r.SetParam("symbol", s.symbol)
 	r.SetParam("interval", s.interval)
+
 	r.SetParam("limit", s.limit)
 	r.SetParam("startTime", s.startTime)
 	r.SetParam("endTime", s.endTime)

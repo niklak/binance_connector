@@ -3,9 +3,7 @@ package market
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/helpers"
 	"github.com/niklak/binance_connector/internal/request"
@@ -35,23 +33,21 @@ func (s *TickerPrice) Symbols(symbols []string) *TickerPrice {
 // Send the request
 func (s *TickerPrice) Do(ctx context.Context, opts ...request.RequestOption) (res []*TickerPriceResponse, err error) {
 
-	r := newMarketRequest("/api/v3/ticker/price")
+	r := request.New("/api/v3/ticker/price")
 
 	if s.symbol != nil {
 		r.SetParam("symbol", s.symbol)
 	} else if s.symbols != nil {
 		symbols := helpers.StringifyStringSlice(*s.symbols)
 		r.SetParam("symbols", symbols)
-	} else {
-		err = fmt.Errorf("%w: either symbol or symbols", apierrors.ErrMissingParameter)
-		return
 	}
+
 	data, err := s.C.CallAPI(ctx, r)
 	if err != nil {
 		return
 	}
 
-	if s.symbols != nil {
+	if s.symbols != nil || (s.symbol == nil && s.symbols == nil) {
 		if err = json.Unmarshal(data, &res); err != nil {
 			return
 		}

@@ -3,10 +3,7 @@ package market
 import (
 	"context"
 	"encoding/json"
-	"fmt"
-	"net/http"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -41,18 +38,15 @@ func (s *HistoricalTradeLookup) FromId(fromId int64) *HistoricalTradeLookup {
 
 // Send the request
 func (s *HistoricalTradeLookup) Do(ctx context.Context, opts ...request.RequestOption) (res []*RecentTradesListResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/api/v3/historicalTrades",
-		SecType:  request.SecTypeAPIKey,
-	}
-	r.Init()
 
-	if s.symbol == "" {
-		return nil, fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-	}
+	r := request.New(
+		"/api/v3/historicalTrades",
+		request.SecType(request.SecTypeAPIKey),
+		request.RequiredParams("symbol"),
+	)
 
 	r.SetParam("symbol", s.symbol)
+
 	r.SetParam("limit", s.limit)
 	r.SetParam("fromId", s.fromId)
 

@@ -3,10 +3,8 @@ package market
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"math/big"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -35,13 +33,13 @@ func (s *OrderBook) Limit(limit int) *OrderBook {
 // Send the request
 func (s *OrderBook) Do(ctx context.Context, opts ...request.RequestOption) (res *OrderBookResponse, err error) {
 
-	r := newMarketRequest("/api/v3/depth")
-
-	if s.symbol == "" {
-		return nil, fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-	}
+	r := request.New(
+		"/api/v3/depth",
+		request.RequiredParams("symbol"),
+	)
 
 	r.SetParam("symbol", s.symbol)
+
 	r.SetParam("limit", s.limit)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)

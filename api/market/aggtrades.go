@@ -3,9 +3,7 @@ package market
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -55,13 +53,13 @@ func (s *AggTradesList) EndTime(endTime uint64) *AggTradesList {
 // Send the request
 func (s *AggTradesList) Do(ctx context.Context, opts ...request.RequestOption) (res []*AggTradesListResponse, err error) {
 
-	r := newMarketRequest("/api/v3/aggTrades")
-
-	if s.symbol == "" {
-		return nil, fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-	}
+	r := request.New(
+		"/api/v3/aggTrades",
+		request.RequiredParams("symbol"),
+	)
 
 	r.SetParam("symbol", s.symbol)
+
 	r.SetParam("limit", s.limit)
 	r.SetParam("fromId", s.fromId)
 	r.SetParam("startTime", s.startTime)

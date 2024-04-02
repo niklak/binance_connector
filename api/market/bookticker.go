@@ -3,9 +3,7 @@ package market
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/helpers"
 	"github.com/niklak/binance_connector/internal/request"
@@ -34,24 +32,21 @@ func (s *TickerBookTicker) Symbols(symbols []string) *TickerBookTicker {
 
 func (s *TickerBookTicker) Do(ctx context.Context, opts ...request.RequestOption) (res []*TickerBookTickerResponse, err error) {
 
-	r := newMarketRequest("/api/v3/ticker/bookTicker")
+	r := request.New(
+		"/api/v3/ticker/bookTicker",
+		request.RequiredOneOfParams([]string{"symbol", "symbols"}),
+	)
 
 	if s.symbol != nil {
-		r.SetParam("symbol", s.symbol)
+		r.SetParam("symbol", *s.symbol)
 	} else if s.symbols != nil {
 		symbols := helpers.StringifyStringSlice(*s.symbols)
 		r.SetParam("symbols", symbols)
-	} else {
-		err = fmt.Errorf("%w: either symbol or symbols", apierrors.ErrMissingParameter)
-		return
+
 	}
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 
-	if err != nil {
-		return []*TickerBookTickerResponse{}, err
-	}
-	var raw json.RawMessage
-	err = json.Unmarshal(data, &raw)
 	if err != nil {
 		return
 	}
@@ -68,7 +63,7 @@ func (s *TickerBookTicker) Do(ctx context.Context, opts ...request.RequestOption
 		res = append(res, dst)
 	}
 
-	return res, nil
+	return
 }
 
 // Define TickerBookTicker response data

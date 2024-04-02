@@ -3,9 +3,7 @@ package market
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -31,13 +29,16 @@ func (s *RecentTradesList) Limit(limit int) *RecentTradesList {
 	return s
 }
 
-// Send the request
+// Do sends the request
 func (s *RecentTradesList) Do(ctx context.Context, opts ...request.RequestOption) (res []*RecentTradesListResponse, err error) {
-	r := newMarketRequest("/api/v3/trades")
-	if s.symbol == "" {
-		return nil, fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-	}
+
+	r := request.New(
+		"/api/v3/trades",
+		request.RequiredParams("symbol"),
+	)
+
 	r.SetParam("symbol", s.symbol)
+
 	r.SetParam("limit", s.limit)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)

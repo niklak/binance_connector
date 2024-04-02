@@ -18,7 +18,7 @@ type ExchangeInfo struct {
 // Send the request
 func (s *ExchangeInfo) Do(ctx context.Context, opts ...request.RequestOption) (res *ExchangeInfoResponse, err error) {
 
-	r := newMarketRequest("/api/v3/exchangeInfo")
+	r := request.New("/api/v3/exchangeInfo")
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {

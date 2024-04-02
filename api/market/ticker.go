@@ -3,9 +3,7 @@ package market
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -41,13 +39,13 @@ func (s *Ticker) Type(tickerType string) *Ticker {
 // Send the request
 func (s *Ticker) Do(ctx context.Context, opts ...request.RequestOption) (res *TickerResponse, err error) {
 
-	r := newMarketRequest("/api/v3/ticker")
+	r := request.New(
+		"/api/v3/ticker",
+		request.RequiredParams("symbol"),
+	)
 
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
 	r.SetParam("symbol", s.symbol)
+
 	r.SetParam("windowSize", s.windowSize)
 	r.SetParam("type", s.tickerType)
 

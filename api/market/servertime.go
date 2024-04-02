@@ -18,7 +18,8 @@ type ServerTime struct {
 // Send the request
 func (s *ServerTime) Do(ctx context.Context, opts ...request.RequestOption) (res *ServerTimeResponse, err error) {
 
-	r := newMarketRequest("/api/v3/time")
+	r := request.New("/api/v3/time")
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return
