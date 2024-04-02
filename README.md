@@ -51,8 +51,11 @@ func main() {
     // zerolog.SetGlobalLevel(zerolog.Level(0))
 
     // Create new order
-	newOrder, err := client.NewCreateOrderService().Symbol("BTCUSDT").
-		Side("BUY").Type("MARKET").Quantity(0.001).
+	newOrder, err := client.NewCreateOrderService().
+        Symbol("BTCUSDT").
+		Side("BUY").
+        Type("MARKET").
+        Quantity(0.001).
 		Do(context.Background())
 	if err != nil {
 		panic(err)

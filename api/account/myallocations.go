@@ -3,9 +3,7 @@ package account
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -63,12 +61,11 @@ func (s *AccountAllocationsService) OrderId(orderId int64) *AccountAllocationsSe
 // Do executes the request
 func (s *AccountAllocationsService) Do(ctx context.Context, opts ...request.RequestOption) (res []*AccountAllocationsResponse, err error) {
 
-	r := request.New("/api/v3/myAllocations", request.SecType(request.SecTypeSigned))
-
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
+	r := request.New(
+		"/api/v3/myAllocations",
+		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol"),
+	)
 
 	r.SetParam("symbol", s.symbol)
 

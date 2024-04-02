@@ -3,9 +3,7 @@ package account
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -56,12 +54,11 @@ func (s *QueryPreventedMatchesService) Limit(limit int) *QueryPreventedMatchesSe
 // Do send request
 func (s *QueryPreventedMatchesService) Do(ctx context.Context, opts ...request.RequestOption) (res []*QueryPreventedMatchesResponse, err error) {
 
-	r := request.New("/api/v3/myPreventedMatches", request.SecType(request.SecTypeSigned))
-
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
+	r := request.New(
+		"/api/v3/myPreventedMatches",
+		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol"),
+	)
 
 	r.SetParam("symbol", s.symbol)
 	r.SetParam("preventedMatchId", s.preventMatchId)

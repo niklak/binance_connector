@@ -3,9 +3,7 @@ package account
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -63,12 +61,11 @@ func (s *AccountTradeListService) Limit(limit int) *AccountTradeListService {
 // Do send request
 func (s *AccountTradeListService) Do(ctx context.Context, opts ...request.RequestOption) (res []*AccountTradeListResponse, err error) {
 
-	r := request.New("/api/v3/myTrades", request.SecType(request.SecTypeSigned))
-
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
+	r := request.New(
+		"/api/v3/myTrades",
+		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol"),
+	)
 
 	r.SetParam("symbol", s.symbol)
 	r.SetParam("orderId", s.orderId)

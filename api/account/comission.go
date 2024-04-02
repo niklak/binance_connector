@@ -3,9 +3,7 @@ package account
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -28,12 +26,11 @@ func (s *AccountCommissionService) Symbol(symbol string) *AccountCommissionServi
 // Do executes the request
 func (s *AccountCommissionService) Do(ctx context.Context, opts ...request.RequestOption) (res *AccountCommissionResponse, err error) {
 
-	r := request.New("/api/v3/account/commission", request.SecType(request.SecTypeSigned))
-
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
+	r := request.New(
+		"/api/v3/account/commission",
+		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol"),
+	)
 
 	r.SetParam("symbol", s.symbol)
 
