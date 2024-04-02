@@ -4,6 +4,7 @@ package binance_connector
 
 import (
 	"github.com/niklak/binance_connector/internal/connector"
+	"github.com/niklak/binance_connector/internal/request"
 )
 
 type ConnectorOption = connector.ConnectorOption
@@ -12,6 +13,9 @@ var BaseURL = connector.BaseURL
 var HTTPClient = connector.HTTPClient
 var Timeout = connector.Timeout
 var TimeOffset = connector.TimeOffset
+
+var ErrRequestCantBeNil = connector.ErrRequestCantBeNil
+var ErrMissingParam = request.ErrMissingParam
 
 type Client struct {
 	*connector.Connector

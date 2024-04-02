@@ -105,9 +105,18 @@ func (c *Connector) parseRequest(r *request.Request, opts ...request.RequestOpti
 
 func (c *Connector) CallAPI(ctx context.Context, r *request.Request, opts ...request.RequestOption) (data []byte, err error) {
 
+	if r == nil {
+		return nil, ErrRequestCantBeNil
+	}
+
+	if err = r.Validate(); err != nil {
+		return
+	}
+
 	if err = c.parseRequest(r, opts...); err != nil {
 		return
 	}
+
 	req, err := http.NewRequestWithContext(ctx, r.Method, r.FullURL, r.Body)
 	if err != nil {
 		return

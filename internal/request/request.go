@@ -146,15 +146,31 @@ func WithRecvWindow(recvWindow int64) RequestOption {
 // RequestOption define option type for Request
 type RequestOption func(*Request)
 
+// SecType sets security type for Request
 func SecType(secType secType) RequestOption {
 	return func(r *Request) {
 		r.SecType = secType
 	}
 }
 
+// Method sets method for Request
 func Method(method string) RequestOption {
 	return func(r *Request) {
 		r.Method = method
+	}
+}
+
+// RequiredParams sets required params for Request
+func RequiredParams(params ...string) RequestOption {
+	return func(r *Request) {
+		r.RequiredParams = params
+	}
+}
+
+// RequiredOneOfParams sets required one of the set params for Request
+func RequiredOneOfParams(params ...[]string) RequestOption {
+	return func(r *Request) {
+		r.RequiredOneOfParams = params
 	}
 }
 
