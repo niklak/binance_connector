@@ -32,9 +32,14 @@ type Request struct {
 }
 
 // Init initialize Request's query
+// if query is nil, it will be initialized as url.Values{}
+// if method is empty, it will be initialized as http.MethodGet
 func (r *Request) Init() *Request {
 	if r.Query == nil {
 		r.Query = url.Values{}
+	}
+	if r.Method == "" {
+		r.Method = http.MethodGet
 	}
 	return r
 }
@@ -59,6 +64,8 @@ func (r *Request) SetParam(key string, value interface{}) *Request {
 		param = strconv.Itoa(v)
 	case int64:
 		param = strconv.FormatInt(v, 10)
+	case uint64:
+		param = strconv.FormatUint(v, 10)
 	case float32:
 		param = strconv.FormatFloat(float64(v), 'f', -1, 64)
 	case float64:
@@ -111,5 +118,6 @@ func New(endpoint string, options ...RequestOption) *Request {
 	for _, option := range options {
 		option(r)
 	}
+
 	return r.Init()
 }

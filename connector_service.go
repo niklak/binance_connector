@@ -7,8 +7,18 @@ func (c *Client) NewAccountService() *AccountService {
 }
 
 
+func (c *Client) NewAccountCommissionService() *AccountCommissionService {
+	return &AccountCommissionService{C: c.Connector}
+}
+
+
 func (c *Client) NewQueryCurrentOrderCountUsageService() *QueryCurrentOrderCountUsageService {
 	return &QueryCurrentOrderCountUsageService{C: c.Connector}
+}
+
+
+func (c *Client) NewAccountAllocationsService() *AccountAllocationsService {
+	return &AccountAllocationsService{C: c.Connector}
 }
 
 

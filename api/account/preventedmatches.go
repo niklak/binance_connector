@@ -56,7 +56,7 @@ func (s *QueryPreventedMatchesService) Limit(limit int) *QueryPreventedMatchesSe
 // Do send request
 func (s *QueryPreventedMatchesService) Do(ctx context.Context, opts ...request.RequestOption) (res []*QueryPreventedMatchesResponse, err error) {
 
-	r := newAccountRequest("/api/v3/myPreventedMatches")
+	r := request.New("/api/v3/myPreventedMatches", request.SecType(request.SecTypeSigned))
 
 	if s.symbol == "" {
 		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)

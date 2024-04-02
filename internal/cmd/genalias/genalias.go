@@ -82,6 +82,9 @@ func getSrcFiles(src string) (allFiles []string, err error) {
 		if !strings.HasSuffix(f.Name(), ".go") {
 			continue
 		}
+		if strings.HasSuffix(f.Name(), "_test.go") {
+			continue
+		}
 		allFiles = append(allFiles, path.Join(src, f.Name()))
 
 	}

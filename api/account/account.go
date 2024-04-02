@@ -18,7 +18,8 @@ type AccountService struct {
 
 // Do send request
 func (s *AccountService) Do(ctx context.Context, opts ...request.RequestOption) (res *AccountResponse, err error) {
-	r := newAccountRequest("/api/v3/account")
+	r := request.New("/api/v3/account", request.SecType(request.SecTypeSigned))
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return

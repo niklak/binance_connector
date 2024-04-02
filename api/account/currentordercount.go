@@ -19,7 +19,7 @@ type QueryCurrentOrderCountUsageService struct {
 // Do send request
 func (s *QueryCurrentOrderCountUsageService) Do(ctx context.Context, opts ...request.RequestOption) (res []*QueryCurrentOrderCountUsageResponse, err error) {
 
-	r := newAccountRequest("/api/v3/rateLimit/order")
+	r := request.New("/api/v3/rateLimit/order", request.SecType(request.SecTypeSigned))
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {

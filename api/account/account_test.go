@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 
@@ -20,7 +21,7 @@ type AccountTestSuite struct {
 
 func (s *AccountTestSuite) SetupSuite() {
 
-	//zerolog.SetGlobalLevel(zerolog.Level(1))
+	zerolog.SetGlobalLevel(zerolog.Level(1))
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
@@ -127,6 +128,54 @@ func (s *AccountTestSuite) SetupSuite() {
 			]
 			`))
 
+		case "/api/v3/account/commission":
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte(`
+			{
+				"symbol": "BTCUSDT",
+				"standardCommission": {
+				  "maker": "0.00000010",
+				  "taker": "0.00000020",
+				  "buyer": "0.00000030",
+				  "seller": "0.00000040" 
+				},
+				"taxCommission": {             
+				  "maker": "0.00000112",
+				  "taker": "0.00000114",
+				  "buyer": "0.00000118",
+				  "seller": "0.00000116" 
+				},
+				"discount": {                   
+				  "enabledForAccount": true,
+				  "enabledForSymbol": true,
+				  "discountAsset": "BNB",
+				  "discount": "0.25000000"
+				}
+			  }
+			`))
+
+		case "/api/v3/myAllocations":
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte(`
+			[
+				{
+					"symbol": "BTCUSDT",
+					"allocationId": 0,
+					"allocationType": "SOR",
+					"orderId": 1,
+					"orderListId": -1,
+					"price": "1.00000000",
+					"qty": "5.00000000",
+					"quoteQty": "5.00000000",
+					"commission": "0.00000000",
+					"commissionAsset": "BTC",
+					"time": 1687506878118,
+					"isBuyer": true,
+					"isMaker": false,
+					"isAllocator": false
+				}
+			]
+			`))
 		default:
 			http.NotFound(w, r)
 		}
@@ -189,7 +238,7 @@ func (s *AccountTestSuite) TestTradesList() {
 	assert.Equal(s.T(), accountTradeListResponse, expected)
 }
 
-func (s *AccountTestSuite) TestRateLimit() {
+func (s *AccountTestSuite) TestCurrentOrderCount() {
 	rateLimitService := QueryCurrentOrderCountUsageService{C: s.binanceConnector}
 	rateLimitResponse, err := rateLimitService.Do(context.Background())
 	s.NoError(err)
@@ -234,6 +283,63 @@ func (s *AccountTestSuite) TestQueryPreventedMatches() {
 	assert.Equal(s.T(), queryPreventedMatchesResponse, expected)
 
 }
+
+func (s *AccountTestSuite) TestAccountCommission() {
+	accountCommissionService := AccountCommissionService{C: s.binanceConnector}
+	accountCommissionResponse, err := accountCommissionService.Symbol("BTCUSDT").Do(context.Background())
+	s.NoError(err)
+
+	expected := &AccountCommissionResponse{
+		Symbol: "BTCUSDT",
+		StandardCommission: Commission{
+			Maker:  "0.00000010",
+			Taker:  "0.00000020",
+			Buyer:  "0.00000030",
+			Seller: "0.00000040",
+		},
+		TaxCommission: Commission{
+			Maker:  "0.00000112",
+			Taker:  "0.00000114",
+			Buyer:  "0.00000118",
+			Seller: "0.00000116",
+		},
+		Discount: CommissionDiscount{
+			EnabledForAccount: true,
+			EnabledForSymbol:  true,
+			DiscountAsset:     "BNB",
+			Discount:          "0.25000000",
+		},
+	}
+	assert.Equal(s.T(), accountCommissionResponse, expected)
+
+}
+
+func (s *AccountTestSuite) TestAccountAllocations() {
+	accountAllocationsService := AccountAllocationsService{C: s.binanceConnector}
+	accountAllocationsResponse, err := accountAllocationsService.Symbol("BTCUSDT").Do(context.Background())
+	s.NoError(err)
+
+	expected := []*AccountAllocationsResponse{
+		{
+			Symbol:          "BTCUSDT",
+			AllocationId:    0,
+			AllocationType:  "SOR",
+			OrderId:         1,
+			OrderListId:     -1,
+			Price:           "1.00000000",
+			Qty:             "5.00000000",
+			QuoteQty:        "5.00000000",
+			Commission:      "0.00000000",
+			CommissionAsset: "BTC",
+			Time:            1687506878118,
+			IsBuyer:         true,
+			IsMaker:         false,
+			IsAllocator:     false,
+		},
+	}
+	assert.Equal(s.T(), accountAllocationsResponse, expected)
+}
+
 func TestAccountTestSuite(t *testing.T) {
 	suite.Run(t, new(AccountTestSuite))
 }

@@ -1,4 +1,4 @@
-package binance_connector
+package margin
 
 import (
 	"context"

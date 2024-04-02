@@ -49,15 +49,20 @@ func (s *CancelOCOService) NewClientOrderId(newClientOrderId string) *CancelOCOS
 
 // Do send request
 func (s *CancelOCOService) Do(ctx context.Context, opts ...request.RequestOption) (res *OrderOCOResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodDelete,
-		Endpoint: "/api/v3/orderList",
-		SecType:  request.SecTypeSigned,
-	}
-	r.Init()
+
+	r := request.New(
+		"/api/v3/orderList",
+		request.Method(http.MethodDelete),
+		request.SecType(request.SecTypeSigned),
+	)
 
 	if s.symbol == "" {
 		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
+		return
+	}
+
+	if s.orderListId == nil && s.listClientOrderId == nil {
+		err = fmt.Errorf("%w: either orderListId or listClientOrderId", apierrors.ErrMissingParameter)
 		return
 	}
 

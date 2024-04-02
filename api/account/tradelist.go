@@ -62,7 +62,8 @@ func (s *AccountTradeListService) Limit(limit int) *AccountTradeListService {
 
 // Do send request
 func (s *AccountTradeListService) Do(ctx context.Context, opts ...request.RequestOption) (res []*AccountTradeListResponse, err error) {
-	r := newAccountRequest("/api/v3/myTrades")
+
+	r := request.New("/api/v3/myTrades", request.SecType(request.SecTypeSigned))
 
 	if s.symbol == "" {
 		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
