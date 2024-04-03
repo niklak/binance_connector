@@ -3,10 +3,7 @@ package staking
 import (
 	"context"
 	"encoding/json"
-	"fmt"
-	"net/http"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -51,14 +48,9 @@ func (s *StakingProductListService) Do(ctx context.Context, opts ...request.Requ
 
 	r := request.New(
 		"/sapi/v1/staking/productList",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("product"),
 	)
-
-	if s.product == "" {
-		err = fmt.Errorf("%w: product", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("product", s.product)
 

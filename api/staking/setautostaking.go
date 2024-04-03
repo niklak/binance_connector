@@ -3,10 +3,8 @@ package staking
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -46,20 +44,8 @@ func (s *SetAutoStakingService) Do(ctx context.Context, opts ...request.RequestO
 		"/sapi/v1/staking/setAutoStaking",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("product", "positionId", "renewable"),
 	)
-
-	if s.product == "" {
-		err = fmt.Errorf("%w: product", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.positionId == "" {
-		err = fmt.Errorf("%w: positionId", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.renewable == "" {
-		err = fmt.Errorf("%w: renewable", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("product", s.product)
 	r.SetParam("positionId", s.positionId)

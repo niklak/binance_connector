@@ -3,10 +3,8 @@ package staking
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -53,12 +51,8 @@ func (s *RedeemStakingProductService) Do(ctx context.Context, opts ...request.Re
 		"/sapi/v1/staking/redeem",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("product", "productId"),
 	)
-
-	if s.product == "" {
-		err = fmt.Errorf("%w: product", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("product", s.product)
 	r.SetParam("productId", s.productId)
