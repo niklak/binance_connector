@@ -20,13 +20,13 @@ type FundingWalletService struct {
 	needBtcValuation *string
 }
 
-// Asset set asset
+// Asset sets asset
 func (s *FundingWalletService) Asset(asset string) *FundingWalletService {
 	s.asset = &asset
 	return s
 }
 
-// NeedBtcValuation set needBtcValuation
+// NeedBtcValuation sets needBtcValuation
 func (s *FundingWalletService) NeedBtcValuation(needBtcValuation string) *FundingWalletService {
 	s.needBtcValuation = &needBtcValuation
 	return s
@@ -34,7 +34,8 @@ func (s *FundingWalletService) NeedBtcValuation(needBtcValuation string) *Fundin
 
 func (s *FundingWalletService) Do(ctx context.Context) (res []*FundingWalletResponse, err error) {
 
-	r := request.New("/sapi/v1/asset/get-funding-asset",
+	r := request.New(
+		"/sapi/v1/asset/get-funding-asset",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
 	)

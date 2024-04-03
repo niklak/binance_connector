@@ -34,7 +34,8 @@ func (s *UserAssetService) NeedBtcValuation(needBtcValuation bool) *UserAssetSer
 
 func (s *UserAssetService) Do(ctx context.Context) (res []*UserAssetResponse, err error) {
 
-	r := request.New("/sapi/v3/asset/getUserAsset",
+	r := request.New(
+		"/sapi/v3/asset/getUserAsset",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
 	)

@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"net/http"
 
 	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
@@ -71,8 +70,8 @@ func (s *CloudMiningPaymentHistoryService) Size(size int) *CloudMiningPaymentHis
 
 func (s *CloudMiningPaymentHistoryService) Do(ctx context.Context) (res *CloudMiningPaymentHistoryResponse, err error) {
 
-	r := request.New("/sapi/v1/asset/ledger-transfer/cloud-mining/queryByPage",
-		request.Method(http.MethodGet),
+	r := request.New(
+		"/sapi/v1/asset/ledger-transfer/cloud-mining/queryByPage",
 		request.SecType(request.SecTypeSigned),
 	)
 

@@ -3,7 +3,6 @@ package wallet
 import (
 	"context"
 	"encoding/json"
-	"net/http"
 
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
@@ -20,8 +19,8 @@ type AllCoinsInfoService struct {
 
 func (s *AllCoinsInfoService) Do(ctx context.Context) (res []*CoinInfo, err error) {
 
-	r := request.New("/sapi/v1/capital/config/getall",
-		request.Method(http.MethodGet),
+	r := request.New(
+		"/sapi/v1/capital/config/getall",
 		request.SecType(request.SecTypeSigned),
 	)
 

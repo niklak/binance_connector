@@ -3,10 +3,7 @@ package wallet
 import (
 	"context"
 	"encoding/json"
-	"fmt"
-	"net/http"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -57,21 +54,12 @@ func (s *UserUniversalTransferService) ToSymbol(toSymbol string) *UserUniversalT
 
 func (s *UserUniversalTransferService) Do(ctx context.Context) (res *UserUniversalTransferResponse, err error) {
 
-	r := request.New("/sapi/v1/asset/transfer",
-		request.Method(http.MethodPost),
+	r := request.New(
+		"/sapi/v1/asset/transfer",
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("type", "asset", "amount"),
 	)
 
-	if s.transferType == "" {
-		return nil, fmt.Errorf("%w: transferType", apierrors.ErrMissingParameter)
-	}
-	if s.asset == "" {
-		return nil, fmt.Errorf("%w: asset", apierrors.ErrMissingParameter)
-	}
-
-	if s.amount <= 0 {
-		return nil, fmt.Errorf("%w: amount", apierrors.ErrMissingParameter)
-	}
 	r.SetParam("type", s.transferType)
 	r.SetParam("asset", s.asset)
 	r.SetParam("amount", s.amount)

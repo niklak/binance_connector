@@ -3,7 +3,6 @@ package wallet
 import (
 	"context"
 	"encoding/json"
-	"net/http"
 
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
@@ -48,8 +47,8 @@ func (s *AssetDividendRecordService) Limit(limit int) *AssetDividendRecordServic
 
 func (s *AssetDividendRecordService) Do(ctx context.Context) (res *AssetDividendRecordResponse, err error) {
 
-	r := request.New("/sapi/v1/asset/assetDividend",
-		request.Method(http.MethodGet),
+	r := request.New(
+		"/sapi/v1/asset/assetDividend",
 		request.SecType(request.SecTypeSigned),
 	)
 

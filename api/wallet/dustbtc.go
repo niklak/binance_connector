@@ -3,7 +3,6 @@ package wallet
 import (
 	"context"
 	"encoding/json"
-	"net/http"
 
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
@@ -27,8 +26,8 @@ func (s *AssetDetailService) AccountType(accountType string) *AssetDetailService
 
 func (s *AssetDetailService) Do(ctx context.Context) (res *AssetDetailResponse, err error) {
 
-	r := request.New("/sapi/v1/asset/dust-btc",
-		request.Method(http.MethodGet),
+	r := request.New(
+		"/sapi/v1/asset/dust-btc",
 		request.SecType(request.SecTypeSigned),
 	)
 

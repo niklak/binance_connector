@@ -19,7 +19,8 @@ type EnableFastWithdrawSwitchService struct {
 
 func (s *EnableFastWithdrawSwitchService) Do(ctx context.Context) (res *EnableFastWithdrawSwitchResponse, err error) {
 
-	r := request.New("/sapi/v1/account/enableFastWithdrawSwitch",
+	r := request.New(
+		"/sapi/v1/account/enableFastWithdrawSwitch",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
 	)

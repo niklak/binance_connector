@@ -2,7 +2,6 @@ package wallet
 
 import (
 	"context"
-	"net/http"
 
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
@@ -19,8 +18,8 @@ type DisableFastWithdrawSwitchService struct {
 
 func (s *DisableFastWithdrawSwitchService) Do(ctx context.Context) (res *DisableFastWithdrawSwitchResponse, err error) {
 
-	r := request.New("/sapi/v1/account/disableFastWithdrawSwitch",
-		request.Method(http.MethodPost),
+	r := request.New(
+		"/sapi/v1/account/disableFastWithdrawSwitch",
 		request.SecType(request.SecTypeSigned),
 	)
 

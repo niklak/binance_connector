@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"strings"
 
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
@@ -34,16 +35,19 @@ func (s *DustTransferService) Asset(asset []string) *DustTransferService {
 
 func (s *DustTransferService) Do(ctx context.Context) (res *DustTransferResponse, err error) {
 
-	r := request.New("/sapi/v1/asset/dust",
+	r := request.New(
+		"/sapi/v1/asset/dust",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("asset"),
 	)
 
 	r.SetParam("accountType", s.accountType)
-	for _, a := range s.asset {
-		//TODO: check if this is correct -> asset=BTC,ETH
-		r.Query.Add("asset", a)
-	}
+
+	asset := strings.Join(s.asset, ",")
+	//TODO: check if this is correct -> asset=BTC,ETH
+	r.SetParam("asset", asset)
+
 	data, err := s.C.CallAPI(ctx, r)
 	if err != nil {
 		return nil, err

@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"net/http"
 
 	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
@@ -50,8 +49,8 @@ func (s *AccountSnapshotService) Limit(limit int) *AccountSnapshotService {
 
 func (s *AccountSnapshotService) Do(ctx context.Context) (res *AccountSnapshotResponse, err error) {
 
-	r := request.New("/sapi/v1/accountSnapshot",
-		request.Method(http.MethodGet),
+	r := request.New(
+		"/sapi/v1/accountSnapshot",
 		request.SecType(request.SecTypeSigned),
 	)
 

@@ -3,10 +3,7 @@ package wallet
 import (
 	"context"
 	"encoding/json"
-	"fmt"
-	"net/http"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -71,16 +68,14 @@ func (s *UserUniversalTransferHistoryService) ToSymbol(toSymbol string) *UserUni
 
 func (s *UserUniversalTransferHistoryService) Do(ctx context.Context) (res *UserUniversalTransferHistoryResponse, err error) {
 
-	r := request.New("/sapi/v1/asset/transfer",
-		request.Method(http.MethodGet),
+	r := request.New(
+		"/sapi/v1/asset/transfer",
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("type"),
 	)
 
-	if s.transferType == "" {
-		return nil, fmt.Errorf("%w: transferType", apierrors.ErrMissingParameter)
-	}
-
 	r.SetParam("type", s.transferType)
+
 	r.SetParam("startTime", s.startTime)
 	r.SetParam("endTime", s.endTime)
 	r.SetParam("current", s.current)

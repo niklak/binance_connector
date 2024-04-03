@@ -3,7 +3,6 @@ package wallet
 import (
 	"context"
 	"encoding/json"
-	"net/http"
 
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
@@ -20,8 +19,8 @@ type AccountApiTradingStatusService struct {
 
 func (s *AccountApiTradingStatusService) Do(ctx context.Context) (res *AccountApiTradingStatusResponse, err error) {
 
-	r := request.New("/sapi/v1/account/apiTradingStatus",
-		request.Method(http.MethodGet),
+	r := request.New(
+		"/sapi/v1/account/apiTradingStatus",
 		request.SecType(request.SecTypeSigned),
 	)
 

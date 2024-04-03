@@ -3,10 +3,8 @@ package wallet
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -85,23 +83,13 @@ func (s *WithdrawService) WalletType(walletType int) *WithdrawService {
 
 func (s *WithdrawService) Do(ctx context.Context) (res *WithdrawResponse, err error) {
 
-	r := request.New("/sapi/v1/capital/withdraw/apply",
+	r := request.New(
+		"/sapi/v1/capital/withdraw/apply",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("coin", "address", "amount"),
 	)
 
-	if s.coin == "" {
-		err = fmt.Errorf("%w: coin", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.address == "" {
-		err = fmt.Errorf("%w: address", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.amount <= 0 {
-		err = fmt.Errorf("%w: amount", apierrors.ErrMissingParameter)
-		return
-	}
 	r.SetParam("coin", s.coin)
 	r.SetParam("address", s.address)
 	r.SetParam("amount", s.amount)

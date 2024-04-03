@@ -3,7 +3,6 @@ package wallet
 import (
 	"context"
 	"encoding/json"
-	"net/http"
 
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
@@ -20,8 +19,8 @@ type AccountStatusService struct {
 
 func (s *AccountStatusService) Do(ctx context.Context) (res *AccountStatusResponse, err error) {
 
-	r := request.New("/sapi/v1/account/status",
-		request.Method(http.MethodGet),
+	r := request.New(
+		"/sapi/v1/account/status",
 		request.SecType(request.SecTypeSigned),
 	)
 

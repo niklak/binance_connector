@@ -3,7 +3,6 @@ package wallet
 import (
 	"context"
 	"encoding/json"
-	"net/http"
 
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
@@ -20,8 +19,8 @@ type AutoConvertStableCoinService struct {
 
 func (s *AutoConvertStableCoinService) Do(ctx context.Context) (res *AutoConvertStableCoinResponse, err error) {
 
-	r := request.New("/sapi/v1/capital/contract/convertible-coins",
-		request.Method(http.MethodGet),
+	r := request.New(
+		"/sapi/v1/capital/contract/convertible-coins",
 		request.SecType(request.SecTypeSigned),
 	)
 

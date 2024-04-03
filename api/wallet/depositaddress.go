@@ -3,10 +3,7 @@ package wallet
 import (
 	"context"
 	"encoding/json"
-	"fmt"
-	"net/http"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -43,15 +40,11 @@ func (s *DepositAddressService) Network(network string) *DepositAddressService {
 
 func (s *DepositAddressService) Do(ctx context.Context) (res *DepositAddressResponse, err error) {
 
-	r := request.New("/sapi/v1/capital/deposit/address",
-		request.Method(http.MethodGet),
+	r := request.New(
+		"/sapi/v1/capital/deposit/address",
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("coin"),
 	)
-
-	if s.coin == "" {
-		err = fmt.Errorf("%w: coin", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("coin", s.coin)
 	r.SetParam("amount", s.amount)

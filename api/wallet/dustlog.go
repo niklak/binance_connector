@@ -3,7 +3,6 @@ package wallet
 import (
 	"context"
 	"encoding/json"
-	"net/http"
 
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
@@ -41,8 +40,8 @@ func (s *DustLogService) EndTime(endTime uint64) *DustLogService {
 
 func (s *DustLogService) Do(ctx context.Context) (res *DustLogResponse, err error) {
 
-	r := request.New("/sapi/v1/asset/dribblet",
-		request.Method(http.MethodGet),
+	r := request.New(
+		"/sapi/v1/asset/dribblet",
 		request.SecType(request.SecTypeSigned),
 	)
 

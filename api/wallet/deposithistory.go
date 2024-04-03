@@ -3,7 +3,6 @@ package wallet
 import (
 	"context"
 	"encoding/json"
-	"net/http"
 
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
@@ -69,8 +68,8 @@ func (s *DepositHistoryService) TxId(txid string) *DepositHistoryService {
 
 func (s *DepositHistoryService) Do(ctx context.Context) (res []*DepositHistoryResponse, err error) {
 
-	r := request.New("/sapi/v1/capital/deposit/hisrec",
-		request.Method(http.MethodGet),
+	r := request.New(
+		"/sapi/v1/capital/deposit/hisrec",
 		request.SecType(request.SecTypeSigned),
 	)
 

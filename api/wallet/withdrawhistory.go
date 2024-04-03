@@ -3,7 +3,6 @@ package wallet
 import (
 	"context"
 	"encoding/json"
-	"net/http"
 
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
@@ -69,8 +68,8 @@ func (s *WithdrawHistoryService) EndTime(endTime uint64) *WithdrawHistoryService
 
 func (s *WithdrawHistoryService) Do(ctx context.Context) (res []*WithdrawHistoryResponse, err error) {
 
-	r := request.New("/sapi/v1/capital/withdraw/history",
-		request.Method(http.MethodGet),
+	r := request.New(
+		"/sapi/v1/capital/withdraw/history",
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -81,6 +80,7 @@ func (s *WithdrawHistoryService) Do(ctx context.Context) (res []*WithdrawHistory
 	r.SetParam("limit", s.limit)
 	r.SetParam("startTime", s.startTime)
 	r.SetParam("endTime", s.endTime)
+
 	data, err := s.C.CallAPI(ctx, r)
 	if err != nil {
 		return nil, err
