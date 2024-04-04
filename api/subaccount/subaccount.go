@@ -3,15 +3,13 @@ package subaccount
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
 
-// Create a Virtual Sub-account(For Master Account)
+// Create a Virtual Sub-account(For Master Account) (POST /sapi/v1/sub-account/virtualSubAccount)
 //
 //gen:new_service
 type CreateSubAccountService struct {
@@ -29,12 +27,8 @@ func (s *CreateSubAccountService) Do(ctx context.Context, opts ...request.Reques
 		"/sapi/v1/sub-account/virtualSubAccount",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("subAccountString"),
 	)
-
-	if s.subAccountString == "" {
-		err = fmt.Errorf("%w: subAccountString", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("subAccountString", s.subAccountString)
 	data, err := s.C.CallAPI(ctx, r, opts...)
@@ -85,7 +79,6 @@ func (s *QuerySubAccountListService) Do(ctx context.Context, opts ...request.Req
 
 	r := request.New(
 		"/sapi/v1/sub-account/list",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -162,7 +155,6 @@ func (s *QuerySubAccountSpotAssetTransferHistoryService) Do(ctx context.Context,
 
 	r := request.New(
 		"/sapi/v1/sub-account/sub/transfer/history",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -193,7 +185,7 @@ type SubAccountTransferHistoryResponse struct {
 }
 
 // Query Sub-account Futures Asset Transfer History (For Master Account)
-
+//
 //gen:new_service
 type QuerySubAccountFuturesAssetTransferHistoryService struct {
 	C           *connector.Connector
@@ -239,23 +231,13 @@ func (s *QuerySubAccountFuturesAssetTransferHistoryService) Do(ctx context.Conte
 
 	r := request.New(
 		"/sapi/v1/sub-account/futures/internalTransfer",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email", "futuresType"),
 	)
-
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
-
-	if s.futuresType == 0 {
-		err = fmt.Errorf("%w: futuresType", apierrors.ErrMissingParameter)
-		return
-
-	}
 
 	r.SetParam("email", s.email)
 	r.SetParam("futuresType", s.futuresType)
+
 	r.SetParam("startTime", s.startTime)
 	r.SetParam("endTime", s.endTime)
 	r.SetParam("page", s.page)
@@ -276,8 +258,8 @@ type QuerySubAccountFuturesAssetTransferHistoryResp struct {
 	Transfers   []SubAccountTransferHistoryResponse `json:"transfers"`
 }
 
-// Sub-account Futures Asset Transfer (For Master Account)
-
+// Sub-account Futures Asset Transfer (For Master Account) (POST /sapi/v1/sub-account/futures/internalTransfer)
+//
 //gen:new_service
 type SubAccountFuturesAssetTransferService struct {
 	C           *connector.Connector
@@ -319,6 +301,7 @@ func (s *SubAccountFuturesAssetTransferService) Do(ctx context.Context, opts ...
 		"/sapi/v1/sub-account/futures/internalTransfer",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("fromEmail", "toEmail", "futuresType", "asset", "amount"),
 	)
 
 	r.SetParam("fromEmail", s.fromEmail)
@@ -341,7 +324,7 @@ type SubAccountFuturesAssetTransferResp struct {
 }
 
 // Query Sub-account Assets (For Master Account)
-
+//
 //gen:new_service
 type QuerySubAccountAssetsService struct {
 	C     *connector.Connector
@@ -359,14 +342,11 @@ func (s *QuerySubAccountAssetsService) Do(ctx context.Context, opts ...request.R
 		"/sapi/v3/sub-account/assets",
 		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email"),
 	)
 
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
-
 	r.SetParam("email", s.email)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
@@ -384,6 +364,8 @@ type QuerySubAccountAssetsResp struct {
 	} `json:"balances"`
 }
 
+// Query Sub-account Spot Assets Summary (For Master Account) (GET /sapi/v1/sub-account/spotSummary)
+//
 //gen:new_service
 type QuerySubAccountSpotAssetsSummaryService struct {
 	C     *connector.Connector
@@ -411,7 +393,6 @@ func (s *QuerySubAccountSpotAssetsSummaryService) Do(ctx context.Context, opts .
 
 	r := request.New(
 		"/sapi/v1/sub-account/spotSummary",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -437,6 +418,8 @@ type QuerySubAccountSpotAssetsSummaryResp struct {
 	} `json:"spotSubUserAssetBtcVoList"`
 }
 
+// Get Sub-account Deposit Address (For Master Account) (GET /sapi/v1/capital/deposit/subAddress)
+//
 //gen:new_service
 type SubAccountDepositAddressService struct {
 	C       *connector.Connector
@@ -466,16 +449,8 @@ func (s *SubAccountDepositAddressService) Do(ctx context.Context, opts ...reques
 		"/sapi/v1/capital/deposit/subAddress",
 		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email", "coin"),
 	)
-
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.coin == "" {
-		err = fmt.Errorf("%w: coin", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("email", s.email)
 	r.SetParam("coin", s.coin)
@@ -498,7 +473,7 @@ type SubAccountDepositAddressResp struct {
 }
 
 // Get Sub-account Deposit History (For Master Account)
-
+//
 //gen:new_service
 type SubAccountDepositHistoryService struct {
 	C         *connector.Connector
@@ -550,19 +525,9 @@ func (s *SubAccountDepositHistoryService) Do(ctx context.Context, opts ...reques
 
 	r := request.New(
 		"/sapi/v1/capital/deposit/subHisrec",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email", "coin"),
 	)
-
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
-
-	if s.coin == "" {
-		err = fmt.Errorf("%w: coin", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("email", s.email)
 	r.SetParam("coin", s.coin)
@@ -599,7 +564,7 @@ type SubAccountDepositHistoryResponse struct {
 }
 
 // Get Sub-account's Status on Margin/Futures (For Master Account)
-
+//
 //gen:new_service
 type SubAccountStatusService struct {
 	C     *connector.Connector
@@ -615,7 +580,6 @@ func (s *SubAccountStatusService) Do(ctx context.Context, opts ...request.Reques
 
 	r := request.New(
 		"/sapi/v1/sub-account/status",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -641,7 +605,7 @@ type SubAccountStatusResp struct {
 }
 
 // Enable Margin for Sub-account (For Master Account)
-
+//
 //gen:new_service
 type EnableMarginForSubAccountService struct {
 	C     *connector.Connector
@@ -659,12 +623,9 @@ func (s *EnableMarginForSubAccountService) Do(ctx context.Context, opts ...reque
 		"/sapi/v1/sub-account/margin/enable",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email"),
 	)
 
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
 	r.SetParam("email", s.email)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
@@ -682,7 +643,7 @@ type EnableMarginForSubAccountResp struct {
 }
 
 // Get Detail on Sub-account's Margin Account (For Master Account)
-
+//
 //gen:new_service
 type DetailOnSubAccountMarginAccountService struct {
 	C     *connector.Connector
@@ -697,14 +658,9 @@ func (s *DetailOnSubAccountMarginAccountService) Email(email string) *DetailOnSu
 func (s *DetailOnSubAccountMarginAccountService) Do(ctx context.Context, opts ...request.RequestOption) (res *DetailOnSubAccountMarginAccountResp, err error) {
 	r := request.New(
 		"/sapi/v1/sub-account/margin/account",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email"),
 	)
-
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("email", s.email)
 	data, err := s.C.CallAPI(ctx, r, opts...)
@@ -738,7 +694,7 @@ type DetailOnSubAccountMarginAccountResp struct {
 }
 
 // Get Summary of Sub-account's Margin Account (For Master Account)
-
+//
 //gen:new_service
 type SummaryOfSubAccountMarginAccountService struct {
 	C *connector.Connector
@@ -748,7 +704,6 @@ func (s *SummaryOfSubAccountMarginAccountService) Do(ctx context.Context, opts .
 
 	r := request.New(
 		"/sapi/v1/sub-account/margin/accountSummary",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -774,7 +729,7 @@ type SummaryOfSubAccountMarginAccountResp struct {
 }
 
 // Enable Futures for Sub-account (For Master Account)
-
+//
 //gen:new_service
 type EnableFuturesForSubAccountService struct {
 	C     *connector.Connector
@@ -790,14 +745,9 @@ func (s *EnableFuturesForSubAccountService) Do(ctx context.Context, opts ...requ
 
 	r := request.New(
 		"/sapi/v1/sub-account/futures/enable",
-		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email"),
 	)
-
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("email", s.email)
 	data, err := s.C.CallAPI(ctx, r, opts...)
@@ -815,7 +765,7 @@ type EnableFuturesForSubAccountResp struct {
 }
 
 // Get Detail on Sub-account's Futures Account (For Master Account)
-
+//
 //gen:new_service
 type DetailOnSubAccountFuturesAccountService struct {
 	C     *connector.Connector
@@ -830,16 +780,12 @@ func (s *DetailOnSubAccountFuturesAccountService) Email(email string) *DetailOnS
 func (s *DetailOnSubAccountFuturesAccountService) Do(ctx context.Context, opts ...request.RequestOption) (res *DetailOnSubAccountFuturesAccountResp, err error) {
 	r := request.New(
 		"/sapi/v1/sub-account/futures/account",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email"),
 	)
 
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
-
 	r.SetParam("email", s.email)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
@@ -879,7 +825,7 @@ type DetailOnSubAccountFuturesAccountResp struct {
 }
 
 // Get Summary of Sub-account's Futures Account (For Master Account)
-
+//
 //gen:new_service
 type SummaryOfSubAccountFuturesAccountService struct {
 	C *connector.Connector
@@ -925,7 +871,7 @@ type SummaryOfSubAccountFuturesAccountResp struct {
 }
 
 // Get Futures Position-Risk of Sub-account (For Master Account)
-
+//
 //gen:new_service
 type FuturesPositionRiskOfSubAccountService struct {
 	C     *connector.Connector
@@ -943,11 +889,8 @@ func (s *FuturesPositionRiskOfSubAccountService) Do(ctx context.Context, opts ..
 		"/sapi/v1/sub-account/futures/positionRisk",
 		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email"),
 	)
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("email", s.email)
 	data, err := s.C.CallAPI(ctx, r, opts...)
@@ -971,7 +914,7 @@ type FuturesPositionRiskOfSubAccountResp struct {
 }
 
 // Futures Transfer for Sub-account (For Master Account)
-
+//
 //gen:new_service
 type FuturesTransferForSubAccountService struct {
 	C            *connector.Connector
@@ -1007,27 +950,9 @@ func (s *FuturesTransferForSubAccountService) Do(ctx context.Context, opts ...re
 		"/sapi/v1/sub-account/futures/transfer",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email", "asset", "amount", "type"),
 	)
 
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
-
-	if s.asset == "" {
-		err = fmt.Errorf("%w: asset", apierrors.ErrMissingParameter)
-		return
-	}
-
-	if s.amount == 0 {
-		err = fmt.Errorf("%w: amount", apierrors.ErrMissingParameter)
-		return
-	}
-
-	if s.transferType == 0 {
-		err = fmt.Errorf("%w: transferType", apierrors.ErrMissingParameter)
-		return
-	}
 	r.SetParam("email", s.email)
 	r.SetParam("asset", s.asset)
 	r.SetParam("amount", s.amount)
@@ -1047,7 +972,7 @@ type FuturesTransferForSubAccountResp struct {
 }
 
 // Margin Transfer for Sub-account (For Master Account)
-
+//
 //gen:new_service
 type MarginTransferForSubAccountService struct {
 	C            *connector.Connector
@@ -1083,29 +1008,14 @@ func (s *MarginTransferForSubAccountService) Do(ctx context.Context, opts ...req
 		"/sapi/v1/sub-account/margin/transfer",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email", "asset", "amount", "type"),
 	)
 
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.asset == "" {
-		err = fmt.Errorf("%w: asset", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.amount == 0 {
-		err = fmt.Errorf("%w: amount", apierrors.ErrMissingParameter)
-		return
-	}
-
-	if s.transferType == 0 {
-		err = fmt.Errorf("%w: transferType", apierrors.ErrMissingParameter)
-		return
-	}
 	r.SetParam("email", s.email)
 	r.SetParam("asset", s.asset)
 	r.SetParam("amount", s.amount)
 	r.SetParam("type", s.transferType)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
@@ -1120,7 +1030,7 @@ type MarginTransferForSubAccountResp struct {
 }
 
 // Transfer to Sub-account of Same Master (For Sub-account)
-
+//
 //gen:new_service
 type TransferToSubAccountOfSameMasterService struct {
 	C       *connector.Connector
@@ -1150,24 +1060,13 @@ func (s *TransferToSubAccountOfSameMasterService) Do(ctx context.Context, opts .
 		"/sapi/v1/sub-account/transfer/subToSub",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("toEmail", "asset", "amount"),
 	)
-
-	if s.toEmail == "" {
-		err = fmt.Errorf("%w: toEmail", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.asset == "" {
-		err = fmt.Errorf("%w: asset", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.amount == 0 {
-		err = fmt.Errorf("%w: amount", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("toEmail", s.toEmail)
 	r.SetParam("asset", s.asset)
 	r.SetParam("amount", s.amount)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
@@ -1182,7 +1081,7 @@ type TransferToSubAccountOfSameMasterResp struct {
 }
 
 // Transfer to Master (For Sub-account)
-
+//
 //gen:new_service
 type TransferToMasterService struct {
 	C      *connector.Connector
@@ -1206,18 +1105,12 @@ func (s *TransferToMasterService) Do(ctx context.Context, opts ...request.Reques
 		"/sapi/v1/sub-account/transfer/subToMaster",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("asset", "amount"),
 	)
-	if s.asset == "" {
-		err = fmt.Errorf("%w: asset", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.amount == 0 {
-		err = fmt.Errorf("%w: amount", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("asset", s.asset)
 	r.SetParam("amount", s.amount)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
@@ -1232,7 +1125,7 @@ type TransferToMasterResp struct {
 }
 
 // Sub-account Transfer History (For Sub-account)
-
+//
 //gen:new_service
 type SubAccountTransferHistoryService struct {
 	C            *connector.Connector
@@ -1272,7 +1165,6 @@ func (s *SubAccountTransferHistoryService) Do(ctx context.Context, opts ...reque
 
 	r := request.New(
 		"/sapi/v1/sub-account/transfer/subUserHistory",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -1305,7 +1197,7 @@ type SubAccountTransferHistoryResp struct {
 }
 
 // Universal Transfer (For Master Account)
-
+//
 //gen:new_service
 type UniversalTransferService struct {
 	C               *connector.Connector
@@ -1365,6 +1257,7 @@ func (s *UniversalTransferService) Do(ctx context.Context, opts ...request.Reque
 		"/sapi/v1/asset/universalTransfer",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("asset", "amount", "fromAccountType", "toAccountType"),
 	)
 
 	r.SetParam("asset", s.asset)
@@ -1392,7 +1285,7 @@ type UniversalTransferResp struct {
 }
 
 // Query Universal Transfer History (For Master Account)
-
+//
 //gen:new_service
 type QueryUniversalTransferHistoryService struct {
 	C            *connector.Connector
@@ -1443,7 +1336,6 @@ func (s *QueryUniversalTransferHistoryService) Limit(limit int) *QueryUniversalT
 func (s *QueryUniversalTransferHistoryService) Do(ctx context.Context, opts ...request.RequestOption) (res QueryUniversalTransferHistoryResp, err error) {
 	r := request.New(
 		"/sapi/v1/asset/universalTransfer",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -1483,7 +1375,7 @@ type InternalUniversalTransfer struct {
 }
 
 // Get Detail on Sub-account's Futures Account V2 (For Master Account)
-
+//
 //gen:new_service
 type DetailOnSubAccountFuturesAccountV2Service struct {
 	C           *connector.Connector
@@ -1504,22 +1396,13 @@ func (s *DetailOnSubAccountFuturesAccountV2Service) FuturesType(futuresType int)
 func (s *DetailOnSubAccountFuturesAccountV2Service) Do(ctx context.Context, opts ...request.RequestOption) (res interface{}, err error) {
 	r := request.New(
 		"/sapi/v1/sub-account/futures/account",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email", "futuresType"),
 	)
-
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
-
-	if s.futuresType == 0 {
-		err = fmt.Errorf("%w: futuresType", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("email", s.email)
 	r.SetParam("futuresType", s.futuresType)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
@@ -1606,8 +1489,8 @@ func (s *SummaryOfSubAccountFuturesAccountV2Service) Do(ctx context.Context, opt
 
 	r := request.New(
 		"/sapi/v1/sub-account/futures/accountSummary",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("futuresType"),
 	)
 
 	r.SetParam("futuresType", s.futuresType)
@@ -1668,7 +1551,7 @@ type SummaryOfSubAccountFuturesAccountV2COINResp struct {
 }
 
 // Get Futures Position-Risk of Sub-account V2 (For Master Account)
-
+//
 //gen:new_service
 type FuturesPositionRiskOfSubAccountV2Service struct {
 	C           *connector.Connector
@@ -1690,22 +1573,13 @@ func (s *FuturesPositionRiskOfSubAccountV2Service) Do(ctx context.Context, opts 
 
 	r := request.New(
 		"/sapi/v1/sub-account/futures/positionRisk",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email", "futuresType"),
 	)
-
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
-
-	if s.futuresType == 0 {
-		err = fmt.Errorf("%w: futuresType", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("email", s.email)
 	r.SetParam("futuresType", s.futuresType)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
@@ -1749,10 +1623,7 @@ type FuturesPositionRiskOfSubAccountV2COINResp struct {
 }
 
 // Enable Leverage Token for Sub-account (For Master Account)
-const (
-	enableLeverageTokenForSubAccountEndpoint = "/sapi/v1/sub-account/blvt/enable"
-)
-
+//
 //gen:new_service
 type EnableLeverageTokenForSubAccountService struct {
 	C          *connector.Connector
@@ -1773,22 +1644,15 @@ func (s *EnableLeverageTokenForSubAccountService) EnableBlvt(enableBlvt bool) *E
 func (s *EnableLeverageTokenForSubAccountService) Do(ctx context.Context, opts ...request.RequestOption) (res *EnableLeverageTokenForSubAccountResp, err error) {
 
 	r := request.New(
-		enableLeverageTokenForSubAccountEndpoint,
+		"/sapi/v1/sub-account/blvt/enable",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email", "enableBlvt"),
 	)
 
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
-	// TODO: this is weird
-	if !s.enableBlvt {
-		err = fmt.Errorf("%w: enableBlvt", apierrors.ErrMissingParameter)
-		return
-	}
 	r.SetParam("email", s.email)
 	r.SetParam("enableBlvt", s.enableBlvt)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
@@ -1804,7 +1668,7 @@ type EnableLeverageTokenForSubAccountResp struct {
 }
 
 // Get IP Restriction for a Sub-account API Key (For Master Account)
-
+//
 //gen:new_service
 type IPRestrictionForSubAccountAPIKeyService struct {
 	C                *connector.Connector
@@ -1826,22 +1690,13 @@ func (s *IPRestrictionForSubAccountAPIKeyService) Do(ctx context.Context, opts .
 
 	r := request.New(
 		"/sapi/v1/sub-account/subaccountApi/ipRestriction",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email", "subAccountApiKey"),
 	)
-
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
-
-	if s.subAccountApiKey == "" {
-		err = fmt.Errorf("%w: subAccountApiKey", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("email", s.email)
 	r.SetParam("subAccountApiKey", s.subAccountApiKey)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
@@ -1861,7 +1716,7 @@ type IPRestrictionForSubAccountAPIKeyResp struct {
 }
 
 // Delete IP List For a Sub-account API Key (For Master Account)
-
+//
 //gen:new_service
 type DeleteIPListForSubAccountAPIKeyService struct {
 	C                *connector.Connector
@@ -1891,18 +1746,8 @@ func (s *DeleteIPListForSubAccountAPIKeyService) Do(ctx context.Context, opts ..
 		"/sapi/v1/sub-account/subaccountApi/ipRestriction/ipList",
 		request.Method(http.MethodDelete),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email", "subAccountApiKey"),
 	)
-
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-
-	}
-	if s.subAccountApiKey == "" {
-		err = fmt.Errorf("%w: subAccountApiKey", apierrors.ErrMissingParameter)
-		return
-
-	}
 
 	r.SetParam("email", s.email)
 	r.SetParam("subAccountApiKey", s.subAccountApiKey)
@@ -1926,7 +1771,7 @@ type DeleteIPListForSubAccountAPIKeyResp struct {
 }
 
 // Update IP Restriction for Sub-Account API key (For Master Account)
-
+//
 //gen:new_service
 type UpdateIPRestrictionForSubAccountAPIKeyService struct {
 	C                *connector.Connector
@@ -1962,20 +1807,9 @@ func (s *UpdateIPRestrictionForSubAccountAPIKeyService) Do(ctx context.Context, 
 		"/sapi/v1/sub-account/subaccountApi/ipRestriction",
 		request.Method(http.MethodPut),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email", "subAccountApiKey", "status"),
 	)
 
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.subAccountApiKey == "" {
-		err = fmt.Errorf("%w: subAccountApiKey", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.status == "" {
-		err = fmt.Errorf("%w: status", apierrors.ErrMissingParameter)
-		return
-	}
 	r.SetParam("email", s.email)
 	r.SetParam("subAccountApiKey", s.subAccountApiKey)
 	r.SetParam("status", s.status)
@@ -2000,7 +1834,7 @@ type UpdateIPRestrictionForSubAccountAPIKeyResp struct {
 }
 
 // Deposit Assets Into The Managed Sub-account（For Investor Master Account）
-
+//
 //gen:new_service
 type DepositAssetsIntoTheManagedSubAccountService struct {
 	C       *connector.Connector
@@ -2030,25 +1864,13 @@ func (s *DepositAssetsIntoTheManagedSubAccountService) Do(ctx context.Context, o
 		"/sapi/v1/managed-subaccount/deposit",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("toEmail", "asset", "amount"),
 	)
-	if s.toEmail == "" {
-		err = fmt.Errorf("%w: toEmail", apierrors.ErrMissingParameter)
-		return
 
-	}
-	if s.asset == "" {
-		err = fmt.Errorf("%w: asset", apierrors.ErrMissingParameter)
-		return
-	}
-
-	if s.amount == 0 {
-		err = fmt.Errorf("%w: amount", apierrors.ErrMissingParameter)
-		return
-
-	}
 	r.SetParam("toEmail", s.toEmail)
 	r.SetParam("asset", s.asset)
 	r.SetParam("amount", s.amount)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
@@ -2063,7 +1885,7 @@ type DepositAssetsIntoTheManagedSubAccountResp struct {
 }
 
 // Query Managed Sub-account Asset Details（For Investor Master Account）
-
+//
 //gen:new_service
 type QueryManagedSubAccountAssetDetailsService struct {
 	C     *connector.Connector
@@ -2081,14 +1903,11 @@ func (s *QueryManagedSubAccountAssetDetailsService) Do(ctx context.Context, opts
 		"/sapi/v1/sub-account/managed-subaccount/asset",
 		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email"),
 	)
 
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
-
 	r.SetParam("email", s.email)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
@@ -2146,26 +1965,13 @@ func (s *WithdrawAssetsFromTheManagedSubAccountService) Do(ctx context.Context, 
 		"/sapi/v1/sub-account/managed-subaccount/withdraw",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("fromEmail", "asset", "amount"),
 	)
-
-	if s.fromEmail == "" {
-		err = fmt.Errorf("%w: fromEmail", apierrors.ErrMissingParameter)
-		return
-
-	}
-	if s.asset == "" {
-		err = fmt.Errorf("%w: asset", apierrors.ErrMissingParameter)
-		return
-	}
-
-	if s.amount == 0 {
-		err = fmt.Errorf("%w: amount", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("fromEmail", s.fromEmail)
 	r.SetParam("asset", s.asset)
 	r.SetParam("amount", s.amount)
+
 	r.SetParam("transferDate", s.transferDate)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
@@ -2182,7 +1988,7 @@ type WithdrawAssetsFromTheManagedSubAccountResp struct {
 }
 
 // Query Managed Sub-account Snapshot（For Investor Master Account）
-
+//
 //gen:new_service
 type QueryManagedSubAccountSnapshotService struct {
 	C         *connector.Connector
@@ -2198,7 +2004,7 @@ func (s *QueryManagedSubAccountSnapshotService) Email(email string) *QueryManage
 	return s
 }
 
-func (s *QueryManagedSubAccountSnapshotService) SubType(subType string) *QueryManagedSubAccountSnapshotService {
+func (s *QueryManagedSubAccountSnapshotService) Type(subType string) *QueryManagedSubAccountSnapshotService {
 	s.subType = subType
 	return s
 }
@@ -2224,17 +2030,8 @@ func (s *QueryManagedSubAccountSnapshotService) Do(ctx context.Context, opts ...
 		"/sapi/v1/managed-subaccount/accountSnapshot",
 		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email", "type"),
 	)
-
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-
-	}
-	if s.subType == "" {
-		err = fmt.Errorf("%w: subType", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("email", s.email)
 	r.SetParam("type", s.subType)
@@ -2242,6 +2039,7 @@ func (s *QueryManagedSubAccountSnapshotService) Do(ctx context.Context, opts ...
 	r.SetParam("startTime", s.startTime)
 	r.SetParam("endTime", s.endTime)
 	r.SetParam("limit", s.limit)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
@@ -2269,7 +2067,7 @@ type QueryManagedSubAccountSnapshotResp struct {
 }
 
 // Query Managed Sub Account Transfer Log (Investor) (USER_DATA)
-
+//
 //gen:new_service
 type QueryManagedSubAccountTransferLogService struct {
 	C                           *connector.Connector
@@ -2321,33 +2119,9 @@ func (s *QueryManagedSubAccountTransferLogService) Do(ctx context.Context, opts 
 
 	r := request.New(
 		"/sapi/v1/managed-subaccount/queryTransLogForInvestor",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email", "startTime", "endTime", "page", "limit"),
 	)
-
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.startTime == 0 {
-		err = fmt.Errorf("%w: startTime", apierrors.ErrMissingParameter)
-		return
-
-	}
-	if s.endTime == 0 {
-		err = fmt.Errorf("%w: endTime", apierrors.ErrMissingParameter)
-		return
-
-	}
-	if s.page == 0 {
-		err = fmt.Errorf("%w: page", apierrors.ErrMissingParameter)
-		return
-
-	}
-	if s.limit == 0 {
-		err = fmt.Errorf("%w: limit", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("email", s.email)
 	r.SetParam("startTime", s.startTime)
@@ -2382,7 +2156,7 @@ type QueryManagedSubAccountTransferLogResp struct {
 }
 
 // Query Managed Sub-account Futures Asset Details（For Investor Master Account）(USER_DATA)
-
+//
 //gen:new_service
 type QueryManagedSubAccountFuturesAssetDetailsService struct {
 	C     *connector.Connector
@@ -2400,14 +2174,11 @@ func (s *QueryManagedSubAccountFuturesAssetDetailsService) Do(ctx context.Contex
 		"/sapi/v1/managed-subaccount/fetch-future-asset",
 		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email"),
 	)
 
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-
-	}
 	r.SetParam("email", s.email)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
@@ -2458,8 +2229,11 @@ func (s *QueryManagedSubAccountMarginAssetDetailsService) Do(ctx context.Context
 		"/sapi/v1/managed-subaccount/marginAsset",
 		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email"),
 	)
+
 	r.SetParam("email", s.email)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
@@ -2485,7 +2259,7 @@ type QueryManagedSubAccountMarginAssetDetailsResp struct {
 }
 
 // Query Managed Sub Account Transfer Log (Trading Team) (USER_DATA)
-
+//
 //gen:new_service
 type QueryManagedSubAccountTransferLogForTradingTeamService struct {
 	C                           *connector.Connector
@@ -2539,28 +2313,8 @@ func (s *QueryManagedSubAccountTransferLogForTradingTeamService) Do(ctx context.
 		"/sapi/v1/managed-subaccount/queryTransLogForTradeParent",
 		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email", "startTime", "endTime", "page", "limit"),
 	)
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.startTime == 0 {
-		err = fmt.Errorf("%w: startTime", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.endTime == 0 {
-		err = fmt.Errorf("%w: endTime", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.page == 0 {
-		err = fmt.Errorf("%w: page", apierrors.ErrMissingParameter)
-		return
-	}
-
-	if s.limit == 0 {
-		err = fmt.Errorf("%w: limit", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("email", s.email)
 	r.SetParam("startTime", s.startTime)
@@ -2596,7 +2350,7 @@ type QueryManagedSubAccountTransferLogForTradingTeamResp struct {
 }
 
 // Query Sub-account Assets (For Master Account)(USER_DATA)
-
+//
 //gen:new_service
 type QuerySubAccountAssetsForMasterAccountService struct {
 	C     *connector.Connector
@@ -2614,14 +2368,11 @@ func (s *QuerySubAccountAssetsForMasterAccountService) Do(ctx context.Context, o
 		"/sapi/v1/sub-account/assets",
 		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email"),
 	)
 
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
-
 	r.SetParam("email", s.email)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
@@ -2640,7 +2391,7 @@ type QuerySubAccountAssetsForMasterAccountResp struct {
 }
 
 // Query Managed Sub-account List
-
+//
 //gen:new_service
 type QueryManagedSubAccountList struct {
 	C     *connector.Connector
@@ -2702,7 +2453,7 @@ type QueryManagedSubAccountListResp struct {
 }
 
 // Query Sub-account Transaction Tatistics (For Master Account) (USER_DATA)
-
+//
 //gen:new_service
 type QuerySubAccountTransactionStatistics struct {
 	C     *connector.Connector
@@ -2720,12 +2471,11 @@ func (s *QuerySubAccountTransactionStatistics) Do(ctx context.Context, opts ...r
 		"/sapi/v1/sub-account/transaction-statistics",
 		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email"),
 	)
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-	}
+
 	r.SetParam("email", s.email)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
@@ -2785,20 +2535,12 @@ func (s *ManagedSubAccountDepositAddressService) Do(ctx context.Context, opts ..
 		"/sapi/v1/managed-subaccount/deposit/address",
 		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("email", "coin"),
 	)
-	if s.email == "" {
-		err = fmt.Errorf("%w: email", apierrors.ErrMissingParameter)
-		return
-
-	}
-	if s.coin == "" {
-		err = fmt.Errorf("%w: coin", apierrors.ErrMissingParameter)
-		return
-
-	}
 
 	r.SetParam("email", s.email)
 	r.SetParam("coin", s.coin)
+
 	r.SetParam("network", s.network)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
