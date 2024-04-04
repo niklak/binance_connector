@@ -1,4 +1,4 @@
-//go:generate go run internal/cmd/genalias/genalias.go  --src=api/account,api/market,api/spot,api/wallet,api/staking,api/subaccount,api/margin --dst-alias=connector_alias.go --dst-service=connector_service.go
+//go:generate go run internal/cmd/genalias/genalias.go  --src=api/account,api/market,api/spot,api/wallet,api/staking,api/subaccount,api/margin,api/ethstaking --dst-alias=connector_alias.go --dst-service=connector_service.go
 
 package binance_connector
 

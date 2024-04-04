@@ -771,3 +771,68 @@ func (c *Client) NewMarginSmallLiabilityExchangeHistoryService() *MarginSmallLia
 	return &MarginSmallLiabilityExchangeHistoryService{C: c.Connector}
 }
 
+
+func (c *Client) NewBETHRewardsDistributionHistoryService() *BETHRewardsDistributionHistoryService {
+	return &BETHRewardsDistributionHistoryService{C: c.Connector}
+}
+
+
+func (c *Client) NewCurrentETHStakingQuotaService() *CurrentETHStakingQuotaService {
+	return &CurrentETHStakingQuotaService{C: c.Connector}
+}
+
+
+func (c *Client) NewRedeemETHService() *RedeemETHService {
+	return &RedeemETHService{C: c.Connector}
+}
+
+
+func (c *Client) NewETHRedemptionHistoryService() *ETHRedemptionHistoryService {
+	return &ETHRedemptionHistoryService{C: c.Connector}
+}
+
+
+func (c *Client) NewETHStakingAccountService() *ETHStakingAccountService {
+	return &ETHStakingAccountService{C: c.Connector}
+}
+
+
+func (c *Client) NewETHStakingHistoryService() *ETHStakingHistoryService {
+	return &ETHStakingHistoryService{C: c.Connector}
+}
+
+
+func (c *Client) NewSubscribeETHStakingService() *SubscribeETHStakingService {
+	return &SubscribeETHStakingService{C: c.Connector}
+}
+
+
+func (c *Client) NewSubscribeETHStakingV2Service() *SubscribeETHStakingV2Service {
+	return &SubscribeETHStakingV2Service{C: c.Connector}
+}
+
+
+func (c *Client) NewWBETHRateHistoryService() *WBETHRateHistoryService {
+	return &WBETHRateHistoryService{C: c.Connector}
+}
+
+
+func (c *Client) NewWBETHRewardsHistoryService() *WBETHRewardsHistoryService {
+	return &WBETHRewardsHistoryService{C: c.Connector}
+}
+
+
+func (c *Client) NewWBETHUnwrapHistoryService() *WBETHUnwrapHistoryService {
+	return &WBETHUnwrapHistoryService{C: c.Connector}
+}
+
+
+func (c *Client) NewWBETHWrapHistoryService() *WBETHWrapHistoryService {
+	return &WBETHWrapHistoryService{C: c.Connector}
+}
+
+
+func (c *Client) NewWrapBETHService() *WrapBETHService {
+	return &WrapBETHService{C: c.Connector}
+}
+

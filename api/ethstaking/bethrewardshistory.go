@@ -9,10 +9,9 @@ import (
 	"github.com/niklak/binance_connector/internal/request"
 )
 
-//Get BETH rewards distribution history(USER_DATA) (GET /sapi/v1/eth-staking/eth/history/rewardsHistory)
+// Get BETH rewards distribution history(USER_DATA) (GET /sapi/v1/eth-staking/eth/history/rewardsHistory)
 //
 //gen:new_service
-
 type BETHRewardsDistributionHistoryService struct {
 	C         *connector.Connector
 	startTime *uint64
@@ -72,6 +71,6 @@ type BETHRewardHistoryRow struct {
 }
 
 type BETHRewardsDistributionHistoryResponse struct {
-	Total int64                   `json:"total"`
+	Total uint64                  `json:"total"`
 	Rows  []*BETHRewardHistoryRow `json:"rows"`
 }

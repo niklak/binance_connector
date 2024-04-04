@@ -13,6 +13,7 @@ Supported API endpoints:
 - Sub-Account
 - Wallet
 - Staking
+- Staking (ETH)
 
 ## Installation
 ```

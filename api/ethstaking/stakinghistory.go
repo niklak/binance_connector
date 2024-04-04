@@ -74,6 +74,6 @@ type ETHHistoryRow struct {
 }
 
 type ETHHistoryResponse struct {
-	Total int64            `json:"total"`
+	Total uint64           `json:"total"`
 	Rows  []*ETHHistoryRow `json:"rows"`
 }

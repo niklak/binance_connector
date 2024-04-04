@@ -5,6 +5,7 @@ import (
 	"github.com/niklak/binance_connector/api/staking"
 	"github.com/niklak/binance_connector/api/subaccount"
 	"github.com/niklak/binance_connector/api/margin"
+	"github.com/niklak/binance_connector/api/ethstaking"
 	"github.com/niklak/binance_connector/api/account"
 	"github.com/niklak/binance_connector/api/market"
 	"github.com/niklak/binance_connector/api/spot"
@@ -465,4 +466,63 @@ type MarginSmallLiabilityExchangeService = margin.MarginSmallLiabilityExchangeSe
 type MarginSmallLiabilityExchangeResponse = margin.MarginSmallLiabilityExchangeResponse
 type MarginSmallLiabilityExchangeHistoryService = margin.MarginSmallLiabilityExchangeHistoryService
 type MarginSmallLiabilityExchangeHistoryResponse = margin.MarginSmallLiabilityExchangeHistoryResponse
+
+//file: api/ethstaking/bethrewardshistory.go
+type BETHRewardsDistributionHistoryService = ethstaking.BETHRewardsDistributionHistoryService
+type BETHRewardHistoryRow = ethstaking.BETHRewardHistoryRow
+type BETHRewardsDistributionHistoryResponse = ethstaking.BETHRewardsDistributionHistoryResponse
+
+//file: api/ethstaking/currentstakingquota.go
+type CurrentETHStakingQuotaService = ethstaking.CurrentETHStakingQuotaService
+type CurrentETHStakingQuotaResponse = ethstaking.CurrentETHStakingQuotaResponse
+
+//file: api/ethstaking/redeemeth.go
+type RedeemETHService = ethstaking.RedeemETHService
+type RedeemETHResponse = ethstaking.RedeemETHResponse
+
+//file: api/ethstaking/redemtionhistory.go
+type ETHRedemptionHistoryService = ethstaking.ETHRedemptionHistoryService
+
+//file: api/ethstaking/stakingaccount.go
+type ETHStakingAccountService = ethstaking.ETHStakingAccountService
+type ETHStakingAccountResponse = ethstaking.ETHStakingAccountResponse
+
+//file: api/ethstaking/stakingaccountv2.go
+type ETHStakingAccountV2Service = ethstaking.ETHStakingAccountV2Service
+type ETHStakingAccountV2Response = ethstaking.ETHStakingAccountV2Response
+
+//file: api/ethstaking/stakinghistory.go
+type ETHStakingHistoryService = ethstaking.ETHStakingHistoryService
+type ETHHistoryRow = ethstaking.ETHHistoryRow
+type ETHHistoryResponse = ethstaking.ETHHistoryResponse
+
+//file: api/ethstaking/subscribestaking.go
+type SubscribeETHStakingService = ethstaking.SubscribeETHStakingService
+type SubscribeETHStakingResponse = ethstaking.SubscribeETHStakingResponse
+
+//file: api/ethstaking/subscribestakingv2.go
+type SubscribeETHStakingV2Service = ethstaking.SubscribeETHStakingV2Service
+type SubscribeETHStakingV2Response = ethstaking.SubscribeETHStakingV2Response
+
+//file: api/ethstaking/wbethratehistory.go
+type WBETHRateHistoryService = ethstaking.WBETHRateHistoryService
+type WBETHRateHistoryRow = ethstaking.WBETHRateHistoryRow
+type WBETHRateHistoryResponse = ethstaking.WBETHRateHistoryResponse
+
+//file: api/ethstaking/wbethrewardshistory.go
+type WBETHRewardsHistoryService = ethstaking.WBETHRewardsHistoryService
+type WBETHRewardsHistoryRow = ethstaking.WBETHRewardsHistoryRow
+type WBETHRewardsHistoryResponse = ethstaking.WBETHRewardsHistoryResponse
+
+//file: api/ethstaking/wbethunwraphistory.go
+type WBETHUnwrapHistoryService = ethstaking.WBETHUnwrapHistoryService
+
+//file: api/ethstaking/wbethwraphistory.go
+type WBETHWrapHistoryService = ethstaking.WBETHWrapHistoryService
+type WBETHHistoryRow = ethstaking.WBETHHistoryRow
+type WBETHHistoryResponse = ethstaking.WBETHHistoryResponse
+
+//file: api/ethstaking/wrapbeth.go
+type WrapBETHService = ethstaking.WrapBETHService
+type WrapBETHResponse = ethstaking.WrapBETHResponse
 
