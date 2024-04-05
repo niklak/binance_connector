@@ -54,10 +54,11 @@ func main() {
     // Create new order
 	newOrder, err := client.NewCreateOrderService().
         Symbol("BTCUSDT").
-		Side("BUY").
+	Side("BUY").
         Type("MARKET").
         Quantity(0.001).
-		Do(context.Background())
+	Do(context.Background())
+
 	if err != nil {
 		panic(err)
 	}
