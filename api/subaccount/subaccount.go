@@ -1461,7 +1461,7 @@ type DetailOnSubAccountFuturesAccountV2COINResp struct {
 }
 
 // Get Summary of Sub-account's Futures Account V2 (For Master Account)
-
+//
 //gen:new_service
 type SummaryOfSubAccountFuturesAccountV2Service struct {
 	C           *connector.Connector
@@ -1928,8 +1928,8 @@ type QueryManagedSubAccountAssetDetailsResp struct {
 	} `json:"assetDetail"`
 }
 
-// Withdrawl Assets From The Managed Sub-account（For Investor Master Account）
-
+// Withdraw Assets From The Managed Sub-account（For Investor Master Account）
+//
 //gen:new_service
 type WithdrawAssetsFromTheManagedSubAccountService struct {
 	C            *connector.Connector
@@ -2211,7 +2211,7 @@ type QueryManagedSubAccountFuturesAssetDetailsResp struct {
 }
 
 // Query Managed Sub-account Margin Asset Details (For Investor Master Account) (USER_DATA)
-
+//
 //gen:new_service
 type QueryManagedSubAccountMarginAssetDetailsService struct {
 	C     *connector.Connector
@@ -2505,7 +2505,7 @@ type QuerySubAccountTransactionStatisticsResp struct {
 }
 
 // Get Managed Sub-account Deposit Address (For Investor Master Account) (USER_DATA)
-
+//
 //gen:new_service
 type ManagedSubAccountDepositAddressService struct {
 	C       *connector.Connector

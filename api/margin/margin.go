@@ -3,10 +3,8 @@ package margin
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
 )
@@ -48,20 +46,8 @@ func (s *TransferService) Do(ctx context.Context, opts ...request.RequestOption)
 		"/sapi/v1/margin/transfer",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("asset", "amount", "type"),
 	)
-
-	if s.asset == "" {
-		err = fmt.Errorf("%w: asset", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.amount == 0 {
-		err = fmt.Errorf("%w: amount", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.transferType == 0 {
-		err = fmt.Errorf("%w: transferType", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("asset", s.asset)
 	r.SetParam("amount", s.amount)
@@ -119,16 +105,8 @@ func (s *BorrowService) Do(ctx context.Context, opts ...request.RequestOption) (
 		"/sapi/v1/margin/loan",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("asset", "amount"),
 	)
-
-	if s.asset == "" {
-		err = fmt.Errorf("%w: asset", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.amount == 0 {
-		err = fmt.Errorf("%w: amount", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("asset", s.asset)
 	r.SetParam("amount", s.amount)
@@ -193,16 +171,8 @@ func (s *RepayService) Do(ctx context.Context, opts ...request.RequestOption) (r
 		"/sapi/v1/margin/repay",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("asset", "amount"),
 	)
-
-	if s.asset == "" {
-		err = fmt.Errorf("%w: asset", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.amount == 0 {
-		err = fmt.Errorf("%w: amount", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("asset", s.asset)
 	r.SetParam("amount", s.amount)
@@ -247,14 +217,11 @@ func (s *QueryMarginAssetService) Do(ctx context.Context, opts ...request.Reques
 		"/sapi/v1/margin/asset",
 		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeAPIKey),
+		request.RequiredParams("asset"),
 	)
 
-	if s.asset == "" {
-		err = fmt.Errorf("%w: asset", apierrors.ErrMissingParameter)
-		return
-	}
-
 	r.SetParam("asset", s.asset)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return
@@ -295,16 +262,12 @@ func (s *QueryCrossMarginPairService) Do(ctx context.Context, opts ...request.Re
 
 	r := request.New(
 		"/sapi/v1/margin/pair",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol"),
 	)
 
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
-
 	r.SetParam("symbol", s.symbol)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return
@@ -339,7 +302,6 @@ func (s *GetAllMarginAssetsService) Do(ctx context.Context, opts ...request.Requ
 
 	r := request.New(
 		"/sapi/v1/margin/allAssets",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -371,7 +333,7 @@ type GetAllMarginAssetsResponse struct {
 // Get all margin pairs API Endpoint
 
 // GetAllMarginPairsService get all margin pairs
-
+//
 //gen:new_service
 type GetAllMarginPairsService struct {
 	C *connector.Connector
@@ -382,7 +344,6 @@ func (s *GetAllMarginPairsService) Do(ctx context.Context, opts ...request.Reque
 
 	r := request.New(
 		"/sapi/v1/margin/allPairs",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeAPIKey),
 	)
 
@@ -429,15 +390,12 @@ func (s *QueryMarginPriceIndexService) Do(ctx context.Context, opts ...request.R
 
 	r := request.New(
 		"/sapi/v1/margin/priceIndex",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeAPIKey),
+		request.RequiredParams("symbol"),
 	)
 
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
 	r.SetParam("symbol", s.symbol)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
 		return
@@ -454,7 +412,7 @@ type QueryMarginPriceIndexResponse struct {
 	Symbol   string `json:"symbol"`
 }
 
-// Margin Accouunt New Order (TRADE) API Endpoint
+// Margin Account New Order (TRADE) API Endpoint
 
 // MarginAccountNewOrderService margin account new order
 //
@@ -561,21 +519,8 @@ func (s *MarginAccountNewOrderService) Do(ctx context.Context, opts ...request.R
 		"/sapi/v1/margin/order",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol", "side", "type"),
 	)
-
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
-
-	if s.side == "" {
-		err = fmt.Errorf("%w: side", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.orderType == "" {
-		err = fmt.Errorf("%w: orderType", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("symbol", s.symbol)
 	r.SetParam("side", s.side)
@@ -720,18 +665,12 @@ func (s *MarginAccountCancelOrderService) Do(ctx context.Context, opts ...reques
 		"/sapi/v1/margin/order",
 		request.Method(http.MethodDelete),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol"),
+		request.RequiredOneOfParams([]string{"orderId", "origClientOrderId"}),
 	)
 
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
-
-	if s.orderId == nil && s.origClientOrderId == nil {
-		return nil, fmt.Errorf("%w: either orderId or origClientOrderId", apierrors.ErrMissingParameter)
-	}
-
 	r.SetParam("symbol", s.symbol)
+
 	r.SetParam("isIsolated", s.isIsolated)
 	r.SetParam("orderId", s.orderId)
 	r.SetParam("origClientOrderId", s.origClientOrderId)
@@ -793,11 +732,9 @@ func (s *MarginAccountCancelAllOrdersService) Do(ctx context.Context, opts ...re
 		"/sapi/v1/margin/openOrders",
 		request.Method(http.MethodDelete),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol"),
 	)
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
+
 	r.SetParam("symbol", s.symbol)
 	r.SetParam("isIsolated", s.isIsolated)
 
@@ -917,18 +854,9 @@ func (s *QueryMarginBorrowRepayService) Do(ctx context.Context, opts ...request.
 
 	r := request.New(
 		"/sapi/v1/margin/borrow-repay",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("asset", "type"),
 	)
-
-	if s.asset == "" {
-		err = fmt.Errorf("%w: asset", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.ty == "" {
-		err = fmt.Errorf("%w: type", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("asset", s.asset)
 	r.SetParam("type", s.ty)
@@ -1024,7 +952,6 @@ func (s *InterestHistoryService) Do(ctx context.Context, opts ...request.Request
 
 	r := request.New(
 		"/sapi/v1/margin/interestHistory",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -1159,7 +1086,6 @@ func (s *CrossMarginAccountDetailService) Do(ctx context.Context, opts ...reques
 
 	r := request.New(
 		"/sapi/v1/margin/account",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -1233,13 +1159,9 @@ func (s *MarginAccountOrderService) Do(ctx context.Context, opts ...request.Requ
 
 	r := request.New(
 		"/sapi/v1/margin/order",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol"),
 	)
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("symbol", s.symbol)
 	r.SetParam("isIsolated", s.isIsolated)
@@ -1277,9 +1199,6 @@ type MarginAccountOrderResponse struct {
 }
 
 // Query Margin Account's Open Order (USER_DATA) API Endpoint
-const (
-	marginAccountOpenOrderEndpoint = "/sapi/v1/margin/openOrders"
-)
 
 // MarginAccountOpenOrderService query margin account's open order
 //
@@ -1304,27 +1223,22 @@ func (s *MarginAccountOpenOrderService) IsIsolated(isIsolated string) *MarginAcc
 
 // Do send request
 func (s *MarginAccountOpenOrderService) Do(ctx context.Context, opts ...request.RequestOption) (res *MarginAccountOpenOrderResponse, err error) {
-	r := &request.Request{
-		Method:   http.MethodGet,
-		Endpoint: marginAccountOpenOrderEndpoint,
-		SecType:  request.SecTypeSigned,
-	}
-	if s.symbol != nil {
-		r.SetParam("symbol", *s.symbol)
-	}
-	if s.isIsolated != nil {
-		r.SetParam("isIsolated", *s.isIsolated)
-	}
+
+	r := request.New(
+		"/sapi/v1/margin/openOrders",
+		request.SecType(request.SecTypeSigned),
+	)
+
+	r.SetParam("symbol", s.symbol)
+	r.SetParam("isIsolated", s.isIsolated)
+
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
-		return &MarginAccountOpenOrderResponse{}, err
+		return
 	}
 	res = new(MarginAccountOpenOrderResponse)
 	err = json.Unmarshal(data, res)
-	if err != nil {
-		return &MarginAccountOpenOrderResponse{}, err
-	}
-	return res, nil
+	return
 }
 
 // MarginAccountOpenOrderResponse define margin account open order response
@@ -1406,14 +1320,9 @@ func (s *MarginAccountAllOrderService) Do(ctx context.Context, opts ...request.R
 
 	r := request.New(
 		"/sapi/v1/margin/allOrders",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol"),
 	)
-
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return &MarginAccountAllOrderResponse{}, err
-	}
 
 	r.SetParam("symbol", s.symbol)
 
@@ -1577,28 +1486,8 @@ func (s *MarginAccountNewOCOService) Do(ctx context.Context, opts ...request.Req
 		"/sapi/v1/margin/orderList",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol", "side", "quantity", "price", "stopPrice"),
 	)
-
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.side == "" {
-		err = fmt.Errorf("%w: side", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.quantity == 0 {
-		err = fmt.Errorf("%w: quantity", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.price == 0 {
-		err = fmt.Errorf("%w: price", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.stopPrice == 0 {
-		err = fmt.Errorf("%w: stopPrice", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("symbol", s.symbol)
 	r.SetParam("side", s.side)
@@ -1661,7 +1550,7 @@ type MarginAccountNewOCOResponse struct {
 }
 
 // Margin Account Cancel OCO (TRADE)
-
+//
 //gen:new_service
 type MarginAccountCancelOCOService struct {
 	C                 *connector.Connector
@@ -1709,12 +1598,8 @@ func (s *MarginAccountCancelOCOService) Do(ctx context.Context, opts ...request.
 		"/sapi/v1/margin/orderList",
 		request.Method(http.MethodDelete),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol"),
 	)
-
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("symbol", s.symbol)
 
@@ -1805,7 +1690,6 @@ func (s *MarginAccountQueryOCOService) Do(ctx context.Context, opts ...request.R
 
 	r := request.New(
 		"/sapi/v1/margin/orderList",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -1894,7 +1778,6 @@ func (s *MarginAccountQueryAllOCOService) Do(ctx context.Context, opts ...reques
 
 	r := request.New(
 		"/sapi/v1/margin/allOrderList",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -1932,7 +1815,7 @@ type MarginAccountQueryAllOCOResponse struct {
 }
 
 // Query Margin Account's Open OCO (USER_DATA)
-
+//
 //gen:new_service
 type MarginAccountQueryOpenOCOService struct {
 	C          *connector.Connector
@@ -1957,7 +1840,6 @@ func (s *MarginAccountQueryOpenOCOService) Do(ctx context.Context, opts ...reque
 
 	r := request.New(
 		"/sapi/v1/margin/openOrderList",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -1991,7 +1873,7 @@ type MarginAccountQueryOpenOCOResponse struct {
 }
 
 // Query Margin Account's Trade List (USER_DATA)
-
+//
 //gen:new_service
 type MarginAccountQueryTradeListService struct {
 	C          *connector.Connector
@@ -2051,14 +1933,9 @@ func (s *MarginAccountQueryTradeListService) Do(ctx context.Context, opts ...req
 
 	r := request.New(
 		"/sapi/v1/margin/myTrades",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol"),
 	)
-
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("symbol", s.symbol)
 
@@ -2095,7 +1972,7 @@ type MarginAccountQueryTradeListResponse struct {
 }
 
 // Query Margin Account's Max Borrow (USER_DATA)
-
+//
 //gen:new_service
 type MarginAccountQueryMaxBorrowService struct {
 	C              *connector.Connector
@@ -2120,14 +1997,10 @@ func (s *MarginAccountQueryMaxBorrowService) Do(ctx context.Context, opts ...req
 
 	r := request.New(
 		"/sapi/v1/margin/maxBorrowable",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("asset"),
 	)
 
-	if s.asset == "" {
-		err = fmt.Errorf("%w: asset", apierrors.ErrMissingParameter)
-		return
-	}
 	r.SetParam("asset", s.asset)
 
 	r.SetParam("isolatedSymbol", s.isolatedSymbol)
@@ -2148,7 +2021,7 @@ type MarginAccountQueryMaxBorrowResponse struct {
 }
 
 // Query Margin Account's Max Transfer-Out Amount (USER_DATA)
-
+//
 //gen:new_service
 type MarginAccountQueryMaxTransferOutAmountService struct {
 	C              *connector.Connector
@@ -2173,14 +2046,9 @@ func (s *MarginAccountQueryMaxTransferOutAmountService) Do(ctx context.Context, 
 
 	r := request.New(
 		"/sapi/v1/margin/maxTransferable",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("asset"),
 	)
-
-	if s.asset == "" {
-		err = fmt.Errorf("%w: asset", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("asset", s.asset)
 
@@ -2201,7 +2069,7 @@ type MarginAccountQueryMaxTransferOutAmountResponse struct {
 }
 
 // Get Summary of Margin account (USER_DATA) - GET /sapi/v1/margin/tradeCoeff (HMAC SHA256)
-
+//
 //gen:new_service
 type MarginAccountSummaryService struct {
 	C *connector.Connector
@@ -2212,7 +2080,6 @@ func (s *MarginAccountSummaryService) Do(ctx context.Context, opts ...request.Re
 
 	r := request.New(
 		"/sapi/v1/margin/tradeCoeff",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -2233,7 +2100,7 @@ type MarginAccountSummaryResponse struct {
 }
 
 // Isolated Margin Account Transfer (MARGIN)
-
+//
 //gen:new_service
 type MarginIsolatedAccountTransferService struct {
 	C         *connector.Connector
@@ -2281,29 +2148,8 @@ func (s *MarginIsolatedAccountTransferService) Do(ctx context.Context, opts ...r
 		"/sapi/v1/margin/isolated/transfer",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("asset", "symbol", "transFrom", "transTo", "amount"),
 	)
-
-	if s.asset == "" {
-		err = fmt.Errorf("%w: asset", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
-
-	if s.transFrom == "" {
-		err = fmt.Errorf("%w: transFrom", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.transTo == "" {
-		err = fmt.Errorf("%w: transTo", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.amount == 0 {
-		err = fmt.Errorf("%w: amount", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("asset", s.asset)
 	r.SetParam("symbol", s.symbol)
@@ -2326,7 +2172,7 @@ type MarginIsolatedAccountTransferResponse struct {
 }
 
 // Isolated Margin Account Transfer History (MARGIN)
-
+//
 //gen:new_service
 type MarginIsolatedAccountTransferHistoryService struct {
 	C         *connector.Connector
@@ -2400,14 +2246,10 @@ func (s *MarginIsolatedAccountTransferHistoryService) Do(ctx context.Context, op
 
 	r := request.New(
 		"/sapi/v1/margin/isolated/transfer",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol"),
 	)
 
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
 	r.SetParam("symbol", s.symbol)
 
 	r.SetParam("asset", s.asset)
@@ -2530,7 +2372,7 @@ type MarginIsolatedAccountInfoResponse struct {
 }
 
 // Disable Isolated Margin Account (TRADE)
-
+//
 //gen:new_service
 type MarginIsolatedAccountDisableService struct {
 	C      *connector.Connector
@@ -2550,12 +2392,8 @@ func (s *MarginIsolatedAccountDisableService) Do(ctx context.Context, opts ...re
 		"/sapi/v1/margin/isolated/account",
 		request.Method(http.MethodDelete),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol"),
 	)
-
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("symbol", s.symbol)
 
@@ -2574,7 +2412,7 @@ type MarginIsolatedAccountDisableResponse struct {
 }
 
 // Enable Isolated Margin Account (TRADE)
-
+//
 //gen:new_service
 type MarginIsolatedAccountEnableService struct {
 	C      *connector.Connector
@@ -2594,12 +2432,9 @@ func (s *MarginIsolatedAccountEnableService) Do(ctx context.Context, opts ...req
 		"/sapi/v1/margin/isolated/account",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol"),
 	)
 
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
 	r.SetParam("symbol", s.symbol)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
@@ -2617,7 +2452,7 @@ type MarginIsolatedAccountEnableResponse struct {
 }
 
 // Query Enabled Isolated Margin Account Limit (USER_DATA)
-
+//
 //gen:new_service
 type MarginIsolatedAccountLimitService struct {
 	C *connector.Connector
@@ -2628,7 +2463,6 @@ func (s *MarginIsolatedAccountLimitService) Do(ctx context.Context, opts ...requ
 
 	r := request.New(
 		"/sapi/v1/margin/isolated/accountLimit",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -2666,14 +2500,10 @@ func (s *MarginIsolatedSymbolService) Do(ctx context.Context, opts ...request.Re
 
 	r := request.New(
 		"/sapi/v1/margin/isolated/pair",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol"),
 	)
 
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
 	r.SetParam("symbol", s.symbol)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
@@ -2709,7 +2539,6 @@ func (s *AllIsolatedMarginSymbolService) Do(ctx context.Context, opts ...request
 
 	r := request.New(
 		"/sapi/v1/margin/isolated/allPairs",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -2725,7 +2554,7 @@ func (s *AllIsolatedMarginSymbolService) Do(ctx context.Context, opts ...request
 // MarginIsolatedSymbolAllService returns all isolated margin symbols
 
 // Toggle BNB Burn On Spot Trade And Margin Interest (USER_DATA)
-
+//
 //gen:new_service
 type MarginToggleBnbBurnService struct {
 	C               *connector.Connector
@@ -2753,6 +2582,7 @@ func (s *MarginToggleBnbBurnService) Do(ctx context.Context, opts ...request.Req
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
 	)
+
 	r.SetParam("spotBNBBurn", s.spotBNBBurn)
 	r.SetParam("interestBNBBurn", s.interestBNBBurn)
 
@@ -2772,7 +2602,7 @@ type MarginToggleBnbBurnResponse struct {
 }
 
 // Get BNB Burn Status (USER_DATA)
-
+//
 //gen:new_service
 type MarginBnbBurnStatusService struct {
 	C *connector.Connector
@@ -2783,7 +2613,6 @@ func (s *MarginBnbBurnStatusService) Do(ctx context.Context, opts ...request.Req
 
 	r := request.New(
 		"/sapi/v1/bnbBurn",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -2803,7 +2632,7 @@ type MarginBnbBurnStatusResponse struct {
 }
 
 // Query Margin Interest Rate History (USER_DATA)
-
+//
 //gen:new_service
 type MarginInterestRateHistoryService struct {
 	C         *connector.Connector
@@ -2842,14 +2671,9 @@ func (s *MarginInterestRateHistoryService) Do(ctx context.Context, opts ...reque
 
 	r := request.New(
 		"/sapi/v1/margin/interestRateHistory",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("asset"),
 	)
-
-	if s.asset == "" {
-		err = fmt.Errorf("%w: asset", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("asset", s.asset)
 
@@ -2875,7 +2699,7 @@ type MarginInterestRateHistoryResponse struct {
 }
 
 // Query Cross Margin Fee Data (USER_DATA)
-
+//
 //gen:new_service
 type MarginCrossMarginFeeService struct {
 	C        *connector.Connector
@@ -3009,14 +2833,9 @@ func (s *MarginIsolatedMarginTierService) Do(ctx context.Context, opts ...reques
 
 	r := request.New(
 		"/sapi/v1/margin/isolated/marginTier",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("symbol"),
 	)
-
-	if s.symbol == "" {
-		err = fmt.Errorf("%w: symbol", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("symbol", s.symbol)
 
@@ -3043,10 +2862,7 @@ type MarginIsolatedMarginTierResponse struct {
 }
 
 // Query Current Margin Order Count Usage (TRADE)
-const (
-	marginCurrentOrderCountEndpoint = "/sapi/v1/margin/rateLimit/order"
-)
-
+//
 //gen:new_service
 type MarginCurrentOrderCountService struct {
 	C          *connector.Connector
@@ -3070,8 +2886,7 @@ func (s *MarginCurrentOrderCountService) Symbol(symbol string) *MarginCurrentOrd
 func (s *MarginCurrentOrderCountService) Do(ctx context.Context, opts ...request.RequestOption) (res []*MarginCurrentOrderCountResponse, err error) {
 
 	r := request.New(
-		marginCurrentOrderCountEndpoint,
-		request.Method(http.MethodGet),
+		"/sapi/v1/margin/rateLimit/order",
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -3097,7 +2912,7 @@ type MarginCurrentOrderCountResponse struct {
 }
 
 // Margin Dustlog (USER_DATA)
-
+//
 //gen:new_service
 type MarginDustlogService struct {
 	C         *connector.Connector
@@ -3122,7 +2937,6 @@ func (s *MarginDustlogService) Do(ctx context.Context, opts ...request.RequestOp
 
 	r := request.New(
 		"/sapi/v1/asset/dribblet",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -3163,7 +2977,7 @@ type UserAssetDribbletDetail struct {
 }
 
 // Cross margin collateral ratio (MARKET_DATA)
-
+//
 //gen:new_service
 type MarginCrossCollateralRatioService struct {
 	C *connector.Connector
@@ -3174,7 +2988,6 @@ func (s *MarginCrossCollateralRatioService) Do(ctx context.Context, opts ...requ
 
 	r := request.New(
 		"/sapi/v1/margin/crossCollateralRatio",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -3200,7 +3013,7 @@ type MarginCrossCollateralRatioResponse struct {
 }
 
 // Get Small Liability Exchange Coin List (USER_DATA)
-
+//
 //gen:new_service
 type MarginSmallLiabilityExchangeCoinListService struct {
 	C *connector.Connector
@@ -3211,7 +3024,6 @@ func (s *MarginSmallLiabilityExchangeCoinListService) Do(ctx context.Context, op
 
 	r := request.New(
 		"/sapi/v1/margin/smallLiability/exchangeCoinList",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 	)
 
@@ -3233,7 +3045,7 @@ type MarginSmallLiabilityExchangeCoinListResponse struct {
 }
 
 // Small Liability Exchange (MARGIN)
-
+//
 //gen:new_service
 type MarginSmallLiabilityExchangeService struct {
 	C          *connector.Connector
@@ -3253,12 +3065,9 @@ func (s *MarginSmallLiabilityExchangeService) Do(ctx context.Context, opts ...re
 		"/sapi/v1/margin/smallLiability/exchange",
 		request.Method(http.MethodPost),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("assetNames"),
 	)
 
-	if s.assetNames == "" {
-		err = fmt.Errorf("%w: assetNames", apierrors.ErrMissingParameter)
-		return
-	}
 	r.SetParam("assetNames", s.assetNames)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
@@ -3275,7 +3084,7 @@ type MarginSmallLiabilityExchangeResponse struct {
 }
 
 // Get Small Liability Exchange History (USER_DATA)
-
+//
 //gen:new_service
 type MarginSmallLiabilityExchangeHistoryService struct {
 	C         *connector.Connector
@@ -3314,21 +3123,13 @@ func (s *MarginSmallLiabilityExchangeHistoryService) Do(ctx context.Context, opt
 
 	r := request.New(
 		"/sapi/v1/margin/exchange-small-liability-history",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("current", "size"),
 	)
-
-	if s.current == 0 {
-		err = fmt.Errorf("%w: current", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.size == 0 {
-		err = fmt.Errorf("%w: size", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("current", s.current)
 	r.SetParam("size", s.size)
+
 	r.SetParam("startTime", s.startTime)
 	r.SetParam("endTime", s.endTime)
 
