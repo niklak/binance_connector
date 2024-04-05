@@ -174,14 +174,25 @@ func RequiredOneOfParams(params ...[]string) RequestOption {
 	}
 }
 
+func SetParam(key string, value interface{}) RequestOption {
+	return func(r *Request) {
+		r.SetParam(key, value)
+	}
+}
+
 // New create a new Request, prefer to use this function to create a new Request, because it will initialize query and form
 func New(endpoint string, options ...RequestOption) *Request {
 	r := &Request{
 		Endpoint: endpoint,
+		Query:    url.Values{},
 	}
 	for _, option := range options {
 		option(r)
 	}
 
-	return r.Init()
+	if r.Method == "" {
+		r.Method = http.MethodGet
+	}
+
+	return r
 }
