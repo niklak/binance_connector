@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/niklak/binance_connector/internal/connector"
-	"github.com/niklak/binance_connector/internal/request"
+	"github.com/niklak/binance_connector/request"
 )
 
 // ETH Staking account (USER_DATA) (GET /sapi/v1/eth-staking/account)

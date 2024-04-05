@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/niklak/binance_connector/internal/connector"
-	"github.com/niklak/binance_connector/internal/request"
+	"github.com/niklak/binance_connector/request"
 )
 
 // Binance Get all account orders; active, canceled, or filled (GET /api/v3/allOrders)

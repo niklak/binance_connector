@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/niklak/binance_connector/internal/connector"
-	"github.com/niklak/binance_connector/internal/request"
+	"github.com/niklak/binance_connector/request"
 )
 
 // Binance Exchange Information endpoint (GET /api/v3/exchangeInfo)

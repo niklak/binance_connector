@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/niklak/binance_connector/internal/connector"
-	"github.com/niklak/binance_connector/internal/request"
+	"github.com/niklak/binance_connector/request"
 )
 
 // Cross Margin Account Transfer API Endpoint

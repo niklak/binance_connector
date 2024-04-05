@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/niklak/binance_connector/internal/connector"
-	"github.com/niklak/binance_connector/internal/request"
+	"github.com/niklak/binance_connector/request"
 )
 
 // Get ETH staking history (USER_DATA) (GET /sapi/v1/eth-staking/eth/history/stakingHistory)

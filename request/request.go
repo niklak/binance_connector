@@ -174,10 +174,16 @@ func RequiredOneOfParams(params ...[]string) RequestOption {
 	}
 }
 
+// SetParam sets query parameter with key/value to Request
 func SetParam(key string, value interface{}) RequestOption {
 	return func(r *Request) {
 		r.SetParam(key, value)
 	}
+}
+
+// Signed sets security type to SecTypeSigned. This request require to be signed with a secret key
+func Signed() RequestOption {
+	return SecType(SecTypeSigned)
 }
 
 // New create a new Request, prefer to use this function to create a new Request, because it will initialize query and form

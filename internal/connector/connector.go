@@ -15,7 +15,7 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"github.com/niklak/binance_connector/internal/helpers"
-	"github.com/niklak/binance_connector/internal/request"
+	"github.com/niklak/binance_connector/request"
 )
 
 type Connector struct {
@@ -53,6 +53,7 @@ func (c *Connector) Init() *Connector {
 		c.logger.Fatal().Err(err).Msg("")
 	}
 	c.apiBaseURL = u
+	c.logger.Info().Msg("Connector initialized")
 	return c
 }
 

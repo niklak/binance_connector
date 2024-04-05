@@ -1,7 +1,7 @@
 # Binance Connector
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/niklak/binance_connector.svg)](https://pkg.go.dev/github.com/niklak/binance_connector)
-
+[![Go](https://github.com/niklak/binance_connector/actions/workflows/go.yml/badge.svg)](https://github.com/niklak/binance_connector/actions/workflows/go.yml)
 
 This package is a wrapper for the Binance API. It is based on the [binance-connector-go](https://github.com/binance/binance-connector-go).
 
@@ -67,6 +67,10 @@ func main() {
 
 
 ```
+
+## Service for any kind of the Binance API endpoint
+Binance API has a lot of endpoints with different parameters. Many endpoints are missing in this package but it has a flexible service that allows you to call any endpoint with functional options.
+ - [examples/neworder](./examples/neworder/main.go)
 
 
 ## Differences between this package and `binance-connector-go`

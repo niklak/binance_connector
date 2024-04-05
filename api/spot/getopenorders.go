@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/niklak/binance_connector/internal/connector"
-	"github.com/niklak/binance_connector/internal/request"
+	"github.com/niklak/binance_connector/request"
 )
 
 // Binance Get current open orders (GET /api/v3/openOrders)

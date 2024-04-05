@@ -3,11 +3,9 @@ package wallet
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
-	"github.com/niklak/binance_connector/internal/request"
+	"github.com/niklak/binance_connector/request"
 )
 
 // Get Cloud-Mining payment and refund history (USER_DATA)
@@ -73,16 +71,8 @@ func (s *CloudMiningPaymentHistoryService) Do(ctx context.Context) (res *CloudMi
 	r := request.New(
 		"/sapi/v1/asset/ledger-transfer/cloud-mining/queryByPage",
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("startTime", "endTime"),
 	)
-
-	if s.startTime == 0 {
-		err = fmt.Errorf("%w: startTime", apierrors.ErrMissingParameter)
-		return
-	}
-	if s.endTime == 0 {
-		err = fmt.Errorf("%w: endTime", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("startTime", s.startTime)
 	r.SetParam("endTime", s.endTime)

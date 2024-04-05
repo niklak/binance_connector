@@ -6,7 +6,7 @@ import (
 
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/helpers"
-	"github.com/niklak/binance_connector/internal/request"
+	"github.com/niklak/binance_connector/request"
 )
 
 // Binance Symbol Order Book Ticker (GET /api/v3/ticker/bookTicker)

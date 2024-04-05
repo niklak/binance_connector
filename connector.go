@@ -3,11 +3,14 @@
 package binance_connector
 
 import (
+	"github.com/niklak/binance_connector/api/binanceservice"
 	"github.com/niklak/binance_connector/internal/connector"
-	"github.com/niklak/binance_connector/internal/request"
+	"github.com/niklak/binance_connector/request"
 )
 
 type ConnectorOption = connector.ConnectorOption
+
+type Service = binanceservice.Service
 
 var BaseURL = connector.BaseURL
 var HTTPClient = connector.HTTPClient
@@ -38,4 +41,9 @@ func NewClientWithOptions(apiKey, secretKey string, options ...ConnectorOption) 
 	c := connector.NewConnector(apiKey, secretKey, options...)
 
 	return &Client{Connector: c}
+}
+
+// NewService create a new flexible binance service
+func (c *Client) NewService() *Service {
+	return &Service{C: c.Connector}
 }

@@ -3,11 +3,9 @@ package wallet
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
-	"github.com/niklak/binance_connector/api/apierrors"
 	"github.com/niklak/binance_connector/internal/connector"
-	"github.com/niklak/binance_connector/internal/request"
+	"github.com/niklak/binance_connector/request"
 )
 
 // Daily Account Snapshot (USER_DATA)
@@ -52,12 +50,8 @@ func (s *AccountSnapshotService) Do(ctx context.Context) (res *AccountSnapshotRe
 	r := request.New(
 		"/sapi/v1/accountSnapshot",
 		request.SecType(request.SecTypeSigned),
+		request.RequiredParams("type"),
 	)
-
-	if s.marketType == "" {
-		err = fmt.Errorf("%w: marketType", apierrors.ErrMissingParameter)
-		return
-	}
 
 	r.SetParam("type", s.marketType)
 	r.SetParam("startTime", s.startTime)

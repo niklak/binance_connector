@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/niklak/binance_connector/internal/connector"
-	"github.com/niklak/binance_connector/internal/request"
+	"github.com/niklak/binance_connector/request"
 )
 
 // Dust Transfer (USER_DATA)
