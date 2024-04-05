@@ -10,9 +10,12 @@ on:
     branches: [ "main" ]
 
 jobs:
-
+  
   build:
     runs-on: ubuntu-latest
+    env:
+      BINANCE_KEY: ${{ secrets.BINANCE_KEY }}
+      BINANCE_SECRET: ${{ secrets.BINANCE_SECRET }}
     steps:
     - uses: actions/checkout@v3
 
