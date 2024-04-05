@@ -37,9 +37,9 @@ func (s *QueryOCOService) Do(ctx context.Context, opts ...request.RequestOption)
 		"/api/v3/orderList",
 		request.SecType(request.SecTypeSigned),
 		request.RequiredOneOfParams([]string{"orderListId", "origClientOrderId"}),
+		request.SetParam("orderListId", s.orderListId),
+		request.SetParam("origClientOrderId", s.origClientOrderId),
 	)
-	r.SetParam("orderListId", s.orderListId)
-	r.SetParam("origClientOrderId", s.origClientOrderId)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {

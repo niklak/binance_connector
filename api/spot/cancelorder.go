@@ -61,14 +61,12 @@ func (s *CancelOrderService) Do(ctx context.Context, opts ...request.RequestOpti
 		request.SecType(request.SecTypeSigned),
 		request.RequiredParams("symbol"),
 		request.RequiredOneOfParams([]string{"orderId", "origClientOrderId"}),
+		request.SetParam("symbol", s.symbol),
+		request.SetParam("orderId", s.orderId),
+		request.SetParam("origClientOrderId", s.origClientOrderId),
+		request.SetParam("newClientOrderId", s.newClientOrderId),
+		request.SetParam("cancelRestrictions", s.cancelRestrictions),
 	)
-
-	r.SetParam("symbol", s.symbol)
-
-	r.SetParam("orderId", s.orderId)
-	r.SetParam("origClientOrderId", s.origClientOrderId)
-	r.SetParam("newClientOrderId", s.newClientOrderId)
-	r.SetParam("cancelRestrictions", s.cancelRestrictions)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {

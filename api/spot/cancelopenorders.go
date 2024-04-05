@@ -32,9 +32,8 @@ func (s *CancelOpenOrdersService) Do(ctx context.Context, opts ...request.Reques
 		request.Method(http.MethodDelete),
 		request.SecType(request.SecTypeSigned),
 		request.RequiredParams("symbol"),
+		request.SetParam("symbol", s.symbol),
 	)
-
-	r.SetParam("symbol", s.symbol)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {

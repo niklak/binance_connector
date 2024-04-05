@@ -58,13 +58,12 @@ func (s *QueryPreventedMatchesService) Do(ctx context.Context, opts ...request.R
 		"/api/v3/myPreventedMatches",
 		request.SecType(request.SecTypeSigned),
 		request.RequiredParams("symbol"),
+		request.SetParam("symbol", s.symbol),
+		request.SetParam("preventedMatchId", s.preventMatchId),
+		request.SetParam("orderId", s.orderId),
+		request.SetParam("fromPreventedMatchId", s.fromPreventedMatchId),
+		request.SetParam("limit", s.limit),
 	)
-
-	r.SetParam("symbol", s.symbol)
-	r.SetParam("preventedMatchId", s.preventMatchId)
-	r.SetParam("orderId", s.orderId)
-	r.SetParam("fromPreventedMatchId", s.fromPreventedMatchId)
-	r.SetParam("limit", s.limit)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {

@@ -65,14 +65,13 @@ func (s *AccountTradeListService) Do(ctx context.Context, opts ...request.Reques
 		"/api/v3/myTrades",
 		request.SecType(request.SecTypeSigned),
 		request.RequiredParams("symbol"),
+		request.SetParam("symbol", s.symbol),
+		request.SetParam("orderId", s.orderId),
+		request.SetParam("startTime", s.startTime),
+		request.SetParam("endTime", s.endTime),
+		request.SetParam("fromId", s.fromId),
+		request.SetParam("limit", s.limit),
 	)
-
-	r.SetParam("symbol", s.symbol)
-	r.SetParam("orderId", s.orderId)
-	r.SetParam("startTime", s.startTime)
-	r.SetParam("endTime", s.endTime)
-	r.SetParam("fromId", s.fromId)
-	r.SetParam("limit", s.limit)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {

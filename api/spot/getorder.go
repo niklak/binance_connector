@@ -8,8 +8,7 @@ import (
 	"github.com/niklak/binance_connector/internal/request"
 )
 
-// Query Order (USER_DATA)
-// Binance Query Order (USER_DATA) (GET /api/v3/order)
+// Query Order (USER_DATA) (GET /api/v3/order)
 // GetOrderService get order
 //
 //gen:new_service
@@ -46,12 +45,10 @@ func (s *GetOrderService) Do(ctx context.Context, opts ...request.RequestOption)
 		request.SecType(request.SecTypeSigned),
 		request.RequiredParams("symbol"),
 		request.RequiredOneOfParams([]string{"orderId", "origClientOrderId"}),
+		request.SetParam("symbol", s.symbol),
+		request.SetParam("orderId", s.orderId),
+		request.SetParam("origClientOrderId", s.origClientOrderId),
 	)
-
-	r.SetParam("symbol", s.symbol)
-
-	r.SetParam("orderId", s.orderId)
-	r.SetParam("origClientOrderId", s.origClientOrderId)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {

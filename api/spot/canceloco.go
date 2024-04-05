@@ -54,12 +54,11 @@ func (s *CancelOCOService) Do(ctx context.Context, opts ...request.RequestOption
 		request.SecType(request.SecTypeSigned),
 		request.RequiredParams("symbol"),
 		request.RequiredOneOfParams([]string{"orderListId", "listClientOrderId"}),
+		request.SetParam("symbol", s.symbol),
+		request.SetParam("orderListId", s.orderListId),
+		request.SetParam("listClientOrderId", s.listClientOrderId),
+		request.SetParam("newClientOrderId", s.newClientOrderId),
 	)
-
-	r.SetParam("symbol", s.symbol)
-	r.SetParam("orderListId", s.orderListId)
-	r.SetParam("listClientOrderId", s.listClientOrderId)
-	r.SetParam("newClientOrderId", s.newClientOrderId)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {

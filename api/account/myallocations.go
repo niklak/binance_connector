@@ -65,15 +65,13 @@ func (s *AccountAllocationsService) Do(ctx context.Context, opts ...request.Requ
 		"/api/v3/myAllocations",
 		request.SecType(request.SecTypeSigned),
 		request.RequiredParams("symbol"),
+		request.SetParam("symbol", s.symbol),
+		request.SetParam("startTime", s.startTime),
+		request.SetParam("endTime", s.endTime),
+		request.SetParam("fromAllocationId", s.fromAllocationId),
+		request.SetParam("limit", s.limit),
+		request.SetParam("orderId", s.orderId),
 	)
-
-	r.SetParam("symbol", s.symbol)
-
-	r.SetParam("startTime", s.startTime)
-	r.SetParam("endTime", s.endTime)
-	r.SetParam("fromAllocationId", s.fromAllocationId)
-	r.SetParam("limit", s.limit)
-	r.SetParam("orderId", s.orderId)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {

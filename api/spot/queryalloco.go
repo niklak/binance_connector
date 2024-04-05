@@ -50,12 +50,11 @@ func (s *QueryAllOCOService) Do(ctx context.Context, opts ...request.RequestOpti
 	r := request.New(
 		"/api/v3/allOrderList",
 		request.SecType(request.SecTypeSigned),
+		request.SetParam("fromId", s.fromId),
+		request.SetParam("startTime", s.startTime),
+		request.SetParam("endTime", s.endTime),
+		request.SetParam("limit", s.limit),
 	)
-
-	r.SetParam("fromId", s.fromId)
-	r.SetParam("startTime", s.startTime)
-	r.SetParam("endTime", s.endTime)
-	r.SetParam("limit", s.limit)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {

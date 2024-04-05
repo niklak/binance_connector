@@ -30,9 +30,8 @@ func (s *AccountCommissionService) Do(ctx context.Context, opts ...request.Reque
 		"/api/v3/account/commission",
 		request.SecType(request.SecTypeSigned),
 		request.RequiredParams("symbol"),
+		request.SetParam("symbol", s.symbol),
 	)
-
-	r.SetParam("symbol", s.symbol)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {

@@ -129,6 +129,9 @@ type GetOrderService = spot.GetOrderService
 type NewOCOService = spot.NewOCOService
 type OrderOCOResponse = spot.OrderOCOResponse
 
+//file: api/spot/neworderlistoco.go
+type CreateOrderListOCOService = spot.CreateOrderListOCOService
+
 //file: api/spot/orderresponse.go
 type OrderResponse = spot.OrderResponse
 

@@ -147,6 +147,11 @@ func (c *Client) NewNewOCOService() *NewOCOService {
 }
 
 
+func (c *Client) NewCreateOrderListOCOService() *CreateOrderListOCOService {
+	return &CreateOrderListOCOService{C: c.Connector}
+}
+
+
 func (c *Client) NewQueryAllOCOService() *QueryAllOCOService {
 	return &QueryAllOCOService{C: c.Connector}
 }

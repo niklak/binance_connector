@@ -60,14 +60,12 @@ func (s *GetAllOrdersService) Do(ctx context.Context, opts ...request.RequestOpt
 		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
 		request.RequiredParams("symbol"),
+		request.SetParam("symbol", s.symbol),
+		request.SetParam("orderId", s.orderId),
+		request.SetParam("startTime", s.startTime),
+		request.SetParam("endTime", s.endTime),
+		request.SetParam("limit", s.limit),
 	)
-
-	r.SetParam("symbol", s.symbol)
-
-	r.SetParam("orderId", s.orderId)
-	r.SetParam("startTime", s.startTime)
-	r.SetParam("endTime", s.endTime)
-	r.SetParam("limit", s.limit)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {

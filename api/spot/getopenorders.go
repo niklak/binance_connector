@@ -3,7 +3,6 @@ package spot
 import (
 	"context"
 	"encoding/json"
-	"net/http"
 
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/request"
@@ -29,11 +28,9 @@ func (s *GetOpenOrdersService) Do(ctx context.Context, opts ...request.RequestOp
 
 	r := request.New(
 		"/api/v3/openOrders",
-		request.Method(http.MethodGet),
 		request.SecType(request.SecTypeSigned),
+		request.SetParam("symbol", s.symbol),
 	)
-
-	r.SetParam("symbol", s.symbol)
 
 	data, err := s.C.CallAPI(ctx, r, opts...)
 	if err != nil {
