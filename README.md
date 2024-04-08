@@ -71,6 +71,7 @@ func main() {
 ## Service for any kind of the Binance API endpoint
 Binance API has a lot of endpoints with different parameters. Many endpoints are missing in this package but it has a flexible service that allows you to call any endpoint with functional options.
  - [examples/neworder](./examples/neworder/main.go)
+ - [examples/tickerpricealt](./examples/tickerpricealt/main.go)
 
 
 ## Differences between this package and `binance-connector-go`

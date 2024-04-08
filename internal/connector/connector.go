@@ -53,7 +53,6 @@ func (c *Connector) Init() *Connector {
 		c.logger.Fatal().Err(err).Msg("")
 	}
 	c.apiBaseURL = u
-	c.logger.Info().Msg("Connector initialized")
 	return c
 }
 
