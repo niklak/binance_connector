@@ -58,7 +58,7 @@ func (c *Connector) Init() *Connector {
 
 func (c *Connector) parseRequest(r *request.Request, opts ...request.RequestOption) (err error) {
 
-	// Accoring to https://binance-docs.github.io/apidocs/spot/en/#general-api-information,
+	// According to https://binance-docs.github.io/apidocs/spot/en/#general-api-information,
 	// all methods accepts query parameters and have priority over form-data.
 
 	// set request options from user

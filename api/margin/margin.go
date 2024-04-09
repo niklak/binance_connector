@@ -2960,7 +2960,7 @@ type MarginDustlogResponse struct {
 // UserAssetDribblet represents one dust log row
 type UserAssetDribblet struct {
 	OperateTime              int64                     `json:"operateTime"`
-	TotalTransferedAmount    string                    `json:"totalTransferedAmount"`    //Total transfered BNB amount for this exchange.
+	TotalTransferedAmount    string                    `json:"totalTransferedAmount"`    //Total transferred BNB amount for this exchange.
 	TotalServiceChargeAmount string                    `json:"totalServiceChargeAmount"` //Total service charge amount for this exchange.
 	TransId                  int64                     `json:"transId"`
 	UserAssetDribbletDetails []UserAssetDribbletDetail `json:"userAssetDribbletDetails"` //Details of this exchange.
