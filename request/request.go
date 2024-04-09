@@ -49,34 +49,12 @@ func (r *Request) Init() *Request {
 // SetParam set param with key/value to query string, if param is nil it will be ignored
 // if param is nil pointer, it will be ignored. if param is pointer it will be dereferenced
 func (r *Request) SetParam(key string, value interface{}) *Request {
-	v := reflect.ValueOf(value)
+	value = indirect(value)
 
-	if v.Kind() == reflect.Ptr {
-		if v.IsNil() {
-			return r
-		} else {
-			value = v.Elem().Interface()
-		}
-	}
-	var param string
-	switch v := value.(type) {
-	case string:
-		param = v
-	case int:
-		param = strconv.Itoa(v)
-	case int64:
-		param = strconv.FormatInt(v, 10)
-	case uint64:
-		param = strconv.FormatUint(v, 10)
-	case float32:
-		param = strconv.FormatFloat(float64(v), 'f', -1, 64)
-	case float64:
-		param = strconv.FormatFloat(v, 'f', -1, 64)
-	default:
-		param = fmt.Sprintf("%v", value)
-	}
-	if param != "" {
-		r.Query.Set(key, param)
+	val := toString(value)
+
+	if val != "" {
+		r.Query.Set(key, val)
 	}
 
 	return r
@@ -201,4 +179,65 @@ func New(endpoint string, options ...RequestOption) *Request {
 	}
 
 	return r
+}
+
+// From html/template/content.go
+// Copyright 2011 The Go Authors. All rights reserved.
+// indirect returns the value, after dereferencing as many times
+// as necessary to reach the base type (or nil).
+func indirect(a interface{}) interface{} {
+	if a == nil {
+		return nil
+	}
+	if t := reflect.TypeOf(a); t.Kind() != reflect.Ptr {
+		// Avoid creating a reflect.Value if it's not a pointer.
+		return a
+	}
+	v := reflect.ValueOf(a)
+	for v.Kind() == reflect.Ptr && !v.IsNil() {
+		v = v.Elem()
+	}
+	return v.Interface()
+}
+
+func toString(v interface{}) string {
+	v = indirect(v)
+
+	switch s := v.(type) {
+	case nil:
+		return ""
+	case string:
+		return s
+	case bool:
+		return strconv.FormatBool(s)
+	case float64:
+		return strconv.FormatFloat(s, 'f', -1, 64)
+	case float32:
+		return strconv.FormatFloat(float64(s), 'f', -1, 32)
+	case int:
+		return strconv.Itoa(s)
+	case int64:
+		return strconv.FormatInt(s, 10)
+	case int32:
+		return strconv.Itoa(int(s))
+	case int16:
+		return strconv.FormatInt(int64(s), 10)
+	case int8:
+		return strconv.FormatInt(int64(s), 10)
+	case uint:
+		return strconv.FormatUint(uint64(s), 10)
+	case uint64:
+		return strconv.FormatUint(uint64(s), 10)
+	case uint32:
+		return strconv.FormatUint(uint64(s), 10)
+	case uint16:
+		return strconv.FormatUint(uint64(s), 10)
+	case uint8:
+		return strconv.FormatUint(uint64(s), 10)
+	case fmt.Stringer:
+		return s.String()
+	default:
+		return fmt.Sprintf("%v", s)
+	}
+
 }
