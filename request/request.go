@@ -49,7 +49,11 @@ func (r *Request) Init() *Request {
 // SetParam set param with key/value to query string, if param is nil it will be ignored
 // if param is nil pointer, it will be ignored. if param is pointer it will be dereferenced
 func (r *Request) SetParam(key string, value interface{}) *Request {
+
 	value = indirect(value)
+	if value == nil {
+		return r
+	}
 
 	val := toString(value)
 
@@ -194,18 +198,19 @@ func indirect(a interface{}) interface{} {
 		return a
 	}
 	v := reflect.ValueOf(a)
-	for v.Kind() == reflect.Ptr && !v.IsNil() {
+	for v.Kind() == reflect.Ptr {
+		if v.IsNil() {
+			return nil
+		}
 		v = v.Elem()
 	}
 	return v.Interface()
 }
 
 func toString(v interface{}) string {
-	v = indirect(v)
+	// At this point v can't be nil, because it is invoked after `indirect` function
 
 	switch s := v.(type) {
-	case nil:
-		return ""
 	case string:
 		return s
 	case bool:
