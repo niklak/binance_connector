@@ -77,14 +77,11 @@ func (c *Connector) parseRequest(r *request.Request, opts ...request.RequestOpti
 	if r.SecType == request.SecTypeSigned {
 		r.SetParam(timestampKey, helpers.CurrentTimestamp()-c.TimeOffset)
 	}
-	header := http.Header{}
-	if r.Header != nil {
-		header = r.Header.Clone()
-	}
+
 	//header.Set("User-Agent", fmt.Sprintf("%s/%s", Name, Version))
 
 	if r.SecType == request.SecTypeAPIKey || r.SecType == request.SecTypeSigned {
-		header.Set("X-MBX-APIKEY", c.APIKey)
+		r.Header.Set("X-MBX-APIKEY", c.APIKey)
 	}
 
 	if r.SecType == request.SecTypeSigned {
@@ -98,12 +95,9 @@ func (c *Connector) parseRequest(r *request.Request, opts ...request.RequestOpti
 	}
 
 	u.RawQuery = r.Query.Encode()
+	r.FullURL = u.String()
 
-	fullURL := u.String()
-
-	c.logger.Debug().Str("full_url", fullURL).Msg("")
-	r.FullURL = fullURL
-	r.Header = header
+	c.logger.Debug().Str("full_url", r.FullURL).Msg("")
 	return
 }
 

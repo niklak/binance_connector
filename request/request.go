@@ -40,6 +40,9 @@ func (r *Request) Init() *Request {
 	if r.Query == nil {
 		r.Query = url.Values{}
 	}
+	if r.Header == nil {
+		r.Header = http.Header{}
+	}
 	if r.Method == "" {
 		r.Method = http.MethodGet
 	}
