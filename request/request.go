@@ -176,6 +176,7 @@ func New(endpoint string, options ...RequestOption) *Request {
 	r := &Request{
 		Endpoint: endpoint,
 		Query:    url.Values{},
+		Header:   http.Header{},
 	}
 	for _, option := range options {
 		option(r)
