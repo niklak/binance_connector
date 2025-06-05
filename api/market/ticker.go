@@ -2,9 +2,9 @@ package market
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/niklak/binance_connector/internal/connector"
+	"github.com/niklak/binance_connector/internal/helpers"
 	"github.com/niklak/binance_connector/request"
 )
 
@@ -13,14 +13,21 @@ import (
 //gen:new_service
 type Ticker struct {
 	C          *connector.Connector
-	symbol     string
+	symbol     *string
+	symbols    *[]string
 	windowSize *string
 	tickerType *string
 }
 
 // Symbol set symbol
 func (s *Ticker) Symbol(symbol string) *Ticker {
-	s.symbol = symbol
+	s.symbol = &symbol
+	return s
+}
+
+// Symbols set symbols
+func (s *Ticker) Symbols(symbols []string) *Ticker {
+	s.symbols = &symbols
 	return s
 }
 
@@ -37,14 +44,19 @@ func (s *Ticker) Type(tickerType string) *Ticker {
 }
 
 // Send the request
-func (s *Ticker) Do(ctx context.Context, opts ...request.RequestOption) (res *TickerResponse, err error) {
+func (s *Ticker) Do(ctx context.Context, opts ...request.RequestOption) (res []*TickerResponse, err error) {
 
 	r := request.New(
 		"/api/v3/ticker",
 		request.RequiredParams("symbol"),
 	)
 
-	r.SetParam("symbol", s.symbol)
+	if s.symbol != nil {
+		r.SetParam("symbol", s.symbol)
+	} else if s.symbols != nil {
+		symbols := helpers.StringifyStringSlice(*s.symbols)
+		r.SetParam("symbols", symbols)
+	}
 
 	r.SetParam("windowSize", s.windowSize)
 	r.SetParam("type", s.tickerType)
@@ -53,8 +65,8 @@ func (s *Ticker) Do(ctx context.Context, opts ...request.RequestOption) (res *Ti
 	if err != nil {
 		return
 	}
-	res = new(TickerResponse)
-	err = json.Unmarshal(data, res)
+	expectArray := s.symbols != nil || (s.symbol == nil && s.symbols == nil)
+	res, err = helpers.DeserializeIntoSlice[TickerResponse](data, expectArray)
 	return
 }
 

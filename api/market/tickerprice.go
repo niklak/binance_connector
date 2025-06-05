@@ -2,7 +2,6 @@ package market
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/niklak/binance_connector/internal/connector"
 	"github.com/niklak/binance_connector/internal/helpers"
@@ -47,18 +46,8 @@ func (s *TickerPrice) Do(ctx context.Context, opts ...request.RequestOption) (re
 		return
 	}
 
-	if s.symbols != nil || (s.symbol == nil && s.symbols == nil) {
-		if err = json.Unmarshal(data, &res); err != nil {
-			return
-		}
-	} else if s.symbol != nil {
-		dst := &TickerPriceResponse{}
-		if err = json.Unmarshal(data, dst); err != nil {
-			return
-		}
-		res = append(res, dst)
-	}
-
+	expectArray := s.symbols != nil || (s.symbol == nil && s.symbols == nil)
+	res, err = helpers.DeserializeIntoSlice[TickerPriceResponse](data, expectArray)
 	return
 }
 

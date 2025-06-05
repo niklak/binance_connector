@@ -17,7 +17,7 @@ jobs:
       BINANCE_KEY: ${{ secrets.BINANCE_KEY }}
       BINANCE_SECRET: ${{ secrets.BINANCE_SECRET }}
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Go
       uses: actions/setup-go@v4

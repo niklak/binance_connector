@@ -186,7 +186,6 @@ func (s *AccountTestSuite) SetupSuite() {
 }
 
 func (s *AccountTestSuite) TearDownSuite() {
-	// Setup the test
 	s.testServer.Close()
 }
 

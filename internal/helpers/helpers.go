@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"encoding/json"
 	"strings"
 	"time"
 )
@@ -28,4 +29,21 @@ func StringifyStringSlice(s []string) string {
 	buf.WriteString("]")
 
 	return buf.String()
+}
+
+// Some responses may return slice of objects as well as single object. This function returns always a slice of objects.
+func DeserializeIntoSlice[T any](data []byte, expectArray bool) (res []*T, err error) {
+
+	if expectArray {
+		if err = json.Unmarshal(data, &res); err != nil {
+			return
+		}
+		return
+	}
+	dst := new(T)
+	if err = json.Unmarshal(data, dst); err != nil {
+		return
+	}
+	res = append(res, dst)
+	return
 }
