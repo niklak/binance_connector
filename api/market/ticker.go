@@ -48,7 +48,7 @@ func (s *Ticker) Do(ctx context.Context, opts ...request.RequestOption) (res []*
 
 	r := request.New(
 		"/api/v3/ticker",
-		request.RequiredParams("symbol"),
+		request.RequiredOneOfParams([]string{"symbol", "symbols"}),
 	)
 
 	if s.symbol != nil {
