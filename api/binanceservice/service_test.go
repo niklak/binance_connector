@@ -25,7 +25,6 @@ func TestSimpleService_Do(t *testing.T) {
 
 	assert.NotZero(apiKey)
 	assert.NotZero(apiSecret)
-
 	c := connector.NewConnector(apiKey, apiSecret, connector.BaseURL("https://testnet.binance.vision"))
 
 	s := &Service{C: c}
@@ -97,7 +96,7 @@ func TestNewOrderService_Do(t *testing.T) {
 		request.SetParam("symbol", "ADAUSDT"),
 		request.SetParam("side", "BUY"),
 		request.SetParam("type", "LIMIT"),
-		request.SetParam("price", "0.51"),
+		request.SetParam("price", "0.24"),
 		request.SetParam("quantity", "500"),
 		request.SetParam("timeInForce", "GTC"),
 	)
