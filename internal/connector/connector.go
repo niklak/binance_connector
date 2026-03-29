@@ -121,7 +121,11 @@ func (c *Connector) CallAPI(ctx context.Context, r *request.Request, opts ...req
 	}
 	req.Header = r.Header
 
-	c.logger.Debug().Str("request", fmt.Sprintf("%#v", req)).Msg("")
+	c.logger.Debug().
+		Str("method", req.Method).
+		Str("path", req.URL.Path).
+		Str("host", req.Host).
+		Msg("http request")
 
 	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
@@ -141,9 +145,11 @@ func (c *Connector) CallAPI(ctx context.Context, r *request.Request, opts ...req
 	}()
 
 	c.logger.Debug().
-		Str("response", fmt.Sprintf("%#v", resp)).
-		Str("response_body", string(data)).
-		Int("response_status_code", resp.StatusCode).Msg("")
+		Str("method", resp.Request.Method).
+		Str("path", resp.Request.URL.Path).
+		Str("host", resp.Request.Host).
+		Int("status_code", resp.StatusCode).
+		Msg("http request's response")
 
 	if resp.StatusCode >= http.StatusBadRequest {
 		apiErr := new(APIError)
